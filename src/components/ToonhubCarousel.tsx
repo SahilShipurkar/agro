@@ -155,7 +155,7 @@ export default function ToonhubCarousel({ onSwitchToCozyPaws }: ToonhubCarouselP
             zIndex: 2,
             top: '18%',
             fontFamily: "'Anton', sans-serif",
-            fontSize: 'clamp(90px, 28vw, 380px)',
+            fontSize: 'clamp(60px, 18vw, 320px)',
             fontWeight: 900,
             color: 'white',
             opacity: 1,
@@ -165,7 +165,7 @@ export default function ToonhubCarousel({ onSwitchToCozyPaws }: ToonhubCarouselP
             whiteSpace: 'nowrap',
           }}
         >
-          3D SHAPE
+          OUR PRODUCTS
         </div>
 
         {/* Top-left brand label & CozyPaws switcher */}
