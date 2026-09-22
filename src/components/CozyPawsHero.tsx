@@ -7,61 +7,79 @@ import {
   Plus,
 } from 'lucide-react';
 
-export default function CozyPawsHero() {
+interface CozyPawsHeroProps {
+  onNavigateAbout?: () => void;
+  onNavigateStore?: () => void;
+}
+
+export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyPawsHeroProps = {}) {
   return (
     <div className="h-screen w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
-      {/* HEADER */}
-      <header className="shrink-0 w-full px-4 sm:px-8 lg:px-12 py-4 relative z-30 flex items-center justify-between animate-fade-in delay-100">
-        {/* Left: Navbharat Agro Services Logo */}
-        <div className="flex items-center gap-3 cursor-pointer select-none">
-          <img
-            src="/Whitte Circle logo(3).png"
-            alt="Navbharat Agro Services Logo"
-            className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 object-contain rounded-full shadow-md transition-transform hover:scale-105"
-          />
-          <span className="font-sans font-extrabold text-lg sm:text-xl lg:text-2xl text-[#123814] tracking-tight">
-            Navbharat Agro Services
-          </span>
-        </div>
-
-        {/* Center Nav (hidden below md) */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-          <a href="#home" className="text-gray-900 font-semibold hover:text-[#1a3d1a] transition-colors">
-            Home
-          </a>
-          <a href="#delivery" className="text-gray-600 hover:text-gray-900 transition-colors">
-            About Us
-          </a>
-          <a href="#brands" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Products
-          </a>
-          <a href="#gallery" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Gallery
-          </a>
-          <a href="#business" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Careers
-          </a>
-          <a href="#blog" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Blog / Resources
-          </a>
-          <a href="#contact" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Contact Us
-          </a>
-        </nav>
-
-        {/* Right Controls */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* Cart Button */}
-          <button
-            aria-label="Cart"
-            className="relative w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#E86A10] border-2 border-[#EFFDF0] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
-              1
+      {/* HEADER WITH NAVBAR BELOW */}
+      <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
+        {/* Top Row: Logo, Brand Name & Cart Button */}
+        <div className="w-full px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
+          <div className="flex items-center gap-2.5 cursor-pointer select-none">
+            <img
+              src="/Whitte Circle logo(3).png"
+              alt="Navbharat Agro Services Logo"
+              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+            />
+            <span className="font-sans font-extrabold text-base sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+              Navbharat Agro Services
             </span>
-          </button>
+          </div>
+
+          {/* Right Controls */}
+          <div className="flex items-center gap-3">
+            <button
+              aria-label="Cart"
+              onClick={onNavigateStore}
+              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105"
+            >
+              <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[#E86A10] border-2 border-[#EFFDF0] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
+                1
+              </span>
+            </button>
+          </div>
         </div>
+
+        {/* Bottom Row: Navigation Bar Below Logo & Name */}
+        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
+          <div className="max-w-5xl mx-auto flex items-center justify-center sm:justify-between flex-wrap gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700">
+            <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap">
+              Home
+            </a>
+            <a
+              href="#about"
+              onClick={(e) => {
+                if (onNavigateAbout) {
+                  e.preventDefault();
+                  onNavigateAbout();
+                }
+              }}
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
+            >
+              About Us
+            </a>
+            <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+              Products
+            </a>
+            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+              Gallery
+            </a>
+            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+              Careers
+            </a>
+            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+              Blog / Resources
+            </a>
+            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+              Contact Us
+            </a>
+          </div>
+        </nav>
       </header>
 
       {/* HERO SECTION CONTAINER */}
@@ -88,12 +106,12 @@ export default function CozyPawsHero() {
           </h1>
         </div>
 
-        {/* Left Product Card (Heat Plus Care) - Desktop/Tablet */}
+        {/* Left Product Card (Heat Max) - Desktop/Tablet */}
         <div className="hidden md:block absolute top-[60px] lg:top-[50px] left-4 lg:left-12 z-20 w-[160px] lg:w-[clamp(160px,14vw,260px)] animate-slide-in-left delay-600">
           <div className="relative rounded-2xl overflow-hidden aspect-[260/257] bg-white/60 shadow-sm border border-white/60 group p-2">
             <img
-              src="/Heat.png"
-              alt="Heat Plus Care"
+              src="/heatmax.png"
+              alt="Heat Max Booster"
               className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
             <button className="absolute bottom-2 right-2 w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#1a3d1a] hover:bg-[#2a5a2a] text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md cursor-pointer">
@@ -101,7 +119,7 @@ export default function CozyPawsHero() {
             </button>
           </div>
           <div className="mt-2 flex flex-col">
-            <span className="text-gray-700 text-xs lg:text-sm font-medium">Heat Plus Care</span>
+            <span className="text-gray-700 text-xs lg:text-sm font-medium">Heat Max Booster</span>
             <span className="text-[#1a3d1a] font-bold text-sm lg:text-base">499rs</span>
           </div>
         </div>
@@ -224,12 +242,12 @@ export default function CozyPawsHero() {
             <div className="w-[110px] bg-white/50 p-2 rounded-xl border border-white/70 shadow-sm flex flex-col items-center">
               <div className="w-full aspect-square rounded-lg overflow-hidden relative bg-white/40 p-1">
                 <img
-                  src="/Heat.png"
-                  alt="Heat Plus Care"
+                  src="/heatmax.png"
+                  alt="Heat Max Booster"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <span className="text-[10px] font-medium text-gray-800 mt-1 line-clamp-1">Heat Plus</span>
+              <span className="text-[10px] font-medium text-gray-800 mt-1 line-clamp-1">Heat Max</span>
               <span className="text-xs font-bold text-[#1a3d1a]">$49.99</span>
             </div>
 

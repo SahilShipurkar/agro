@@ -16,6 +16,7 @@ interface ProductItem {
 
 interface ToonhubCarouselProps {
   onSwitchToCozyPaws?: () => void;
+  onNavigateDiscover?: () => void;
 }
 
 const PRODUCTS: ProductItem[] = [
@@ -55,13 +56,50 @@ const PRODUCTS: ProductItem[] = [
     panel: '#85CC92',
   },
   {
-    id: 'heat-plus',
-    name: 'Heat Plus',
-    subtitle: 'Reproductive Nutrition Support',
+    id: 'garbha-care',
+    name: 'Garbha Care',
+    subtitle: 'Uterine & Pregnancy Care Supplement',
     description:
-      'Heat Plus is a nutritional supplement designed to support reproductive management in dairy animals as part of a proper nutrition and herd-management program.',
+      'Garbha Care is a specialized tonic formulated to support uterine health, post-calving cleansing, and overall pregnancy wellness in dairy animals.',
     idealFor: '🐄 Cows • 🐃 Buffaloes',
-    src: '/Heat.png',
+    form: 'Liquid Tonic',
+    src: '/garbhaCare.png',
+    bg: '#6BBF7A',
+    panel: '#85CC92',
+  },
+  {
+    id: 'grow-max',
+    name: 'Grow Max',
+    subtitle: 'Calf Growth & Muscle Development',
+    description:
+      'Grow Max is a growth promoter and weight-gain supplement for calves and young cattle, supporting early muscle development and gut digestion.',
+    idealFor: '🐄 Calves • 🐃 Young Cattle',
+    form: 'Powder',
+    src: '/growmax.png',
+    bg: '#6BBF7A',
+    panel: '#85CC92',
+  },
+  {
+    id: 'heat-max',
+    name: 'Heat Max',
+    subtitle: 'Advanced Estrous & Reproductive Booster',
+    description:
+      'Heat Max is an advanced reproductive formulation enriched with vitamins and chelated minerals to induce timely heat and optimize breeding results.',
+    idealFor: '🐄 Cows • 🐃 Buffaloes',
+    form: 'Bolus / Powder Pack',
+    src: '/heatmax.png',
+    bg: '#6BBF7A',
+    panel: '#85CC92',
+  },
+  {
+    id: 'mast-guard',
+    name: 'Mast Guard',
+    subtitle: 'Udder Care & Mastitis Protection',
+    description:
+      'Mast Guard is an udder immunity and tissue recovery supplement designed to protect against mastitis, support teat health, and preserve milk purity.',
+    idealFor: '🐄 Cows • 🐃 Buffaloes',
+    form: 'Powder / Ointment',
+    src: '/mastguard.png',
     bg: '#6BBF7A',
     panel: '#85CC92',
   },
@@ -70,7 +108,9 @@ const PRODUCTS: ProductItem[] = [
 const grainDataUrl =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.08'/></svg>";
 
-export default function ToonhubCarousel({}: ToonhubCarouselProps = {}) {
+export default function ToonhubCarousel({
+  onNavigateDiscover,
+}: ToonhubCarouselProps = {}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isMobile, setIsMobile] = useState(() =>
@@ -296,6 +336,12 @@ export default function ToonhubCarousel({}: ToonhubCarouselProps = {}) {
         >
           <a
             href="#discover"
+            onClick={(e) => {
+              if (onNavigateDiscover) {
+                e.preventDefault();
+                onNavigateDiscover();
+              }
+            }}
             className="flex items-center gap-2 text-white no-underline uppercase opacity-95 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
             style={{
               fontFamily: "'Anton', sans-serif",
