@@ -108,7 +108,7 @@ export function ProductRevealCard({
       y: -8, 
       filter: "blur(0px)", 
       transition: {  
-        type: "spring",  
+        type: "spring" as const,  
         stiffness: 300,  
         damping: 30, 
         mass: 0.8, 
@@ -132,7 +132,7 @@ export function ProductRevealCard({
       opacity: 1, 
       filter: "blur(0px)", 
       transition: { 
-        type: "spring", 
+        type: "spring" as const, 
         stiffness: 400, 
         damping: 28, 
         mass: 0.6, 
@@ -153,7 +153,7 @@ export function ProductRevealCard({
       y: 0, 
       scale: 1, 
       transition: { 
-        type: "spring", 
+        type: "spring" as const, 
         stiffness: 400, 
         damping: 25, 
         mass: 0.5, 
@@ -167,7 +167,7 @@ export function ProductRevealCard({
       scale: 1.03,  
       y: -2, 
       transition: {  
-        type: "spring",  
+        type: "spring" as const,  
         stiffness: 400,  
         damping: 25  
       } 
@@ -182,7 +182,7 @@ export function ProductRevealCard({
       rotate: [0, 10, -10, 0], 
       transition: {  
         duration: 0.5, 
-        ease: "easeInOut" 
+        ease: "easeInOut" as const
       } 
     }, 
   } 
