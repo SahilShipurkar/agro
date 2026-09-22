@@ -1,5 +1,4 @@
 import {
-  Search,
   ShoppingCart,
   Star,
   ArrowUpRight,
@@ -30,48 +29,28 @@ export default function CozyPawsHero() {
           <a href="#home" className="text-gray-900 font-semibold hover:text-[#1a3d1a] transition-colors">
             Home
           </a>
-          <a href="#shop" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Shop
-          </a>
           <a href="#delivery" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Delivery and payment
+            About Us
           </a>
           <a href="#brands" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Brands
+            Products
+          </a>
+          <a href="#gallery" className="text-gray-600 hover:text-gray-900 transition-colors">
+            Gallery
+          </a>
+          <a href="#business" className="text-gray-600 hover:text-gray-900 transition-colors">
+            Careers
           </a>
           <a href="#blog" className="text-gray-600 hover:text-gray-900 transition-colors">
-            Blog
+            Blog / Resources
+          </a>
+          <a href="#contact" className="text-gray-600 hover:text-gray-900 transition-colors">
+            Contact Us
           </a>
         </nav>
 
         {/* Right Controls */}
         <div className="flex items-center gap-3 sm:gap-4">
-          <button
-            onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-3.5 py-1.5 rounded-full bg-[#1a3d1a] hover:bg-[#2a5a2a] text-white text-xs font-semibold tracking-wide transition-all shadow-sm hover:scale-105 cursor-pointer"
-          >
-            TOONHUB ↓
-          </button>
-
-          {/* Search Button (hidden below sm) */}
-          <button
-            aria-label="Search"
-            className="hidden sm:flex w-10 h-10 rounded-full border border-gray-300 items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer"
-          >
-            <Search className="w-5 h-5" />
-          </button>
-
-          {/* Favorites Button */}
-          <button
-            aria-label="Favorites"
-            className="relative w-10 h-10 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] flex items-center justify-center text-white transition-colors cursor-pointer"
-          >
-            <Star className="w-5 h-5 fill-white text-white" />
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#E86A10] border-2 border-[#EFFDF0] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm">
-              4
-            </span>
-          </button>
-
           {/* Cart Button */}
           <button
             aria-label="Cart"
@@ -82,15 +61,6 @@ export default function CozyPawsHero() {
               1
             </span>
           </button>
-
-          {/* Avatar */}
-          <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-200 cursor-pointer shrink-0">
-            <img
-              src="https://polo-pecan-73837341.figma.site/_assets/v11/e62173d41f91350a59628e8a9a55ae078a886fb9.png?w=128"
-              alt="User avatar"
-              className="w-full h-full object-cover"
-            />
-          </div>
         </div>
       </header>
 
