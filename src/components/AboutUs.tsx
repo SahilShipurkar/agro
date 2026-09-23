@@ -20,6 +20,8 @@ import {
   Menu,
 } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
+import { useLanguage } from '@/lib/languageContext';
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 
 interface AboutUsProps {
   onNavigateHome?: () => void;
@@ -32,6 +34,7 @@ export default function AboutUs({
   onNavigateProducts,
   onNavigateStore,
 }: AboutUsProps = {}) {
+  const { t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const handleScrollToProducts = () => {
     if (onNavigateProducts) {
@@ -43,42 +46,42 @@ export default function AboutUs({
 
   const productCategories = [
     {
-      title: 'Cattle Nutrition Supplements',
+      title: t('discover.tabs.feed', 'Cattle Nutrition Supplements'),
       description:
         'Nutritional solutions designed to support the daily nutritional requirements of dairy animals.',
       icon: Milk,
       color: 'bg-emerald-50 text-emerald-700',
     },
     {
-      title: 'Dairy & Milk Production Support',
+      title: t('discover.tabs.all', 'Dairy & Milk Production Support'),
       description:
         'Products formulated to complement proper nutrition and dairy management practices.',
       icon: Activity,
       color: 'bg-amber-50 text-amber-700',
     },
     {
-      title: 'Calf Nutrition',
+      title: t('discover.tabs.calf', 'Calf Nutrition'),
       description:
         'Specialized nutritional support for growing calves and young Dairy Animals.',
       icon: Baby,
       color: 'bg-blue-50 text-blue-700',
     },
     {
-      title: 'Reproductive & Dairy Animals Management',
+      title: t('discover.tabs.reproductive', 'Reproductive & Dairy Animals Management'),
       description:
         'Nutrition-focused solutions that can support Dairy Animals reproductive and overall management when used appropriately.',
       icon: Sparkles,
       color: 'bg-rose-50 text-rose-700',
     },
     {
-      title: 'Mineral & Nutritional Supplements',
+      title: t('discover.tabs.minerals', 'Mineral & Nutritional Supplements'),
       description:
         'Essential nutritional support for maintaining proper Dairy Animals nutrition and overall well-being.',
       icon: Award,
       color: 'bg-purple-50 text-purple-700',
     },
     {
-      title: 'Silage & Fodder Solutions',
+      title: t('discover.tabs.silage', 'Silage & Fodder Solutions'),
       description:
         'Quality fodder solutions that help farmers plan and manage feed availability throughout the year.',
       icon: Layers,
@@ -139,7 +142,7 @@ export default function AboutUs({
     <div className="w-full bg-[#EFFDF0] min-h-screen font-['Inter',sans-serif]">
       {/* HEADER WITH NAVBAR BELOW */}
       <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
-        {/* Top Row: Logo, Brand Name & Cart Button */}
+        {/* Top Row: Logo, Brand Name & Language + Cart Button */}
         <div className="w-full px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
           <div
             onClick={onNavigateHome}
@@ -151,14 +154,15 @@ export default function AboutUs({
               className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
             <span className="font-sans font-black text-[15px] sm:text-lg lg:text-xl text-[#123814] tracking-tight">
-              Navbharat Agro Services
+              {t('nav.brand', 'Navbharat Agro Services')}
             </span>
           </div>
 
-          {/* Right Controls */}
-          <div className="flex items-center gap-3">
+          {/* Right Controls: Language Switcher & Cart */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageSwitcher />
             <button
-              aria-label="Cart"
+              aria-label={t('nav.cart', 'Cart')}
               onClick={onNavigateStore}
               className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
@@ -180,13 +184,13 @@ export default function AboutUs({
               }}
               className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
-              Home
+              {t('nav.home', 'Home')}
             </a>
             <a
               href="#about"
               className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap cursor-pointer"
             >
-              About Us
+              {t('nav.aboutUs', 'About Us')}
             </a>
             <a
               href="#toonhub"
@@ -198,19 +202,19 @@ export default function AboutUs({
               }}
               className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
-              Products
+              {t('nav.products', 'Products')}
             </a>
             <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Gallery
+              {t('nav.gallery', 'Gallery')}
             </a>
             <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Careers
+              {t('nav.careers', 'Careers')}
             </a>
             <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Blog / Resources
+              {t('nav.blog', 'Blog / Resources')}
             </a>
             <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Contact Us
+              {t('nav.contactUs', 'Contact Us')}
             </a>
           </div>
         </nav>
@@ -228,13 +232,13 @@ export default function AboutUs({
               }}
               className="hover:text-[#123814] transition-colors cursor-pointer"
             >
-              Home
+              {t('nav.home', 'Home')}
             </a>
             <a
               href="#about"
               className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors cursor-pointer"
             >
-              About Us
+              {t('nav.aboutUs', 'About Us')}
             </a>
             <a
               href="#toonhub"
@@ -246,7 +250,7 @@ export default function AboutUs({
               }}
               className="hover:text-[#123814] transition-colors cursor-pointer"
             >
-              Products
+              {t('nav.products', 'Products')}
             </a>
           </div>
 
@@ -254,7 +258,7 @@ export default function AboutUs({
           <div className="absolute right-3">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="More navigation links"
+              aria-label={t('nav.menu', 'More navigation links')}
               className="flex items-center justify-center w-7 h-7 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] shadow-xs active:scale-95 transition-all cursor-pointer"
             >
               <Menu className="w-3.5 h-3.5 text-[#123814]" />
@@ -268,28 +272,28 @@ export default function AboutUs({
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Gallery
+                    {t('nav.gallery', 'Gallery')}
                   </a>
                   <a
                     href="#business"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Careers
+                    {t('nav.careers', 'Careers')}
                   </a>
                   <a
                     href="#blog"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Blog / Resources
+                    {t('nav.blog', 'Blog / Resources')}
                   </a>
                   <a
                     href="#contact"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Contact Us
+                    {t('nav.contactUs', 'Contact Us')}
                   </a>
                 </div>
               )}
@@ -305,28 +309,19 @@ export default function AboutUs({
           <div className="max-w-3xl space-y-5">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1a3d1a] text-white font-bold text-xs tracking-wider uppercase shadow-md">
               <Sparkles className="w-3.5 h-3.5 text-[#E86A10]" />
-              About Navbharat Agro Services
+              {t('about.overviewTitle', 'About Navbharat Agro Services')}
             </span>
 
             <h1 className="font-serif-display text-3xl sm:text-4xl lg:text-5xl text-[#123814] leading-tight font-extrabold">
-              Nurturing Animal Health, Empowering Rural Livelihoods.
+              {t('about.heroTitle', 'Nurturing Animal Health, Empowering Rural Livelihoods.')}
             </h1>
 
             <p className="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed pt-1 font-medium">
-              Navbharat Agro Services (NAS) is an animal nutrition company
-              dedicated to supporting dairy farmers, Dairy Animals owners,
-              rural entrepreneurs, dealers, and veterinary professionals. We
-              develop and provide cattle feed, nutritional supplements, silage,
-              and Dairy Animals nutrition solutions designed around the
-              practical needs of farmers.
+              {t('about.overviewP1', 'Navbharat Agro Services is an animal nutrition company dedicated to supporting dairy farmers, Dairy Animals owners, rural entrepreneurs, dealers, and veterinary professionals. We develop and provide cattle feed, nutritional supplements, silage, and Dairy Animals nutrition solutions designed around the practical needs of farmers.')}
             </p>
 
             <p className="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed font-medium">
-              Our approach goes beyond selling products. We aim to create
-              long-term value by combining quality nutrition, expert knowledge,
-              farmer education, and reliable support. Our goal is to contribute
-              to healthier Dairy Animals, better dairy management, improved
-              productivity, and stronger rural livelihoods.
+              {t('about.overviewP2', 'Our approach goes beyond selling products. We aim to create long-term value by combining quality nutrition, expert knowledge, farmer education, and reliable support. Our goal is to contribute to healthier Dairy Animals, better dairy management, improved productivity, and stronger rural livelihoods.')}
             </p>
           </div>
         </div>
@@ -421,7 +416,7 @@ export default function AboutUs({
               onClick={handleScrollToProducts}
               className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white font-bold text-sm transition-all shadow-xl hover:scale-105 cursor-pointer"
             >
-              <span>View All Products</span>
+              <span>{t('carousel.discoverAll', 'View All Products')}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

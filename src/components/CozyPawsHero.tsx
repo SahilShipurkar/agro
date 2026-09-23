@@ -9,6 +9,8 @@ import {
   Menu,
 } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
+import { useLanguage } from '@/lib/languageContext';
+import LanguageSwitcher from './ui/LanguageSwitcher';
 
 interface CozyPawsHeroProps {
   onNavigateAbout?: () => void;
@@ -17,32 +19,35 @@ interface CozyPawsHeroProps {
 
 export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyPawsHeroProps = {}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <div className="h-full w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
       {/* HEADER WITH NAVBAR BELOW */}
       <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
-        {/* Top Row: Logo, Brand Name & Cart Button */}
-        <div className="w-full px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
-          <div className="flex items-center gap-2.5 cursor-pointer select-none">
+        {/* Top Row: Logo, Brand Name, Language Switcher & Cart Button */}
+        <div className="w-full px-3.5 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
+          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none">
             <img
               src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
-              className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
-            <span className="font-sans font-black text-[15px] sm:text-lg lg:text-xl text-[#123814] tracking-tight">
-              Navbharat Agro Services
+            <span className="font-sans font-black text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+              {t('nav.brand')}
             </span>
           </div>
 
-          {/* Right Controls */}
-          <div className="flex items-center gap-3">
+          {/* Right Controls: Language Switcher & Cart */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageSwitcher />
+
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
+              className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
-              <ShoppingCart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -51,7 +56,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         <nav className="hidden md:block w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
           <div className="max-w-5xl mx-auto flex items-center justify-between gap-6 text-xs sm:text-sm font-semibold text-gray-700">
             <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap">
-              Home
+              {t('nav.home')}
             </a>
             <a
               href="#about"
@@ -63,22 +68,22 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
               }}
               className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
-              About Us
+              {t('nav.aboutUs')}
             </a>
             <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Products
+              {t('nav.products')}
             </a>
             <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Gallery
+              {t('nav.gallery')}
             </a>
             <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Careers
+              {t('nav.careers')}
             </a>
             <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Blog / Resources
+              {t('nav.blog')}
             </a>
             <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Contact Us
+              {t('nav.contactUs')}
             </a>
           </div>
         </nav>
@@ -87,7 +92,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 relative flex items-center justify-center">
           <div className="flex items-center justify-center gap-6 text-xs font-bold text-gray-700">
             <a href="#home" className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors">
-              Home
+              {t('nav.home')}
             </a>
             <a
               href="#about"
@@ -99,10 +104,10 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
               }}
               className="hover:text-[#123814] transition-colors cursor-pointer"
             >
-              About Us
+              {t('nav.aboutUs')}
             </a>
             <a href="#toonhub" className="hover:text-[#123814] transition-colors">
-              Products
+              {t('nav.products')}
             </a>
           </div>
 
@@ -124,28 +129,28 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                 >
-                  Gallery
+                  {t('nav.gallery')}
                 </a>
                 <a
                   href="#business"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                 >
-                  Careers
+                  {t('nav.careers')}
                 </a>
                 <a
                   href="#blog"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                 >
-                  Blog / Resources
+                  {t('nav.blog')}
                 </a>
                 <a
                   href="#contact"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                 >
-                  Contact Us
+                  {t('nav.contactUs')}
                 </a>
               </div>
             )}
@@ -163,16 +168,10 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         <div className="hidden md:flex flex-col items-center justify-center px-12 pt-4 lg:pt-[5.4rem] z-5 relative text-center pointer-events-none">
           <h1 className="font-serif-display text-[#1a3d1a] leading-[1.05] tracking-tight text-3xl sm:text-5xl lg:text-[clamp(36px,4.5vw,72px)] flex flex-col items-center">
             <span className="block">
-              <span className="inline-block animate-word-pop delay-200">A</span>{' '}
-              <span className="inline-block animate-word-pop delay-250">Tradition</span>{' '}
-              <span className="inline-block animate-word-pop delay-300">of</span>{' '}
-              <span className="inline-block animate-word-pop delay-350">Quality.</span>
+              {t('hero.titleLine1')}
             </span>
-            <span className="block mt-1 sm:mt-2">
-              <span className="inline-block animate-word-pop delay-400">A</span>{' '}
-              <span className="inline-block animate-word-pop delay-450">Legacy</span>{' '}
-              <span className="inline-block animate-word-pop delay-500">of</span>{' '}
-              <span className="inline-block animate-word-pop delay-550">Trust</span>
+            <span className="block mt-1 sm:mt-2 text-[#E86A10]">
+              {t('hero.titleLine2')}
             </span>
           </h1>
         </div>
@@ -200,8 +199,8 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             </button>
           </div>
           <div className="mt-2 flex flex-col">
-            <span className="text-gray-700 text-xs lg:text-sm font-medium group-hover:text-[#E86A10] transition-colors">Heat Max Booster</span>
-            <span className="text-[#1a3d1a] font-bold text-sm lg:text-base">499rs</span>
+            <span className="text-gray-700 text-xs lg:text-sm font-medium group-hover:text-[#E86A10] transition-colors">{t('hero.heatMax')}</span>
+            <span className="text-[#1a3d1a] font-bold text-sm lg:text-base">{t('hero.priceTag')}</span>
           </div>
         </div>
 
@@ -217,8 +216,8 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
               <Play className="w-4 h-4 lg:w-5 lg:h-5 fill-white ml-0.5" />
             </button>
           </div>
-          <p className="mt-2 text-[10px] lg:text-xs text-gray-700 leading-tight text-center lg:text-left">
-            Watch Product Reviews on TikTok and YouTube
+          <p className="mt-2 text-[10px] lg:text-xs text-gray-700 leading-tight text-center lg:text-left font-medium">
+            {t('hero.farmerReviews')}
           </p>
         </div>
 
@@ -226,10 +225,10 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         <div className="hidden md:flex absolute bottom-0 left-0 right-0 z-10 items-end justify-center pointer-events-auto">
           {/* Left Image (Cow Left) */}
           <div className="flex-1 min-h-[200px] sm:min-h-[250px] lg:min-h-[280px] relative overflow-visible animate-photo-reveal delay-700 flex items-end justify-center">
-            {/* Light Green Box (Height aligned to red line under hooves) */}
+            {/* Light Green Box */}
             <div className="absolute bottom-0 left-0 right-0 h-[100px] sm:h-[125px] lg:h-[140px] bg-[#9ce4b3] rounded-t-2xl z-0" />
 
-            {/* Cow Image with hooves resting on red line */}
+            {/* Cow Image */}
             <img
               src={getAssetUrl("/left-cow.png")}
               alt="Agro cow left"
@@ -250,7 +249,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   <Plus className="w-3 h-3 text-white" />
                 </div>
               </div>
-              <span className="font-bold text-[#1a3d1a] text-xs lg:text-sm">98K+</span>
+              <span className="font-bold text-[#1a3d1a] text-xs lg:text-sm">{t('hero.farmersCount')}</span>
             </div>
           </div>
 
@@ -264,24 +263,24 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             />
             <div className="z-20 text-center flex flex-col items-center gap-3 w-full px-4 mt-2 animate-fade-up delay-1100">
               <h2 className="text-white text-base sm:text-xl font-bold drop-shadow-md">
-                Best Products for Your Pet
+                {t('hero.bestProducts')}
               </h2>
               <button
                 onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white font-medium text-sm transition-all duration-200 shadow-lg hover:scale-105 cursor-pointer"
               >
                 <ArrowRight className="w-4 h-4" />
-                Explore Products
+                {t('hero.exploreProducts')}
               </button>
             </div>
           </div>
 
           {/* Right Image (Cow Right) */}
           <div className="flex-1 min-h-[200px] sm:min-h-[250px] lg:min-h-[280px] relative overflow-visible animate-photo-reveal delay-800 flex items-end justify-center">
-            {/* Light Green Box (Height aligned to red line under hooves) */}
+            {/* Light Green Box */}
             <div className="absolute bottom-0 left-0 right-0 h-[100px] sm:h-[125px] lg:h-[140px] bg-[#9ce4b3] rounded-t-2xl z-0" />
 
-            {/* Cow Image with hooves resting on red line */}
+            {/* Cow Image */}
             <img
               src={getAssetUrl("/right-cow.png")}
               alt="Agro cow right"
@@ -291,7 +290,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             {/* Right Overlay */}
             <div className="absolute bottom-4 lg:bottom-6 right-4 lg:right-8 z-20 bg-white/85 backdrop-blur-md px-4 py-2 rounded-full flex items-center gap-2 shadow-lg border border-white/70 animate-fade-up delay-1200">
               <Star className="w-4 h-4 text-[#E86A10] fill-[#E86A10]" />
-              <span className="font-bold text-[#1a3d1a] text-xs lg:text-sm">4.6</span>
+              <span className="font-bold text-[#1a3d1a] text-xs lg:text-sm">{t('hero.rating')}</span>
             </div>
           </div>
         </div>
@@ -302,11 +301,12 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         <div className="md:hidden flex flex-col h-full justify-between pt-2 pb-0 overflow-hidden relative">
           {/* Top section: Title and Subtitle with increased spacing to fill page nicely */}
           <div className="px-5 text-center z-20 flex flex-col items-center gap-2 pt-1.5">
-            <h1 className="font-serif-display text-[#1a3d1a] text-[27px] xs:text-[29px] leading-[1.18] font-bold tracking-tight">
-              A Tradition of Quality.<br /> A Legacy of Trust.
+            <h1 className="font-serif-display text-[#1a3d1a] text-[25px] xs:text-[28px] leading-[1.18] font-bold tracking-tight">
+              <span>{t('hero.titleLine1')}</span><br />
+              <span className="text-[#E86A10]">{t('hero.titleLine2')}</span>
             </h1>
-            <p className="text-gray-700 text-[12px] xs:text-sm max-w-[320px] leading-relaxed font-medium">
-              Premium cattle feed, chelated minerals & essential dairy nutrition supplements.
+            <p className="text-gray-700 text-[11.5px] xs:text-xs max-w-[320px] leading-relaxed font-medium">
+              {t('hero.subtitle')}
             </p>
           </div>
 
@@ -325,8 +325,8 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                 />
               </div>
               <div className="w-full flex items-center justify-between mt-1.5 px-0.5">
-                <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">Heat Max</span>
-                <span className="text-[11px] font-black text-[#1a3d1a]">₹499</span>
+                <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">{t('hero.heatMax')}</span>
+                <span className="text-[11px] font-black text-[#1a3d1a]">{t('hero.priceTag')}</span>
               </div>
               <button
                 onClick={(e) => {
@@ -335,7 +335,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                 }}
                 className="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-[#E86A10] hover:bg-[#d05c0b] text-white text-[10px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 transition-transform cursor-pointer"
               >
-                <span>Buy / Store</span>
+                <span>{t('hero.buyOrStore')}</span>
                 <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
@@ -358,13 +358,13 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                 </div>
               </div>
               <div className="w-full mt-1.5 px-0.5 flex items-center justify-between">
-                <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">Farmer Reviews</span>
+                <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">{t('hero.farmerReviews')}</span>
                 <span className="text-[10px] font-bold text-[#E86A10] flex items-center gap-0.5">
                   <Star className="w-2.5 h-2.5 fill-[#E86A10]" /> 4.9
                 </span>
               </div>
               <div className="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-[#123814]/10 text-[#123814] text-[10px] font-extrabold flex items-center justify-center gap-1">
-                <span>Watch Stories</span>
+                <span>{t('hero.watchStories')}</span>
                 <Play className="w-2.5 h-2.5 fill-[#123814]" />
               </div>
             </div>
@@ -397,7 +397,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                     +
                   </div>
                 </div>
-                <span className="font-extrabold text-[#1a3d1a] text-[9px]">98K+</span>
+                <span className="font-extrabold text-[#1a3d1a] text-[9px]">{t('hero.farmersCount')}</span>
               </div>
             </div>
 
@@ -414,7 +414,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                 onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
                 className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white font-bold text-[9px] shadow-md active:scale-95 transition-transform z-20 cursor-pointer"
               >
-                <span>Explore Products</span>
+                <span>{t('hero.exploreProducts')}</span>
                 <ArrowRight className="w-2.5 h-2.5" />
               </button>
             </div>
@@ -435,7 +435,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
               {/* Bottom-right 4.8 Rating Badge */}
               <div className="absolute bottom-1.5 right-1.5 z-20 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm border border-white/70">
                 <Star className="w-2.5 h-2.5 text-[#E86A10] fill-[#E86A10]" />
-                <span className="font-extrabold text-[#1a3d1a] text-[9px]">4.8</span>
+                <span className="font-extrabold text-[#1a3d1a] text-[9px]">{t('hero.rating')}</span>
               </div>
             </div>
           </div>
@@ -444,3 +444,4 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
     </div>
   );
 }
+

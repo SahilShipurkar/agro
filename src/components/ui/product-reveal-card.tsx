@@ -4,6 +4,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { ShoppingCart, Star, Heart, Plus, Minus, Eye, Check, X, CheckCircle2, MessageSquare } from "lucide-react" 
 import { useState, useRef } from "react" 
 import { cn, getAssetUrl } from "@/lib/utils" 
+import { useLanguage } from "@/lib/languageContext" 
 
 export interface ProductRevealCardProps { 
   name?: string 
@@ -62,6 +63,7 @@ export function ProductRevealCard({
   enableAnimations = true, 
   className, 
 }: ProductRevealCardProps) { 
+  const { t } = useLanguage()
   const cardRef = useRef<HTMLDivElement>(null)
   const modalImageRef = useRef<HTMLImageElement>(null)
   const [isFavorite, setIsFavorite] = useState(false) 
@@ -296,7 +298,7 @@ export function ProductRevealCard({
             {/* Variant Selection */}
             <div>
               <label className="text-[9px] sm:text-xs font-bold text-[#123814] block mb-1">
-                Select Variant / Size:
+                {t('store.selectVariant', 'Select Variant / Size:')}
               </label>
               <div className="flex flex-wrap gap-1">
                 {variants.map((v) => (
@@ -326,9 +328,9 @@ export function ProductRevealCard({
             {/* Quantity Selector Counter & Total Price */}
             <div className="flex items-center justify-between pt-0.5">
               <div>
-                <span className="text-[9px] sm:text-xs font-bold text-[#123814] block">Quantity:</span>
+                <span className="text-[9px] sm:text-xs font-bold text-[#123814] block">{t('store.quantity', 'Quantity:')}</span>
                 <span className="text-[9.5px] sm:text-xs font-black text-[#E86A10]">
-                  Total: ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
+                  {t('store.total', 'Total:')} ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
                 </span>
               </div>
 
@@ -377,12 +379,12 @@ export function ProductRevealCard({
                 {addedSuccess ? (
                   <>
                     <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    <span>Added!</span>
+                    <span>{t('store.added', 'Added!')}</span>
                   </>
                 ) : (
                   <>
                     <ShoppingCart className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    <span>Add to Cart</span>
+                    <span>{t('store.addToCart', 'Add to Cart')}</span>
                   </>
                 )}
               </button>
@@ -393,10 +395,10 @@ export function ProductRevealCard({
                   handleOpenDetails();
                 }}
                 className="py-1.5 px-2 sm:py-2.5 sm:px-3 rounded-xl sm:rounded-full text-[10px] sm:text-xs font-bold border border-[#123814]/30 text-[#123814] bg-white hover:bg-gray-50 flex items-center justify-center gap-1 shadow-2xs active:scale-95 cursor-pointer"
-                aria-label="View Details"
+                aria-label={t('store.details', 'Details')}
               >
                 <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                <span className="hidden sm:inline">Details</span>
+                <span className="hidden sm:inline">{t('store.details', 'Details')}</span>
               </button>
             </div>
           </div>

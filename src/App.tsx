@@ -6,8 +6,9 @@ import DiscoverPage from './components/DiscoverPage';
 import GlyphPortalSection from './components/GlyphPortalSection';
 import Footer from './components/Footer';
 import { CommerceHero } from './components/ui/commerce-hero';
+import { LanguageProvider } from './lib/languageContext';
 
-export default function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'discover' | 'store'>(() => {
     if (typeof window !== 'undefined') {
       if (window.location.hash === '#about') return 'about';
@@ -139,3 +140,12 @@ export default function App() {
     </div>
   );
 }
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
+}
+

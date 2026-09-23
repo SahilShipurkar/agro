@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
+import { useLanguage } from '@/lib/languageContext';
 
 interface ProductItem {
   id: string;
@@ -127,6 +128,7 @@ const grainDataUrl =
 export default function ToonhubCarousel({
   onNavigateDiscover,
 }: ToonhubCarouselProps = {}) {
+  const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -298,7 +300,7 @@ export default function ToonhubCarousel({
             whiteSpace: 'nowrap',
           }}
         >
-          OUR PRODUCTS
+          {t('carousel.heading', 'OUR PRODUCTS')}
         </div>
 
         {/* Carousel */}
@@ -365,12 +367,12 @@ export default function ToonhubCarousel({
               </p>
               <div className="inline-flex flex-wrap items-center gap-2 text-xs text-white bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/25 shadow-sm">
                 <div>
-                  <span className="font-bold text-white">Ideal For:</span>{' '}
+                  <span className="font-bold text-white">{t('carousel.idealFor', 'Ideal For')}:</span>{' '}
                   {currentProduct.idealFor}
                 </div>
                 {currentProduct.form && (
                   <div className="border-l border-white/30 pl-2">
-                    <span className="font-bold text-white">Form:</span>{' '}
+                    <span className="font-bold text-white">{t('carousel.form', 'Form')}:</span>{' '}
                     {currentProduct.form}
                   </div>
                 )}
@@ -423,7 +425,7 @@ export default function ToonhubCarousel({
               aria-label="Discover all products - Click here"
             >
               <span className="drop-shadow-lg group-hover:drop-shadow-[0_0_18px_rgba(255,255,255,0.9)] transition-all">
-                DISCOVER IT
+                {t('carousel.discoverAll', 'DISCOVER IT')}
               </span>
               <ArrowRight
                 className="w-8 h-8 animate-arrow-bounce drop-shadow-md group-hover:translate-x-2 transition-transform duration-300"
@@ -496,7 +498,7 @@ export default function ToonhubCarousel({
               }}
               className="flex-1 max-w-[190px] h-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#E86A10] text-white font-bold text-xs uppercase tracking-wide shadow-lg active:scale-95 transition-transform"
             >
-              <span>Discover All</span>
+              <span>{t('carousel.discoverAll', 'Discover All')}</span>
               <ArrowRight size={15} strokeWidth={2.5} />
             </a>
           </div>

@@ -16,6 +16,8 @@ import {
   Menu,
 } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
+import { useLanguage } from '@/lib/languageContext';
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 
 interface DiscoverPageProps {
   onNavigateHome?: () => void;
@@ -30,16 +32,17 @@ export default function DiscoverPage({
   onNavigateProducts,
   onNavigateStore,
 }: DiscoverPageProps = {}) {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<string>('dairy-nutrition');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const categories = [
-    { id: 'dairy-nutrition', label: 'All Dairy Nutrition', icon: Milk },
-    { id: 'calf-nutrition', label: 'Calf Nutrition', icon: Baby },
-    { id: 'minerals', label: 'Mineral & Nutritional Supplements', icon: Award },
-    { id: 'reproductive', label: 'Reproductive Management', icon: Sparkles },
-    { id: 'feed-fodder', label: 'Feed & Fodder', icon: Sprout },
-    { id: 'silage', label: 'Silage', icon: Layers },
+    { id: 'dairy-nutrition', label: t('discover.tabs.all', 'All Dairy Nutrition'), icon: Milk },
+    { id: 'calf-nutrition', label: t('discover.tabs.calf', 'Calf Nutrition'), icon: Baby },
+    { id: 'minerals', label: t('discover.tabs.minerals', 'Mineral & Nutritional Supplements'), icon: Award },
+    { id: 'reproductive', label: t('discover.tabs.reproductive', 'Reproductive Management'), icon: Sparkles },
+    { id: 'feed-fodder', label: t('discover.tabs.feed', 'Feed & Fodder'), icon: Sprout },
+    { id: 'silage', label: t('discover.tabs.silage', 'Silage'), icon: Layers },
   ];
 
   const sections = [
@@ -420,14 +423,15 @@ export default function DiscoverPage({
               className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
             <span className="font-sans font-black text-[15px] sm:text-lg lg:text-xl text-[#123814] tracking-tight">
-              Navbharat Agro Services
+              {t('nav.brand', 'Navbharat Agro Services')}
             </span>
           </div>
 
-          {/* Right Controls */}
-          <div className="flex items-center gap-3">
+          {/* Right Controls: Language Switcher & Cart */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <LanguageSwitcher />
             <button
-              aria-label="Cart"
+              aria-label={t('nav.cart', 'Cart')}
               onClick={onNavigateStore}
               className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
@@ -449,7 +453,7 @@ export default function DiscoverPage({
               }}
               className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
-              Home
+              {t('nav.home', 'Home')}
             </a>
             <a
               href="#about"
@@ -461,7 +465,7 @@ export default function DiscoverPage({
               }}
               className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
-              About Us
+              {t('nav.aboutUs', 'About Us')}
             </a>
             <a
               href="#toonhub"
@@ -473,19 +477,19 @@ export default function DiscoverPage({
               }}
               className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap cursor-pointer"
             >
-              Products
+              {t('nav.products', 'Products')}
             </a>
             <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Gallery
+              {t('nav.gallery', 'Gallery')}
             </a>
             <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Careers
+              {t('nav.careers', 'Careers')}
             </a>
             <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Blog / Resources
+              {t('nav.blog', 'Blog / Resources')}
             </a>
             <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              Contact Us
+              {t('nav.contactUs', 'Contact Us')}
             </a>
           </div>
         </nav>
@@ -503,7 +507,7 @@ export default function DiscoverPage({
               }}
               className="hover:text-[#123814] transition-colors cursor-pointer"
             >
-              Home
+              {t('nav.home', 'Home')}
             </a>
             <a
               href="#about"
@@ -515,7 +519,7 @@ export default function DiscoverPage({
               }}
               className="hover:text-[#123814] transition-colors cursor-pointer"
             >
-              About Us
+              {t('nav.aboutUs', 'About Us')}
             </a>
             <a
               href="#toonhub"
@@ -527,7 +531,7 @@ export default function DiscoverPage({
               }}
               className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors cursor-pointer"
             >
-              Products
+              {t('nav.products', 'Products')}
             </a>
           </div>
 
@@ -535,7 +539,7 @@ export default function DiscoverPage({
           <div className="absolute right-3">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="More navigation links"
+              aria-label={t('nav.menu', 'More navigation links')}
               className="flex items-center justify-center w-7 h-7 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] shadow-xs active:scale-95 transition-all cursor-pointer"
             >
               <Menu className="w-3.5 h-3.5 text-[#123814]" />
@@ -549,28 +553,28 @@ export default function DiscoverPage({
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Gallery
+                    {t('nav.gallery', 'Gallery')}
                   </a>
                   <a
                     href="#business"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Careers
+                    {t('nav.careers', 'Careers')}
                   </a>
                   <a
                     href="#blog"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Blog / Resources
+                    {t('nav.blog', 'Blog / Resources')}
                   </a>
                   <a
                     href="#contact"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
                   >
-                    Contact Us
+                    {t('nav.contactUs', 'Contact Us')}
                   </a>
                 </div>
               )}
@@ -680,7 +684,7 @@ export default function DiscoverPage({
                           {/* Key Highlights */}
                           <div className="space-y-1.5 pt-1">
                             <p className="text-xs font-bold text-[#123814] uppercase tracking-wide">
-                              Key Highlights
+                              {t('discover.keyHighlights', 'Key Highlights')}
                             </p>
                             {prod.highlights.map((h, i) => (
                               <div
@@ -698,7 +702,7 @@ export default function DiscoverPage({
                             <div className="flex items-center gap-2 text-xs text-gray-800 bg-emerald-50/80 border border-emerald-200/80 px-3 py-1.5 rounded-xl">
                               <Package className="w-4 h-4 text-[#1a3d1a] shrink-0" />
                               <div>
-                                <span className="font-bold text-[#123814]">Packaging:</span>{' '}
+                                <span className="font-bold text-[#123814]">{t('discover.packaging', 'Packaging')}:</span>{' '}
                                 <span className="font-medium text-gray-700">{prod.packaging}</span>
                               </div>
                             </div>
@@ -707,7 +711,7 @@ export default function DiscoverPage({
                           {/* Usage / Special Notes */}
                           {prod.usage && (
                             <div className="text-xs text-gray-700 bg-gray-50 border border-gray-200/80 px-3 py-2 rounded-xl">
-                              <span className="font-bold text-[#123814]">Recommended Usage:</span>{' '}
+                              <span className="font-bold text-[#123814]">{t('discover.recommendedUsage', 'Recommended Usage')}:</span>{' '}
                               <span>{prod.usage}</span>
                             </div>
                           )}
@@ -717,7 +721,7 @@ export default function DiscoverPage({
                             <div className="flex items-start gap-2 text-[11px] text-amber-900 bg-amber-50 border border-amber-200 px-3 py-2 rounded-xl">
                               <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                               <div>
-                                <span className="font-bold">Important:</span>{' '}
+                                <span className="font-bold">{t('discover.importantNoteTitle', 'Important')}:</span>{' '}
                                 <span>{prod.importantNote}</span>
                               </div>
                             </div>
@@ -733,7 +737,7 @@ export default function DiscoverPage({
                           {/* Ideal For + Action Buttons */}
                           <div className="pt-3 flex flex-col gap-3 border-t border-gray-200">
                             <div className="text-xs text-gray-800 font-semibold">
-                              <span>Ideal For:</span>{' '}
+                              <span>{t('discover.idealFor', 'Ideal For')}:</span>{' '}
                               <span className="text-[#123814]">{prod.idealFor}</span>
                             </div>
 
@@ -744,7 +748,7 @@ export default function DiscoverPage({
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#1a3d1a] hover:bg-[#2a5a2a] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
                               >
-                                <span>Buy Now</span>
+                                <span>{t('hero.buyOrStore', 'Buy Now')}</span>
                                 <ArrowRight className="w-3.5 h-3.5" />
                               </a>
                               <a
@@ -754,14 +758,14 @@ export default function DiscoverPage({
                                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
                               >
                                 <MessageSquare className="w-3.5 h-3.5" />
-                                <span>WhatsApp Enquiry</span>
+                                <span>{t('footer.whatsAppInquiry', 'WhatsApp Enquiry')}</span>
                               </a>
                               <a
                                 href="tel:8237795424"
                                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
                               >
                                 <Phone className="w-3.5 h-3.5" />
-                                <span>Call 8237795424</span>
+                                <span>{t('footer.callUs', 'Call 8237795424')}</span>
                               </a>
                             </div>
                           </div>

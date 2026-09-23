@@ -1,5 +1,6 @@
 import { Phone, MessageSquare, MapPin, ArrowUp, Milk, Award, Sparkles, ShieldCheck } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
+import { useLanguage } from '@/lib/languageContext';
 
 interface FooterProps {
   onNavigateHome?: () => void;
@@ -16,6 +17,7 @@ export default function Footer({
   onNavigateDiscover,
   onNavigateStore,
 }: FooterProps = {}) {
+  const { t } = useLanguage();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -40,7 +42,7 @@ export default function Footer({
             />
             <div className="truncate">
               <h3 className="text-xs font-extrabold text-[#123814] leading-tight truncate">
-                Navbharat Agro
+                {t('nav.shortBrand', 'Navbharat Agro')}
               </h3>
               <p className="text-[9px] text-[#1e5221] font-medium truncate">
                 Dairy & Livestock Nutrition
@@ -65,7 +67,7 @@ export default function Footer({
               className="inline-flex items-center gap-1 bg-[#E86A10] text-white px-2 py-1 rounded-full font-bold text-[10px] shadow-xs active:scale-95 transition-transform"
             >
               <Phone className="w-2.5 h-2.5" />
-              <span>Call</span>
+              <span>{t('footer.callShort', 'Call')}</span>
             </a>
           </div>
         </div>
@@ -75,7 +77,72 @@ export default function Footer({
           {/* Col 1: Navigation */}
           <div>
             <span className="font-extrabold text-[#123814] text-[11px] block mb-1 border-b border-[#123814]/10 pb-0.5">
-              Pages
+              {t('footer.pages', 'Pages')}
+            </span>
+            <ul className="space-y-0.5 text-[#18441b] font-medium">
+              <li>
+                <a
+                  href="#home"
+                  onClick={(e) => {
+                    if (onNavigateHome) {
+                      e.preventDefault();
+                      onNavigateHome();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5"
+                >
+                  • {t('nav.home', 'Home')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  onClick={(e) => {
+                    if (onNavigateAbout) {
+                      e.preventDefault();
+                      onNavigateAbout();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5"
+                >
+                  • {t('nav.aboutUs', 'About Us')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#toonhub"
+                  onClick={(e) => {
+                    if (onNavigateProducts) {
+                      e.preventDefault();
+                      onNavigateProducts();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5"
+                >
+                  • {t('nav.products', 'Products')}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#store"
+                  onClick={(e) => {
+                    if (onNavigateStore) {
+                      e.preventDefault();
+                      onNavigateStore();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] font-bold text-[#123814] block py-0.5"
+                >
+                  • {t('nav.store', 'Store')} 🛒
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 2: Products Range */}
+          <div>
+            <span className="font-extrabold text-[#123814] text-[11px] block mb-1 border-b border-[#123814]/10 pb-0.5">
+              {t('footer.topProducts', 'Top Products')}
             </span>
             <ul className="space-y-0.5 text-[#18441b] font-medium">
               <li>
@@ -242,10 +309,10 @@ export default function Footer({
             />
             <div>
               <h3 className="text-base sm:text-lg font-extrabold text-[#123814] tracking-tight leading-tight">
-                Navbharat Agro Services
+                {t('nav.brand', 'Navbharat Agro Services')}
               </h3>
               <p className="text-xs text-[#1e5221] font-medium">
-                A Tradition of Quality • A Legacy of Trust
+                {t('footer.tradition', 'A Tradition of Quality • A Legacy of Trust')}
               </p>
             </div>
           </div>
@@ -258,14 +325,14 @@ export default function Footer({
               className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#1eb956] text-white px-4 py-2 rounded-full font-bold text-xs transition-all shadow-sm hover:scale-105"
             >
               <MessageSquare className="w-3.5 h-3.5 fill-white" />
-              WhatsApp Inquiry
+              {t('footer.whatsAppInquiry', 'WhatsApp Inquiry')}
             </a>
             <a
               href="tel:8237795424"
               className="inline-flex items-center gap-1.5 bg-[#E86A10] hover:bg-[#d05c0b] text-white px-4 py-2 rounded-full font-bold text-xs transition-all shadow-sm hover:scale-105"
             >
               <Phone className="w-3.5 h-3.5" />
-              Call 8237795424
+              {t('footer.callUs', 'Call 8237795424')}
             </a>
           </div>
         </div>
@@ -276,14 +343,14 @@ export default function Footer({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-[#123814] font-extrabold text-sm sm:text-base">
               <ShieldCheck className="w-4 h-4 text-[#E86A10]" />
-              <span>About Navbharat Agro</span>
+              <span>{t('footer.aboutTitle', 'About Navbharat Agro')}</span>
             </div>
             <p className="text-xs text-[#18441b] leading-relaxed">
-              Formulating cattle feeds, mineral mixtures, Advanta 756 maize silage, and specialized supplements for cows and buffaloes across India.
+              {t('footer.aboutText', 'Formulating cattle feeds, mineral mixtures, Advanta 756 maize silage, and specialized supplements for cows and buffaloes across India.')}
             </p>
             <div className="pt-1 flex items-center gap-1.5 text-[11px] text-[#123814] font-medium">
               <MapPin className="w-3.5 h-3.5 text-[#E86A10] shrink-0" />
-              <span>Serving Dairy Farmers Nationwide</span>
+              <span>{t('footer.servingNationwide', 'Serving Dairy Farmers Nationwide')}</span>
             </div>
           </div>
 
@@ -291,7 +358,7 @@ export default function Footer({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-[#123814] font-extrabold text-sm sm:text-base">
               <Milk className="w-4 h-4 text-[#E86A10]" />
-              <span>Product Range</span>
+              <span>{t('footer.productRange', 'Product Range')}</span>
             </div>
             <ul className="space-y-1 text-xs text-[#18441b] font-medium">
               <li>
@@ -385,7 +452,7 @@ export default function Footer({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-[#123814] font-extrabold text-sm sm:text-base">
               <Award className="w-4 h-4 text-[#E86A10]" />
-              <span>Navigation</span>
+              <span>{t('footer.navigation', 'Navigation')}</span>
             </div>
             <ul className="space-y-1 text-xs text-[#18441b] font-medium">
               <li>
@@ -399,7 +466,7 @@ export default function Footer({
                   }}
                   className="hover:text-[#E86A10] hover:underline transition-colors cursor-pointer"
                 >
-                  Home
+                  {t('nav.home', 'Home')}
                 </a>
               </li>
               <li>
@@ -413,7 +480,7 @@ export default function Footer({
                   }}
                   className="hover:text-[#E86A10] hover:underline transition-colors cursor-pointer"
                 >
-                  About Us
+                  {t('nav.aboutUs', 'About Us')}
                 </a>
               </li>
               <li>
@@ -427,7 +494,7 @@ export default function Footer({
                   }}
                   className="hover:text-[#E86A10] hover:underline transition-colors cursor-pointer"
                 >
-                  Products Carousel
+                  {t('nav.products', 'Products')}
                 </a>
               </li>
               <li>
@@ -441,7 +508,7 @@ export default function Footer({
                   }}
                   className="hover:text-[#E86A10] hover:underline transition-colors cursor-pointer text-[#123814] font-extrabold"
                 >
-                  Discover All Products →
+                  {t('carousel.discoverAll', 'Discover All Products')} →
                 </a>
               </li>
               <li>
@@ -455,12 +522,12 @@ export default function Footer({
                   }}
                   className="hover:text-[#E86A10] hover:underline transition-colors cursor-pointer text-[#123814] font-extrabold"
                 >
-                  Store & Collections 🛒
+                  {t('nav.store', 'Store')} 🛒
                 </a>
               </li>
               <li>
                 <a href="#gallery" className="hover:text-[#E86A10] hover:underline transition-colors">
-                  Gallery & Careers
+                  {t('nav.gallery', 'Gallery')}
                 </a>
               </li>
             </ul>
@@ -470,11 +537,11 @@ export default function Footer({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-[#123814] font-extrabold text-sm sm:text-base">
               <Sparkles className="w-4 h-4 text-[#E86A10]" />
-              <span>Order Helpline</span>
+              <span>{t('footer.orderHelpline', 'Order Helpline')}</span>
             </div>
             <div className="bg-white/80 backdrop-blur p-3 rounded-xl border border-[#123814]/15 space-y-1.5">
               <p className="text-[11px] text-[#18441b] font-medium">
-                For order placement or bulk pricing:
+                {t('footer.bulkPricing', 'For order placement or bulk pricing:')}
               </p>
               <div className="space-y-1">
                 <a
@@ -491,7 +558,7 @@ export default function Footer({
                   className="flex items-center gap-2 text-xs font-bold text-[#1a853d] hover:underline"
                 >
                   <MessageSquare className="w-3.5 h-3.5 fill-[#25D366]" />
-                  <span>WhatsApp Inquiry</span>
+                  <span>{t('footer.whatsAppInquiry', 'WhatsApp Inquiry')}</span>
                 </a>
               </div>
             </div>
@@ -501,14 +568,14 @@ export default function Footer({
         {/* BOTTOM COPYRIGHT & BACK TO TOP BAR */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#18441b] font-medium">
           <p className="text-center sm:text-left">
-            © {new Date().getFullYear()} <strong className="text-[#123814]">Navbharat Agro Services</strong>. All Rights Reserved.
+            © {new Date().getFullYear()} <strong className="text-[#123814]">Navbharat Agro Services</strong>. {t('footer.copyright', 'All Rights Reserved.')}
           </p>
 
           <button
             onClick={scrollToTop}
             className="inline-flex items-center gap-1.5 bg-white/90 hover:bg-white text-[#123814] px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border border-[#123814]/20 shadow-xs hover:scale-105 cursor-pointer"
           >
-            <span>Back to Top</span>
+            <span>{t('footer.backToTop', 'Back to Top')}</span>
             <ArrowUp className="w-3 h-3 text-[#E86A10]" />
           </button>
         </div>

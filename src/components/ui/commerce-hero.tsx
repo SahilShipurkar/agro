@@ -13,6 +13,8 @@ import { Separator } from "@/components/ui/separator";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ProductRevealCard } from "@/components/ui/product-reveal-card";
 import { getAssetUrl } from "@/lib/utils";
+import { useLanguage } from "@/lib/languageContext";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 
 interface CommerceHeroProps {
   onNavigateHome?: () => void;
@@ -273,6 +275,7 @@ export function CommerceHero({
   onNavigateHome,
   onNavigateAbout,
 }: CommerceHeroProps = {}) {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -483,12 +486,12 @@ export function CommerceHero({
     : STORE_PRODUCTS.filter(p => p.category === activeFilter);
 
   const filterTabs = [
-    { label: "All Products", key: "All" },
-    { label: "Cattle Feed", key: "Cattle Feed" },
-    { label: "Calcium", key: "Calcium Supplement" },
-    { label: "Chelated Minerals", key: "Chelated Minerals" },
-    { label: "Silage", key: "Fermented Silage" },
-    { label: "Reproductive & Care", key: "Reproductive Support" },
+    { label: t('store.filterAll', 'All Products'), key: "All" },
+    { label: t('discover.tabs.feed', 'Cattle Feed'), key: "Cattle Feed" },
+    { label: t('discover.tabs.all', 'Calcium'), key: "Calcium Supplement" },
+    { label: t('discover.tabs.minerals', 'Chelated Minerals'), key: "Chelated Minerals" },
+    { label: t('discover.tabs.silage', 'Silage'), key: "Fermented Silage" },
+    { label: t('discover.tabs.reproductive', 'Reproductive & Care'), key: "Reproductive Support" },
   ];
 
   return (
@@ -506,35 +509,37 @@ export function CommerceHero({
               className="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-full shadow-sm"
             />
             <span className="font-extrabold text-base sm:text-xl text-[#123814] tracking-tight">
-              Navbharat Store
+              {t('nav.storeBrand', 'Navbharat Store')}
             </span>
           </div>
 
-          <nav className="hidden lg:flex items-center justify-end gap-6 w-full ml-6">
+          <nav className="hidden lg:flex items-center justify-end gap-5 w-full ml-6">
             <Button
               variant="link"
               onClick={onNavigateHome}
               className="cursor-pointer text-[#123814] hover:text-[#E86A10] font-semibold"
             >
-              Home
+              {t('nav.home', 'Home')}
             </Button>
             <Button
               variant="link"
               onClick={onNavigateAbout}
               className="cursor-pointer text-[#123814] hover:text-[#E86A10] font-semibold"
             >
-              About Us
+              {t('nav.aboutUs', 'About Us')}
             </Button>
             <Button
               variant="link"
               onClick={() => scrollToProducts("All")}
               className="cursor-pointer text-[#123814] hover:text-[#E86A10] font-bold"
             >
-              All Products
+              {t('nav.allProducts', 'All Products')}
             </Button>
             <Button variant="ghost" size="icon" onClick={() => scrollToProducts("All")} className="cursor-pointer hover:text-[#E86A10]">
               <Search className="w-5 h-5" />
             </Button>
+
+            <LanguageSwitcher />
 
             {/* Desktop Navbar Cart Button with Bounce & Badge */}
             <motion.button
@@ -555,8 +560,9 @@ export function CommerceHero({
             </motion.button>
           </nav>
 
-          {/* Mobile Right Navigation: Cart Button + Sheet Nav */}
+          {/* Mobile Right Navigation: Language Switcher + Cart Button + Sheet Nav */}
           <div className="flex lg:hidden items-center gap-1.5 ml-auto">
+            <LanguageSwitcher />
             <motion.button
               id="header-cart-button-mobile"
               type="button"
@@ -584,29 +590,29 @@ export function CommerceHero({
               <SheetHeader className="p-6 text-left border-b">
                 <SheetTitle className="flex items-center gap-3">
                   <img src={getAssetUrl("/Whitte Circle logo(3).png")} alt="Logo" className="w-10 h-10 object-contain rounded-full" />
-                  <span className="text-lg font-bold text-[#123814]">Navbharat Store</span>
+                  <span className="text-lg font-bold text-[#123814]">{t('nav.storeBrand', 'Navbharat Store')}</span>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col p-6 space-y-1">
                 <Button variant="ghost" onClick={onNavigateHome} className="justify-start px-2 h-12 text-base font-medium">
-                  Home
+                  {t('nav.home', 'Home')}
                 </Button>
                 <Button variant="ghost" onClick={onNavigateAbout} className="justify-start px-2 h-12 text-base font-medium">
-                  About Us
+                  {t('nav.aboutUs', 'About Us')}
                 </Button>
                 <Button variant="ghost" onClick={() => scrollToProducts("All")} className="justify-start px-2 h-12 text-base font-medium font-bold text-[#123814]">
-                  Products Catalog
+                  {t('nav.allProducts', 'Products Catalog')}
                 </Button>
               </nav>
               <Separator className="mx-6" />
               <div className="p-6 flex flex-col gap-4">
                 <Button variant="outline" onClick={() => scrollToProducts("All")} className="justify-start gap-2 h-12">
                   <Search className="w-4 h-4" />
-                  Search Products
+                  {t('store.searchPlaceholder', 'Search Products')}
                 </Button>
                 <Button variant="outline" onClick={() => setIsCartOpen(true)} className="justify-start gap-2 h-12 relative">
                   <ShoppingBasket className="w-4 h-4" />
-                  Cart Items
+                  {t('store.cartItems', 'Cart Items')}
                   <span className="absolute right-3 w-5 h-5 bg-[#E86A10] text-white text-xs rounded-full flex items-center justify-center font-bold">
                     {totalCartCount}
                   </span>
@@ -635,8 +641,8 @@ export function CommerceHero({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
-                <span className="block whitespace-nowrap">Premium Dairy Nutrition</span>
-                <span className="text-[#E86A10] block whitespace-nowrap">Directly To Your Farm</span>
+                <span className="block whitespace-nowrap">{t('store.titleLine1', 'Premium Dairy Nutrition')}</span>
+                <span className="text-[#E86A10] block whitespace-nowrap">{t('store.titleLine2', 'Directly To Your Farm')}</span>
               </motion.h1>
               <motion.p
                 className="text-[11px] sm:text-base text-[#1e4d21] max-w-2xl mx-auto leading-relaxed font-medium px-1 sm:px-2 mt-1.5 sm:mt-2"
@@ -644,7 +650,7 @@ export function CommerceHero({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
               >
-                Explore our complete range of high-yield cattle feeds, chelated minerals, liquid calcium supplements, and premium maize silage formulated for healthy dairy herds.
+                {t('store.subtitle', 'Explore our complete range of high-yield cattle feeds, chelated minerals, liquid calcium supplements, and premium maize silage formulated for healthy dairy herds.')}
               </motion.p>
             </div>
           </motion.section>
@@ -687,13 +693,13 @@ export function CommerceHero({
       <div id="store-products" className="mt-8 sm:mt-14 mb-10 max-w-7xl mx-auto px-1 sm:px-2 scroll-mt-6">
         <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-8">
           <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-[#E86A10] bg-[#E86A10]/10 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-[#E86A10]/20">
-            Complete Dairy Nutrition Range
+            {t('store.badge', 'Complete Dairy Nutrition Range')}
           </span>
           <h2 className="text-xl sm:text-4xl font-extrabold text-[#123814] tracking-tight mt-2 sm:mt-3">
-            Explore All Store Products
+            {t('store.catalogTitle', 'Explore All Store Products')}
           </h2>
           <p className="text-[11px] sm:text-sm text-[#1e4d21] font-medium mt-1.5 sm:mt-2 leading-relaxed px-2">
-            Select a category filter or tap any product card to select variant, set quantity, and add to cart with real-time billing!
+            {t('store.catalogSubtitle', 'Select a category filter or tap any product card to select variant, set quantity, and add to cart with real-time billing!')}
           </p>
 
           {/* Filter Pills */}
@@ -796,7 +802,7 @@ export function CommerceHero({
                 {cartItems.length === 0 ? (
                   <div className="py-12 text-center space-y-3">
                     <ShoppingBasket className="w-12 h-12 text-gray-300 mx-auto" />
-                    <p className="text-sm font-bold text-gray-600">Your cart is currently empty</p>
+                    <p className="text-sm font-bold text-gray-600">{t('store.cartEmpty', 'Your cart is currently empty')}</p>
                     <Button
                       onClick={() => {
                         setIsCartOpen(false);
@@ -804,7 +810,7 @@ export function CommerceHero({
                       }}
                       className="bg-[#123814] hover:bg-[#1a4d1d] text-white rounded-full px-5 py-2 text-xs font-bold cursor-pointer"
                     >
-                      Browse Store Products
+                      {t('store.browseCatalog', 'Browse Store Products')}
                     </Button>
                   </div>
                 ) : (
@@ -859,14 +865,14 @@ export function CommerceHero({
             {checkoutStep === 'address' && (
               <form onSubmit={handleProceedToWhatsApp} id="checkout-form" className="p-4 sm:p-6 space-y-3.5 max-h-[62vh] sm:max-h-[68vh] overflow-y-auto pb-8">
                 <div className="bg-[#EFFDF0] p-3 rounded-xl border border-[#123814]/15 flex items-center justify-between text-xs font-bold text-[#123814]">
-                  <span>Items: <span className="text-[#E86A10]">{totalCartCount}</span></span>
-                  <span>Total Amount: <span className="text-[#E86A10] text-sm font-black">₹{totalBillAmount.toLocaleString('en-IN')}</span></span>
+                  <span>{t('store.cartItems', 'Items')}: <span className="text-[#E86A10]">{totalCartCount}</span></span>
+                  <span>{t('store.total', 'Total Amount')}: <span className="text-[#E86A10] text-sm font-black">₹{totalBillAmount.toLocaleString('en-IN')}</span></span>
                 </div>
 
                 {/* Full Name Field */}
                 <div>
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    Farmer / Customer Name <span className="text-red-500">*</span>
+                    {t('store.fullName', 'Farmer / Customer Name')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <User className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
@@ -889,7 +895,7 @@ export function CommerceHero({
                 {/* Phone Number Field */}
                 <div>
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    WhatsApp / Mobile Number (10 digits) <span className="text-red-500">*</span>
+                    {t('store.phone', 'WhatsApp / Mobile Number (10 digits)')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Phone className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
@@ -915,7 +921,7 @@ export function CommerceHero({
                 {/* Farm / Delivery Address Field */}
                 <div>
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    Delivery Address / Farm Location <span className="text-red-500">*</span>
+                    {t('store.address', 'Delivery Address / Farm Location')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <MapPin className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
@@ -939,7 +945,7 @@ export function CommerceHero({
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                      Taluka / Tehsil <span className="text-red-500">*</span>
+                      {t('store.taluka', 'Taluka / Tehsil')} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Building2 className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
@@ -961,7 +967,7 @@ export function CommerceHero({
 
                   <div>
                     <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                      District / City <span className="text-red-500">*</span>
+                      {t('store.cityDistrict', 'District / City')} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Building2 className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
@@ -985,7 +991,7 @@ export function CommerceHero({
                 {/* Pincode Field */}
                 <div>
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    Pincode (6 digits) <span className="text-red-500">*</span>
+                    {t('store.pincode', 'Pincode (6 digits)')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -1008,7 +1014,7 @@ export function CommerceHero({
                 {/* Landmark / Notes (Optional) */}
                 <div className="pb-2">
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    Landmark / Delivery Instructions <span className="text-gray-400 font-normal">(Optional)</span>
+                    {t('store.landmark', 'Landmark / Delivery Instructions')} <span className="text-gray-400 font-normal">(Optional)</span>
                   </label>
                   <input
                     type="text"
@@ -1028,9 +1034,9 @@ export function CommerceHero({
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-lg text-[#123814]">Order Details Sent!</h4>
+                  <h4 className="font-extrabold text-lg text-[#123814]">{t('store.orderSuccessTitle', 'Order Initiated Successfully!')}</h4>
                   <p className="text-xs text-gray-600 mt-1 max-w-xs mx-auto leading-relaxed">
-                    Your complete order and delivery address have been sent to our WhatsApp team. We will confirm your delivery dispatch schedule shortly.
+                    {t('store.orderSuccessMsg', 'Our agro executive will verify your farm location and confirm dispatch immediately.')}
                   </p>
                 </div>
                 <div className="bg-[#EFFDF0] p-4 rounded-2xl border border-[#123814]/15 text-left text-xs space-y-1.5 font-medium text-[#123814]">
@@ -1048,7 +1054,7 @@ export function CommerceHero({
                   }}
                   className="w-full bg-[#123814] hover:bg-[#1a4d1d] text-white rounded-full py-3 text-xs font-bold shadow-md cursor-pointer"
                 >
-                  Continue Shopping
+                  {t('store.browseCatalog', 'Continue Shopping')}
                 </Button>
               </div>
             )}
@@ -1061,18 +1067,18 @@ export function CommerceHero({
                 <>
                   <div className="bg-white p-3.5 rounded-2xl border border-[#123814]/15 shadow-xs space-y-1.5">
                     <div className="flex items-center justify-between text-xs text-gray-600 font-medium">
-                      <span>Subtotal ({totalCartCount} items):</span>
+                      <span>{t('store.subtotal', 'Subtotal')} ({totalCartCount} items):</span>
                       <span className="font-bold text-[#123814]">₹{totalBillAmount.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="flex items-center justify-between text-xs text-gray-600 font-medium">
-                      <span>Farm Delivery Dispatch:</span>
-                      <span className="font-bold text-[#25D366]">Standard Delivery</span>
+                      <span>{t('store.deliveryFee', 'Farm Delivery Dispatch')}:</span>
+                      <span className="font-bold text-[#25D366]">{t('store.freeDelivery', 'Free Delivery / Calculated on Distance')}</span>
                     </div>
                     <Separator className="my-1 bg-[#123814]/10" />
                     <div className="flex items-center justify-between text-sm font-extrabold text-[#123814]">
                       <span className="flex items-center gap-1.5">
                         <Receipt className="w-4 h-4 text-[#E86A10]" />
-                        Total Final Bill:
+                        {t('store.orderSummary', 'Total Final Bill')}:
                       </span>
                       <span className="text-[#E86A10] font-black text-lg">₹{totalBillAmount.toLocaleString('en-IN')}</span>
                     </div>
@@ -1083,7 +1089,7 @@ export function CommerceHero({
                     onClick={() => setCheckoutStep('address')}
                     className="w-full bg-[#123814] hover:bg-[#1a4d1d] text-white py-3.5 rounded-full font-bold text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-[1.02] active:scale-95"
                   >
-                    <span>Enter Delivery Address</span>
+                    <span>{t('store.proceedToCheckout', 'Enter Delivery Address')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </>
@@ -1097,7 +1103,7 @@ export function CommerceHero({
                     className="w-full bg-[#25D366] hover:bg-[#1eb956] text-white py-3.5 rounded-full font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer hover:scale-[1.02] active:scale-95"
                   >
                     <MessageSquare className="w-4.5 h-4.5 fill-white shrink-0" />
-                    <span>Send Order Details on WhatsApp (₹{totalBillAmount.toLocaleString('en-IN')})</span>
+                    <span>{t('store.submitOrder', 'Send Order Details on WhatsApp')} (₹{totalBillAmount.toLocaleString('en-IN')})</span>
                   </button>
                   <button
                     type="button"
