@@ -389,12 +389,16 @@ export default function DiscoverPage({
 
                             <div className="flex flex-wrap items-center gap-2">
                               <a
-                                href={`https://wa.me/918237795424?text=Hello%20Navbharat%20Agro%2C%20I%20want%20to%20buy%20or%20order%20${encodeURIComponent(prod.name)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                href="#store"
+                                onClick={(e) => {
+                                  if (onNavigateStore) {
+                                    e.preventDefault();
+                                    onNavigateStore();
+                                  }
+                                }}
                                 className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-[#1a3d1a] hover:bg-[#2a5a2a] text-white text-xs font-bold transition-all shadow-sm cursor-pointer"
                               >
-                                <span>{t('hero.buyOrStore', 'Buy Now')}</span>
+                                <span>{t('hero.buyOrStore', 'Buy / Store')}</span>
                                 <ArrowRight className="w-3.5 h-3.5" />
                               </a>
                               <a

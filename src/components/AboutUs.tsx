@@ -115,17 +115,17 @@ export default function AboutUs({
       {/* HEADER WITH NAVBAR BELOW */}
       <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
         {/* Top Row: Logo, Brand Name & Language + Cart Button */}
-        <div className="w-full px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
+        <div className="w-full px-3.5 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
           <div
             onClick={onNavigateHome}
-            className="flex items-center gap-2.5 cursor-pointer select-none"
+            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none"
           >
             <img
               src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
-              className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
-            <span className="font-sans font-black text-[15px] sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+            <span className="font-sans font-black text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
               {t('nav.brand', 'Navbharat Agro Services')}
             </span>
           </div>
@@ -136,9 +136,9 @@ export default function AboutUs({
             <button
               aria-label={t('nav.cart', 'Cart')}
               onClick={onNavigateStore}
-              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
+              className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
-              <ShoppingCart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
+              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -273,61 +273,61 @@ export default function AboutUs({
         </nav>
       </header>
 
-      <div className="py-12 sm:py-20 px-4 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-20 sm:space-y-28">
+      <div className="py-4 sm:py-20 px-2.5 sm:px-8 lg:px-12 max-w-7xl mx-auto space-y-5 sm:space-y-24">
         {/* ========================================== */}
         {/* SECTION 1: ABOUT HERO / OVERVIEW */}
         {/* ========================================== */}
-        <div className="relative rounded-3xl bg-white border-2 border-[#1a3d1a]/20 p-6 sm:p-10 lg:p-14 shadow-2xl shadow-[#1a3d1a]/10 overflow-hidden">
-          <div className="max-w-3xl space-y-5">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1a3d1a] text-white font-bold text-xs tracking-wider uppercase shadow-md">
-              <Sparkles className="w-3.5 h-3.5 text-[#E86A10]" />
+        <div className="relative rounded-2xl sm:rounded-3xl bg-white border-2 border-[#1a3d1a]/20 p-3.5 sm:p-10 lg:p-14 shadow-lg sm:shadow-2xl shadow-[#1a3d1a]/10 overflow-hidden">
+          <div className="max-w-3xl space-y-2.5 sm:space-y-5">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#1a3d1a] text-white font-bold text-[9.5px] sm:text-xs tracking-wider uppercase shadow-sm sm:shadow-md">
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#E86A10]" />
               {t('about.overviewTitle', 'About Navbharat Agro Services')}
             </span>
 
-            <h1 className="font-serif-display text-3xl sm:text-4xl lg:text-5xl text-[#123814] leading-tight font-extrabold">
+            <h1 className="font-serif-display text-xl sm:text-4xl lg:text-5xl text-[#123814] leading-tight font-extrabold">
               {t('about.heroTitle', 'Nurturing Animal Health, Empowering Rural Livelihoods.')}
             </h1>
 
-            <p className="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed pt-1 font-medium">
+            <p className="text-gray-800 text-[11px] sm:text-base lg:text-lg leading-relaxed pt-0.5 sm:pt-1 font-medium">
               {t('about.overviewP1', 'Navbharat Agro Services is an animal nutrition company dedicated to supporting dairy farmers, Dairy Animals owners, rural entrepreneurs, dealers, and veterinary professionals.')}
             </p>
 
-            <p className="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed font-medium">
+            <p className="text-gray-800 text-[11px] sm:text-base lg:text-lg leading-relaxed font-medium">
               {t('about.overviewP2', 'Our approach goes beyond selling products. We aim to create long-term value by combining quality nutrition, expert knowledge, farmer education, and reliable support.')}
             </p>
           </div>
         </div>
 
         {/* ========================================== */}
-        {/* SECTION 2: MISSION & VISION */}
+        {/* SECTION 2: MISSION & VISION (2 Cards in 1 Row) */}
         {/* ========================================== */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-8">
           {/* Mission Card */}
-          <div className="relative rounded-3xl bg-gradient-to-br from-[#1a3d1a] via-[#123814] to-[#0c310c] border-2 border-emerald-500/30 p-8 sm:p-10 text-white shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
-            <div className="space-y-4 relative z-10">
-              <div className="w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/30 text-[#E86A10] shadow-md">
-                <Target className="w-6 h-6" />
+          <div className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#1a3d1a] via-[#123814] to-[#0c310c] border-2 border-emerald-500/30 p-3 sm:p-10 text-white shadow-md sm:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 sm:w-32 h-24 sm:h-32 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-500" />
+            <div className="space-y-2 sm:space-y-4 relative z-10">
+              <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/30 text-[#E86A10] shadow-xs sm:shadow-md">
+                <Target className="w-4 h-4 sm:w-6 sm:h-6" />
               </div>
-              <h2 className="font-serif-display text-2xl sm:text-3xl text-white font-bold">
+              <h2 className="font-serif-display text-sm sm:text-3xl text-white font-bold leading-tight">
                 {t('about.missionTitle', 'Our Mission')}
               </h2>
-              <p className="text-emerald-50 text-sm sm:text-base leading-relaxed font-medium">
+              <p className="text-emerald-50 text-[10px] sm:text-base leading-snug sm:leading-relaxed font-medium">
                 {t('about.missionDesc', 'To provide quality cattle feed and animal nutrition solutions that support Dairy Animals health, dairy productivity, and the economic well-being of farmers.')}
               </p>
             </div>
           </div>
 
           {/* Vision Card */}
-          <div className="relative rounded-3xl bg-white border-2 border-[#1a3d1a]/25 p-8 sm:p-10 text-[#123814] shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
-            <div className="space-y-4 relative z-10">
-              <div className="w-12 h-12 rounded-2xl bg-[#1a3d1a] text-white flex items-center justify-center shadow-md">
-                <Eye className="w-6 h-6" />
+          <div className="relative rounded-2xl sm:rounded-3xl bg-white border-2 border-[#1a3d1a]/25 p-3 sm:p-10 text-[#123814] shadow-md sm:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+            <div className="space-y-2 sm:space-y-4 relative z-10">
+              <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-[#1a3d1a] text-white flex items-center justify-center shadow-xs sm:shadow-md">
+                <Eye className="w-4 h-4 sm:w-6 sm:h-6" />
               </div>
-              <h2 className="font-serif-display text-2xl sm:text-3xl text-[#123814] font-bold">
+              <h2 className="font-serif-display text-sm sm:text-3xl text-[#123814] font-bold leading-tight">
                 {t('about.visionTitle', 'Our Vision')}
               </h2>
-              <p className="text-gray-800 text-sm sm:text-base leading-relaxed font-medium">
+              <p className="text-gray-800 text-[10px] sm:text-base leading-snug sm:leading-relaxed font-medium">
                 {t('about.visionDesc', 'To become a trusted animal nutrition brand by combining quality, innovation, technology, expert knowledge, and farmer-focused solutions.')}
               </p>
             </div>
@@ -335,39 +335,39 @@ export default function AboutUs({
         </div>
 
         {/* ========================================== */}
-        {/* SECTION 3: OUR PRODUCTS CATEGORIES */}
+        {/* SECTION 3: OUR PRODUCTS CATEGORIES (2 Cards per Row on Mobile) */}
         {/* ========================================== */}
-        <div className="space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="px-4 py-1.5 rounded-full bg-[#E86A10] text-white font-bold text-xs tracking-wider uppercase shadow-md">
+        <div className="space-y-3.5 sm:space-y-10">
+          <div className="text-center max-w-2xl mx-auto space-y-1.5 sm:space-y-3">
+            <span className="px-2.5 py-0.5 sm:px-4 sm:py-1.5 rounded-full bg-[#E86A10] text-white font-bold text-[9.5px] sm:text-xs tracking-wider uppercase shadow-xs sm:shadow-md">
               {t('footer.productRange', 'Product Range')}
             </span>
-            <h2 className="font-serif-display text-3xl sm:text-4xl text-[#123814] font-bold">
+            <h2 className="font-serif-display text-xl sm:text-4xl text-[#123814] font-bold">
               {t('nav.products', 'Our Products')}
             </h2>
-            <p className="text-gray-700 text-sm sm:text-base font-medium">
+            <p className="text-gray-700 text-[11px] sm:text-base font-medium px-2">
               {t('about.categoriesSubtitle', 'Targeted nutritional formulations for every life stage and dairy management requirement.')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
             {productCategories.map((item, idx) => {
               const IconComp = item.icon;
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl bg-white border-2 border-[#1a3d1a]/15 p-6 shadow-md hover:shadow-xl hover:border-[#1a3d1a]/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between"
+                  className="rounded-2xl bg-white border-2 border-[#1a3d1a]/15 p-3 sm:p-6 shadow-sm sm:shadow-md hover:shadow-xl hover:border-[#1a3d1a]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
                 >
-                  <div className="space-y-3">
+                  <div className="space-y-1.5 sm:space-y-3">
                     <div
-                      className={`w-11 h-11 rounded-xl flex items-center justify-center border border-black/5 shadow-xs ${item.color}`}
+                      className={`w-7 h-7 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center border border-black/5 shadow-2xs ${item.color}`}
                     >
-                      <IconComp className="w-5 h-5" />
+                      <IconComp className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                     </div>
-                    <h3 className="font-bold text-[#123814] text-lg">
+                    <h3 className="font-bold text-[#123814] text-xs sm:text-lg leading-tight">
                       {item.title}
                     </h3>
-                    <p className="text-gray-700 text-xs sm:text-sm leading-relaxed font-medium">
+                    <p className="text-gray-700 text-[9.5px] sm:text-sm leading-snug sm:leading-relaxed font-medium">
                       {item.description}
                     </p>
                   </div>
@@ -376,47 +376,49 @@ export default function AboutUs({
             })}
           </div>
 
-          <div className="text-center pt-2">
+          <div className="text-center pt-1 sm:pt-2">
             <button
               onClick={handleScrollToProducts}
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white font-bold text-sm transition-all shadow-xl hover:scale-105 cursor-pointer"
+              className="inline-flex items-center gap-1.5 sm:gap-2.5 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white font-bold text-xs sm:text-sm transition-all shadow-md sm:shadow-xl hover:scale-105 active:scale-95 cursor-pointer"
             >
               <span>{t('carousel.discoverAll', 'View All Products')}</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>
 
         {/* ========================================== */}
-        {/* SECTION 4: WHY CHOOSE US */}
+        {/* SECTION 4: WHY CHOOSE US (2 Cards per Row on Mobile) */}
         {/* ========================================== */}
-        <div className="space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="px-4 py-1.5 rounded-full bg-[#1a3d1a] text-white font-bold text-xs tracking-wider uppercase shadow-md">
+        <div className="space-y-3.5 sm:space-y-10">
+          <div className="text-center max-w-2xl mx-auto space-y-1.5 sm:space-y-3">
+            <span className="px-2.5 py-0.5 sm:px-4 sm:py-1.5 rounded-full bg-[#1a3d1a] text-white font-bold text-[9.5px] sm:text-xs tracking-wider uppercase shadow-xs sm:shadow-md">
               {t('about.coreStrengths', 'Core Strengths')}
             </span>
-            <h2 className="font-serif-display text-3xl sm:text-4xl text-[#123814] font-bold">
+            <h2 className="font-serif-display text-xl sm:text-4xl text-[#123814] font-bold px-2">
               {t('about.whyChooseTitle', 'Why Leading Dairy Farmers Trust Navbharat')}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-6">
             {whyChooseUs.map((feature, idx) => {
               const IconComponent = feature.icon;
               return (
                 <div
                   key={idx}
-                  className="rounded-3xl bg-white border-2 border-[#1a3d1a]/15 p-6 sm:p-8 shadow-md hover:shadow-xl hover:border-[#E86A10]/50 hover:-translate-y-1.5 transition-all duration-300 space-y-4"
+                  className="rounded-2xl sm:rounded-3xl bg-white border-2 border-[#1a3d1a]/15 p-3 sm:p-8 shadow-sm sm:shadow-md hover:shadow-xl hover:border-[#E86A10]/50 hover:-translate-y-1 transition-all duration-300 space-y-1.5 sm:space-y-4 flex flex-col justify-between"
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-[#1a3d1a] text-white flex items-center justify-center shadow-md">
-                    <IconComponent className="w-6 h-6" />
+                  <div className="w-7 h-7 sm:w-12 sm:h-12 rounded-lg sm:rounded-2xl bg-[#1a3d1a] text-white flex items-center justify-center shadow-xs sm:shadow-md">
+                    <IconComponent className="w-3.5 h-3.5 sm:w-6 sm:h-6" />
                   </div>
-                  <h3 className="font-bold text-[#123814] text-xl">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-700 text-sm leading-relaxed font-medium">
-                    {feature.description}
-                  </p>
+                  <div>
+                    <h3 className="font-bold text-[#123814] text-xs sm:text-xl leading-tight">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-700 text-[9.5px] sm:text-sm leading-snug sm:leading-relaxed font-medium mt-1">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
               );
             })}
@@ -424,37 +426,37 @@ export default function AboutUs({
         </div>
 
         {/* ========================================== */}
-        {/* SECTION 5: COMMITMENT TO FARMERS */}
+        {/* SECTION 5: COMMITMENT TO FARMERS (Mobile Optimized) */}
         {/* ========================================== */}
-        <div className="rounded-3xl bg-gradient-to-br from-[#0c310c] via-[#1a3d1a] to-[#123814] border-2 border-emerald-400/30 p-8 sm:p-12 lg:p-16 text-white shadow-2xl space-y-10 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#9ce4b3]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#0c310c] via-[#1a3d1a] to-[#123814] border-2 border-emerald-400/30 p-4 sm:p-12 lg:p-16 text-white shadow-xl sm:shadow-2xl space-y-4 sm:space-y-10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 sm:w-96 h-48 sm:h-96 bg-[#9ce4b3]/10 rounded-full blur-2xl sm:blur-3xl pointer-events-none" />
 
-          <div className="max-w-3xl space-y-4 relative z-10">
-            <span className="px-4 py-1.5 rounded-full bg-white/20 text-emerald-200 font-bold text-xs tracking-wider uppercase border border-white/30 shadow-sm">
+          <div className="max-w-3xl space-y-2 sm:space-y-4 relative z-10">
+            <span className="px-2.5 py-0.5 sm:px-4 sm:py-1.5 rounded-full bg-white/20 text-emerald-200 font-bold text-[9.5px] sm:text-xs tracking-wider uppercase border border-white/30 shadow-xs">
               {t('about.corePromise', 'Our Core Promise')}
             </span>
-            <h2 className="font-serif-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+            <h2 className="font-serif-display text-xl sm:text-4xl lg:text-5xl font-bold leading-tight">
               {t('about.commitmentTitle', 'Our Commitment to Farmers')}
             </h2>
-            <p className="text-emerald-50 text-sm sm:text-base lg:text-lg leading-relaxed font-medium">
+            <p className="text-emerald-50 text-[11px] sm:text-base lg:text-lg leading-relaxed font-medium">
               {t('about.commitmentSubtitle', 'At Navbharat Agro Services, farmers are at the heart of everything we do. We believe that better Dairy Animals management begins with the right nutrition, the right knowledge, and the right support.')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4 relative z-10">
             {commitments.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3.5 bg-white/15 backdrop-blur-md px-4.5 py-3.5 rounded-2xl border border-white/30 hover:bg-white/20 transition-colors shadow-sm"
+                className="flex items-center gap-2 sm:gap-3.5 bg-white/15 backdrop-blur-md px-2.5 py-2 sm:px-4.5 sm:py-3.5 rounded-xl sm:rounded-2xl border border-white/30 hover:bg-white/20 transition-colors shadow-2xs sm:shadow-sm"
               >
-                <CheckCircle2 className="w-5 h-5 text-[#E86A10] shrink-0" />
-                <span className="text-sm font-semibold text-white">{item}</span>
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-[#E86A10] shrink-0" />
+                <span className="text-[10px] sm:text-sm font-semibold text-white leading-tight">{item}</span>
               </div>
             ))}
           </div>
 
-          <div className="pt-6 border-t border-white/20 text-center relative z-10">
-            <p className="font-serif-display text-xl sm:text-2xl lg:text-3xl text-emerald-200 font-medium italic">
+          <div className="pt-3 sm:pt-6 border-t border-white/20 text-center relative z-10">
+            <p className="font-serif-display text-xs sm:text-2xl lg:text-3xl text-emerald-200 font-medium italic">
               {t('about.commitmentQuote', '“Our goal is to grow together with the farming community.”')}
             </p>
           </div>
