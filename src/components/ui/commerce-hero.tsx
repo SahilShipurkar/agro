@@ -621,26 +621,25 @@ export function CommerceHero({
       {/* Main Page Scrollable Content */}
       <main className="w-full relative container px-2 sm:px-4 mx-auto max-w-7xl pb-12">
         {/* Store Hero Banner */}
-        <div className="mt-4 bg-[#EFFDF0] border-2 border-[#123814]/15 rounded-3xl relative shadow-xl overflow-hidden p-6 sm:p-10">
+        <div className="mt-2 sm:mt-4 bg-[#EFFDF0] border-2 border-[#123814]/15 rounded-2xl sm:rounded-3xl relative shadow-xl overflow-hidden p-4 sm:p-10">
           <motion.section
-            className="w-full px-4 py-4 sm:py-6"
+            className="w-full px-2 sm:px-4 py-2 sm:py-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div className="mx-auto text-center max-w-3xl">
               <motion.h1
-                className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3 leading-tight text-[#123814]"
+                className="text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-1 sm:mb-3 leading-snug sm:leading-tight text-[#123814]"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
-                <span>Premium Dairy Nutrition</span>
-                <br />
-                <span className="text-[#E86A10]">Directly To Your Farm</span>
+                <span className="block whitespace-nowrap">Premium Dairy Nutrition</span>
+                <span className="text-[#E86A10] block whitespace-nowrap">Directly To Your Farm</span>
               </motion.h1>
               <motion.p
-                className="text-base sm:text-lg text-[#1e4d21] max-w-2xl mx-auto leading-relaxed font-medium"
+                className="text-[11px] sm:text-base text-[#1e4d21] max-w-2xl mx-auto leading-relaxed font-medium px-1 sm:px-2 mt-1.5 sm:mt-2"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
@@ -652,32 +651,32 @@ export function CommerceHero({
         </div>
 
       {/* Category Cards (2 columns on mobile, 4 on desktop) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 max-w-7xl mx-auto mt-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 max-w-7xl mx-auto mt-4 sm:mt-6">
         {categories.map((category, index) => (
           <motion.div
             key={category.title}
-            className="group relative bg-white border-2 border-[#123814]/15 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 min-h-[190px] sm:min-h-[260px] w-full overflow-hidden shadow-md sm:shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-[#123814]/30 cursor-pointer flex flex-col justify-between"
+            className="group relative bg-white border-2 border-[#123814]/15 rounded-2xl sm:rounded-3xl p-3 sm:p-6 min-h-[170px] sm:min-h-[260px] w-full overflow-hidden shadow-md sm:shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-[#123814]/30 cursor-pointer flex flex-col justify-between"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
             onClick={() => scrollToProducts(category.filterKey)}
           >
             <div className="relative z-20">
-              <h2 className="text-sm sm:text-2xl font-extrabold text-[#123814] group-hover:text-[#E86A10] transition-colors duration-300 leading-tight">
+              <h2 className="text-xs sm:text-2xl font-extrabold text-[#123814] group-hover:text-[#E86A10] transition-colors duration-300 leading-tight">
                 {category.title}
               </h2>
-              <p className="text-[10px] sm:text-xs text-gray-600 font-medium mt-0.5 sm:mt-1 line-clamp-1">
+              <p className="text-[9px] sm:text-xs text-gray-600 font-medium mt-0.5 sm:mt-1 line-clamp-1">
                 {category.subtitle}
               </p>
               <div className="mt-2 sm:mt-6 flex items-center justify-center p-1 sm:p-2">
                 <img
                   src={getAssetUrl(category.image)}
                   alt={category.title}
-                  className="w-auto h-20 sm:h-36 max-h-36 object-contain group-hover:scale-110 transition-all duration-500 drop-shadow-md"
+                  className="w-auto h-16 sm:h-36 max-h-36 object-contain group-hover:scale-110 transition-all duration-500 drop-shadow-md"
                 />
               </div>
-              <div className="absolute bottom-1 right-1 sm:bottom-3 sm:right-3 w-7 h-7 sm:w-10 sm:h-10 bg-[#123814] text-white rounded-full flex items-center justify-center group-hover:bg-[#E86A10] group-hover:scale-110 transition-all duration-300 shadow-md">
-                <ArrowUpRight className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
+              <div className="absolute bottom-1 right-1 sm:bottom-3 sm:right-3 w-6 h-6 sm:w-10 sm:h-10 bg-[#123814] text-white rounded-full flex items-center justify-center group-hover:bg-[#E86A10] group-hover:scale-110 transition-all duration-300 shadow-md">
+                <ArrowUpRight className="w-3 h-3 sm:w-5 sm:h-5" />
               </div>
             </div>
           </motion.div>
@@ -685,25 +684,25 @@ export function CommerceHero({
       </div>
 
       {/* Store Products Reveal Cards Section */}
-      <div id="store-products" className="mt-10 sm:mt-14 mb-10 max-w-7xl mx-auto px-2 scroll-mt-6">
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
-          <span className="text-xs font-extrabold uppercase tracking-widest text-[#E86A10] bg-[#E86A10]/10 px-3 py-1 rounded-full border border-[#E86A10]/20">
+      <div id="store-products" className="mt-8 sm:mt-14 mb-10 max-w-7xl mx-auto px-1 sm:px-2 scroll-mt-6">
+        <div className="text-center max-w-2xl mx-auto mb-5 sm:mb-8">
+          <span className="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-[#E86A10] bg-[#E86A10]/10 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-[#E86A10]/20">
             Complete Dairy Nutrition Range
           </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#123814] tracking-tight mt-3">
+          <h2 className="text-xl sm:text-4xl font-extrabold text-[#123814] tracking-tight mt-2 sm:mt-3">
             Explore All Store Products
           </h2>
-          <p className="text-xs sm:text-sm text-[#1e4d21] font-medium mt-2 leading-relaxed">
+          <p className="text-[11px] sm:text-sm text-[#1e4d21] font-medium mt-1.5 sm:mt-2 leading-relaxed px-2">
             Select a category filter or tap any product card to select variant, set quantity, and add to cart with real-time billing!
           </p>
 
           {/* Filter Pills */}
-          <div className="mt-5 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 py-1 px-1">
+          <div className="mt-4 sm:mt-5 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 py-1 px-1">
             {filterTabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveFilter(tab.key)}
-                className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${activeFilter === tab.key
+                className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${activeFilter === tab.key
                     ? "bg-[#123814] text-white shadow-md scale-105"
                     : "bg-white text-[#123814] border border-[#123814]/20 hover:border-[#123814]/50 hover:bg-[#EFFDF0]"
                   }`}
@@ -714,7 +713,7 @@ export function CommerceHero({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 justify-items-center">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-8 items-stretch">
           {filteredProducts.map((product) => (
             <ProductRevealCard
               key={product.name}

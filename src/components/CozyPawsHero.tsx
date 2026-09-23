@@ -382,7 +382,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                 src={getAssetUrl("/left-cow.png")}
                 alt="Agro cow left"
                 className="w-full h-auto block object-contain relative z-10"
-                style={{ transform: 'translateY(-34px) scale(0.85)', transformOrigin: 'bottom center' }}
+                style={{ transform: 'translateY(-57px) scale(0.85)', transformOrigin: 'bottom center' }}
               />
 
               {/* Bottom-left 98K+ Badge */}
@@ -407,7 +407,8 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
               <img
                 src={getAssetUrl("/milk1.png")}
                 alt="Milk Max Product"
-                className="h-[80px] object-contain relative z-20 -mt-10 drop-shadow-md transition-transform duration-300 hover:scale-105"
+                className="h-[80px] object-contain relative z-20 -mt-45 drop-shadow-md transition-transform duration-300 hover:scale-105"
+                style={{ transform: 'translateY(-30px)' }}
               />
               <button
                 onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
@@ -428,7 +429,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                 src={getAssetUrl("/right-cow.png")}
                 alt="Agro cow right"
                 className="w-full h-auto block object-contain relative z-10"
-                style={{ transform: 'translateY(-34px) scale(0.85)', transformOrigin: 'bottom center' }}
+                style={{ transform: 'translateY(-57px) scale(0.85)', transformOrigin: 'bottom center' }}
               />
 
               {/* Bottom-right 4.8 Rating Badge */}
