@@ -103,9 +103,9 @@ export default function App() {
   }
 
   return (
-    <div className="w-full bg-[#EFFDF0] min-h-screen overflow-x-hidden flex flex-col">
+    <div className="w-full bg-[#EFFDF0] min-h-screen overflow-x-hidden flex flex-col snap-y snap-proximity md:snap-none">
       {/* Page Section 1: CozyPaws Hero (First Page) */}
-      <section id="cozypaws" className="min-h-[100dvh] md:h-screen w-full relative">
+      <section id="cozypaws" className="h-[100svh] min-h-[100svh] max-h-[100svh] md:h-screen md:min-h-screen md:max-h-none w-full relative snap-start snap-always overflow-hidden">
         <CozyPawsHero
           onNavigateAbout={() => navigateTo('about')}
           onNavigateStore={() => navigateTo('store')}
@@ -113,7 +113,7 @@ export default function App() {
       </section>
 
       {/* Page Section 2: TOONHUB Carousel (Appears on Scroll) */}
-      <section id="toonhub" className="min-h-[100dvh] md:h-screen w-full relative">
+      <section id="toonhub" className="h-[100svh] min-h-[100svh] max-h-[100svh] md:h-screen md:min-h-screen md:max-h-none w-full relative snap-start snap-always overflow-hidden">
         <ToonhubCarousel
           onSwitchToCozyPaws={() => navigateTo('home', 'cozypaws')}
           onNavigateDiscover={() => navigateTo('discover')}

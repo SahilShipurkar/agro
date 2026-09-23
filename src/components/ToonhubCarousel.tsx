@@ -255,7 +255,7 @@ export default function ToonhubCarousel({
 
   return (
     <div
-      className="relative w-full overflow-hidden"
+      className="relative w-full h-full overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -267,7 +267,7 @@ export default function ToonhubCarousel({
       }}
     >
       <div
-        className="relative w-full h-[100dvh] md:h-screen overflow-hidden"
+        className="relative w-full h-full md:h-screen overflow-hidden"
       >
         {/* Grain overlay */}
         <div

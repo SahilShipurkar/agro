@@ -19,7 +19,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="h-[100dvh] w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
+    <div className="h-full w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
       {/* HEADER WITH NAVBAR BELOW */}
       <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
         {/* Top Row: Logo, Brand Name & Cart Button */}
