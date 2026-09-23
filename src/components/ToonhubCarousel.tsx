@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { getAssetUrl } from '@/lib/utils';
 
 interface ProductItem {
   id: string;
@@ -39,6 +40,7 @@ const PRODUCTS: ProductItem[] = [
     description:
       'Dugdhsamrudhi Sarki Pend is a cattle feed solution designed for dairy farmers looking to provide balanced nutritional support to their milking animals.',
     idealFor: '🐄 Cows • 🐃 Buffaloes',
+    form: 'Solid Cake',
     src: '/sarkhi.png',
     bg: '#6BBF7A',
     panel: '#85CC92',
@@ -51,7 +53,20 @@ const PRODUCTS: ProductItem[] = [
     description:
       "NavMin is a mineral and nutritional supplement designed to support the nutritional requirements of dairy animals. It can be incorporated into a suitable livestock nutrition program based on the animal's requirements and professional guidance.",
     idealFor: '🐄 Cows • 🐃 Buffaloes • 🐐 Goats',
+    form: 'Chelated Mineral Powder',
     src: '/navmin.png',
+    bg: '#6BBF7A',
+    panel: '#85CC92',
+  },
+  {
+    id: 'fat-max',
+    name: 'FatMax',
+    subtitle: 'Milk Fat Booster Supplement',
+    description:
+      'FatMax is a specialized nutritional supplement designed for dairy animals as part of a balanced feeding program to optimize milk fat percentage and yield.',
+    idealFor: '🐄 Cows • 🐃 Buffaloes',
+    form: 'Powder',
+    src: '/fatmax.png',
     bg: '#6BBF7A',
     panel: '#85CC92',
   },
@@ -103,6 +118,7 @@ const PRODUCTS: ProductItem[] = [
     bg: '#6BBF7A',
     panel: '#85CC92',
   },
+
 ];
 
 const grainDataUrl =
@@ -113,6 +129,7 @@ export default function ToonhubCarousel({
 }: ToonhubCarouselProps = {}) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' ? window.innerWidth < 640 : false
   );
@@ -120,7 +137,7 @@ export default function ToonhubCarousel({
   useEffect(() => {
     PRODUCTS.forEach((item) => {
       const img = new Image();
-      img.src = item.src;
+      img.src = getAssetUrl(item.src);
     });
 
     const handleResize = () => {
@@ -130,6 +147,17 @@ export default function ToonhubCarousel({
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Auto-scroll every 3 seconds and rotate continuously
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % PRODUCTS.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [isPaused, activeIndex]);
 
   const navigate = (direction: 'next' | 'prev') => {
     if (isAnimating) return;
@@ -201,6 +229,10 @@ export default function ToonhubCarousel({
   return (
     <div
       className="relative w-full overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
       style={{
         backgroundColor: currentProduct.bg,
         transition: 'background-color 650ms cubic-bezier(0.4,0,0.2,1)',
@@ -250,6 +282,12 @@ export default function ToonhubCarousel({
             return (
               <div
                 key={item.id}
+                onClick={() => {
+                  if (index !== activeIndex) {
+                    setActiveIndex(index);
+                  }
+                }}
+                className="cursor-pointer"
                 style={{
                   position: 'absolute',
                   aspectRatio: '0.6 / 1',
@@ -260,7 +298,7 @@ export default function ToonhubCarousel({
                 }}
               >
                 <img
-                  src={item.src}
+                  src={getAssetUrl(item.src)}
                   alt={item.name}
                   draggable={false}
                   style={{
@@ -309,24 +347,27 @@ export default function ToonhubCarousel({
               )}
             </div>
           </div>
+        </div>
 
-          {/* Navigation Arrows */}
-          <div className="flex items-center gap-2 sm:gap-3 pl-0.5">
-            <button
-              onClick={() => navigate('prev')}
-              aria-label="Previous product"
-              className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/80 bg-black/25 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-105 hover:bg-black/40 active:scale-95 shadow-md"
-            >
-              <ArrowLeft size={18} strokeWidth={2.25} />
-            </button>
-            <button
-              onClick={() => navigate('next')}
-              aria-label="Next product"
-              className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border border-white/80 bg-black/25 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-105 hover:bg-black/40 active:scale-95 shadow-md"
-            >
-              <ArrowRight size={18} strokeWidth={2.25} />
-            </button>
-          </div>
+        {/* Center Navigation Arrows */}
+        <div
+          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center gap-3 sm:gap-4 pointer-events-auto"
+          style={{ zIndex: 60 }}
+        >
+          <button
+            onClick={() => navigate('prev')}
+            aria-label="Previous product"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/80 bg-black/30 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-110 hover:bg-black/50 active:scale-95 shadow-lg"
+          >
+            <ArrowLeft size={20} strokeWidth={2.5} />
+          </button>
+          <button
+            onClick={() => navigate('next')}
+            aria-label="Next product"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/80 bg-black/30 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-110 hover:bg-black/50 active:scale-95 shadow-lg"
+          >
+            <ArrowRight size={20} strokeWidth={2.5} />
+          </button>
         </div>
 
         {/* Bottom-right link "DISCOVER IT" */}
@@ -342,20 +383,27 @@ export default function ToonhubCarousel({
                 onNavigateDiscover();
               }
             }}
-            className="flex items-center gap-2 text-white no-underline uppercase opacity-95 hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+            className="group inline-flex items-center gap-2 sm:gap-3 text-white no-underline uppercase cursor-pointer select-none transition-all duration-300 animate-live-pulse hover:scale-110 active:scale-95"
             style={{
               fontFamily: "'Anton', sans-serif",
-              fontSize: 'clamp(20px, 4vw, 56px)',
+              fontSize: 'clamp(22px, 4.5vw, 58px)',
               fontWeight: 400,
               letterSpacing: '-0.02em',
               lineHeight: 1,
             }}
+            aria-label="Discover all products - Click here"
           >
-            <span>DISCOVER IT</span>
-            <ArrowRight className="w-5 h-5 sm:w-8 sm:h-8" strokeWidth={2.25} />
+            <span className="drop-shadow-lg group-hover:drop-shadow-[0_0_18px_rgba(255,255,255,0.9)] transition-all">
+              DISCOVER IT
+            </span>
+            <ArrowRight
+              className="w-5 h-5 sm:w-8 sm:h-8 animate-arrow-bounce drop-shadow-md group-hover:translate-x-2 transition-transform duration-300"
+              strokeWidth={2.5}
+            />
           </a>
         </div>
       </div>
     </div>
   );
 }
+

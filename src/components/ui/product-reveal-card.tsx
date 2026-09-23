@@ -2,8 +2,8 @@
 import { motion, useReducedMotion } from "framer-motion" 
 import { buttonVariants } from "@/components/ui/button" 
 import { ShoppingCart, Star, Heart, Plus, Minus, Eye, Check, X, CheckCircle2, MessageSquare } from "lucide-react" 
-import { useState } from "react" 
-import { cn } from "@/lib/utils" 
+import { useState, useRef } from "react" 
+import { cn, getAssetUrl } from "@/lib/utils" 
 
 export interface ProductRevealCardProps { 
   name?: string 
@@ -19,11 +19,14 @@ export interface ProductRevealCardProps {
   idealFor?: string
   form?: string
   variants?: string[]
-  variantPrices?: Record<string, number>
+  variantPrices?: Record<string, number | undefined>
   highlights?: string[]
   usage?: string
   importantNote?: string
-  onAddToCart?: (item: { name: string; variant: string; quantity: number; unitPrice: number; image: string; category: string }) => void 
+  onAddToCart?: (
+    item: { name: string; variant: string; quantity: number; unitPrice: number; image: string; category: string },
+    sourceElement?: HTMLElement | null
+  ) => void 
   onViewDetails?: () => void 
   onFavorite?: () => void 
   enableAnimations?: boolean 
@@ -33,11 +36,11 @@ export interface ProductRevealCardProps {
 export function ProductRevealCard({ 
   name = "DUGDHSAMRUDHI SARKI PEND", 
   price = "1800", 
-  originalPrice, 
+  originalPrice: _originalPrice, 
   image = "/sarkhi.png", 
   description = "Dugdhsamrudhi Sarki Pend is a cattle feed solution designed for dairy farmers looking to provide balanced nutritional support to their milking animals.", 
   rating = 4.9, 
-  reviewCount = 124, 
+  reviewCount: _reviewCount = 124, 
   category = "Cattle Feed",
   subtitle = "Cattle Feed for Dairy Animals",
   packaging = "40 kg Bag",
@@ -59,6 +62,8 @@ export function ProductRevealCard({
   enableAnimations = true, 
   className, 
 }: ProductRevealCardProps) { 
+  const cardRef = useRef<HTMLDivElement>(null)
+  const modalImageRef = useRef<HTMLImageElement>(null)
   const [isFavorite, setIsFavorite] = useState(false) 
   const [selectedVariant, setSelectedVariant] = useState(variants[0] || packaging)
   const [quantity, setQuantity] = useState(1)
@@ -75,16 +80,19 @@ export function ProductRevealCard({
     onFavorite?.() 
   }
 
-  const handleAdd = () => {
+  const handleAdd = (sourceEl?: HTMLElement | null) => {
     if (onAddToCart) {
-      onAddToCart({
-        name,
-        variant: selectedVariant,
-        quantity,
-        unitPrice: currentUnitPrice,
-        image,
-        category,
-      })
+      onAddToCart(
+        {
+          name,
+          variant: selectedVariant,
+          quantity,
+          unitPrice: currentUnitPrice,
+          image,
+          category,
+        },
+        sourceEl || cardRef.current
+      )
     }
     setAddedSuccess(true)
     setTimeout(() => setAddedSuccess(false), 1800)
@@ -190,6 +198,7 @@ export function ProductRevealCard({
   return ( 
     <>
       <motion.div 
+        ref={cardRef}
         data-slot="product-reveal-card" 
         initial="rest" 
         whileHover="hover" 
@@ -203,7 +212,7 @@ export function ProductRevealCard({
         {/* Image Container */} 
         <div className="relative overflow-hidden bg-[#EFFDF0]/60 p-6 flex items-center justify-center h-60"> 
           <motion.img 
-            src={image} 
+            src={getAssetUrl(image)} 
             alt={name} 
             className="h-44 w-auto max-w-full object-contain drop-shadow-md" 
             variants={imageVariants} 
@@ -461,7 +470,7 @@ export function ProductRevealCard({
 
             {/* Modal Product Image & Badges */}
             <div className="bg-[#EFFDF0] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-around gap-6 border border-[#123814]/15">
-              <img src={image} alt={name} className="h-44 object-contain drop-shadow-lg" />
+              <img ref={modalImageRef} src={getAssetUrl(image)} alt={name} className="h-44 object-contain drop-shadow-lg" />
               <div className="space-y-2 text-xs font-bold text-[#123814]">
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs flex items-center justify-between gap-4">
                   <span>💰 Price:</span>
@@ -521,7 +530,7 @@ export function ProductRevealCard({
               <button
                 type="button"
                 onClick={() => {
-                  handleAdd();
+                  handleAdd(modalImageRef.current);
                   setIsModalOpen(false);
                 }}
                 className="w-full sm:w-1/2 bg-[#E86A10] hover:bg-[#d05c0b] text-white py-3 rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"

@@ -6,6 +6,7 @@ import {
   ArrowRight,
   Plus,
 } from 'lucide-react';
+import { getAssetUrl } from '@/lib/utils';
 
 interface CozyPawsHeroProps {
   onNavigateAbout?: () => void;
@@ -21,7 +22,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         <div className="w-full px-4 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
           <div className="flex items-center gap-2.5 cursor-pointer select-none">
             <img
-              src="/Whitte Circle logo(3).png"
+              src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
               className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
@@ -38,9 +39,6 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
               className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105"
             >
               <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[#E86A10] border-2 border-[#EFFDF0] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
-                1
-              </span>
             </button>
           </div>
         </div>
@@ -107,19 +105,29 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         </div>
 
         {/* Left Product Card (Heat Max) - Desktop/Tablet */}
-        <div className="hidden md:block absolute top-[60px] lg:top-[50px] left-4 lg:left-12 z-20 w-[160px] lg:w-[clamp(160px,14vw,260px)] animate-slide-in-left delay-600">
-          <div className="relative rounded-2xl overflow-hidden aspect-[260/257] bg-white/60 shadow-sm border border-white/60 group p-2">
+        <div
+          onClick={onNavigateStore}
+          className="hidden md:block absolute top-[60px] lg:top-[50px] left-4 lg:left-12 z-20 w-[160px] lg:w-[clamp(160px,14vw,260px)] animate-slide-in-left delay-600 cursor-pointer group select-none"
+        >
+          <div className="relative rounded-2xl overflow-hidden aspect-[260/257] bg-white/60 shadow-sm border border-white/60 group-hover:border-[#1a3d1a]/40 group-hover:shadow-lg transition-all duration-300 p-2">
             <img
-              src="/heatmax.png"
+              src={getAssetUrl("/heatmax.png")}
               alt="Heat Max Booster"
-              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
             />
-            <button className="absolute bottom-2 right-2 w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#1a3d1a] hover:bg-[#2a5a2a] text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md cursor-pointer">
-              <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5" />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onNavigateStore) onNavigateStore();
+              }}
+              aria-label="Open Store"
+              className="absolute bottom-2 right-2 w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#1a3d1a] group-hover:bg-[#E86A10] text-white flex items-center justify-center transition-all duration-300 hover:scale-115 shadow-md cursor-pointer"
+            >
+              <ArrowUpRight className="w-4 h-4 lg:w-5 lg:h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </div>
           <div className="mt-2 flex flex-col">
-            <span className="text-gray-700 text-xs lg:text-sm font-medium">Heat Max Booster</span>
+            <span className="text-gray-700 text-xs lg:text-sm font-medium group-hover:text-[#E86A10] transition-colors">Heat Max Booster</span>
             <span className="text-[#1a3d1a] font-bold text-sm lg:text-base">499rs</span>
           </div>
         </div>
@@ -150,7 +158,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
 
             {/* Cow Image with hooves resting on red line */}
             <img
-              src="/left-cow.png"
+              src={getAssetUrl("/left-cow.png")}
               alt="Agro cow left"
               className="w-full h-auto block object-contain relative z-10"
               style={{ transform: 'translateY(-110px) scale(0.72)', transformOrigin: 'bottom center' }}
@@ -177,7 +185,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
           <div className="flex-[1.265] min-h-[220px] sm:min-h-[260px] lg:min-h-[290px] bg-[#0c310c] relative overflow-visible animate-photo-reveal delay-600 flex flex-col items-center justify-end pb-6 text-center shadow-lg rounded-t-2xl">
             {/* Product Bag Image popping up over dark green box */}
             <img
-              src="/milk1.png"
+              src={getAssetUrl("/milk1.png")}
               alt="Dugdha Samruddhi Product"
               className="h-[150px] sm:h-[190px] lg:h-[230px] object-contain relative z-20 -mt-20 sm:-mt-28 drop-shadow-2xl transition-transform duration-300 hover:scale-105"
             />
@@ -202,7 +210,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
 
             {/* Cow Image with hooves resting on red line */}
             <img
-              src="/right-cow.png"
+              src={getAssetUrl("/right-cow.png")}
               alt="Agro cow right"
               className="w-full h-auto block object-contain relative z-10"
               style={{ transform: 'translateY(-110px) scale(0.72)', transformOrigin: 'bottom center' }}
@@ -239,16 +247,19 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
           {/* Cards row: Product & Video side by side */}
           <div className="px-4 py-2 flex items-center justify-center gap-3 z-20">
             {/* Product Card */}
-            <div className="w-[110px] bg-white/50 p-2 rounded-xl border border-white/70 shadow-sm flex flex-col items-center">
+            <div
+              onClick={onNavigateStore}
+              className="w-[110px] bg-white/50 p-2 rounded-xl border border-white/70 shadow-sm flex flex-col items-center cursor-pointer hover:bg-white/80 transition-all select-none hover:scale-105"
+            >
               <div className="w-full aspect-square rounded-lg overflow-hidden relative bg-white/40 p-1">
                 <img
-                  src="/heatmax.png"
+                  src={getAssetUrl("/heatmax.png")}
                   alt="Heat Max Booster"
                   className="w-full h-full object-contain"
                 />
               </div>
               <span className="text-[10px] font-medium text-gray-800 mt-1 line-clamp-1">Heat Max</span>
-              <span className="text-xs font-bold text-[#1a3d1a]">$49.99</span>
+              <span className="text-xs font-bold text-[#1a3d1a]">499rs</span>
             </div>
 
             {/* Video Card */}
@@ -293,21 +304,21 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
           <div className="relative z-10 flex items-end justify-center w-full mt-auto">
             <div className="flex-1 relative bg-[#9ce4b3] rounded-t-xl overflow-hidden">
               <img
-                src="/left-cow.png"
+                src={getAssetUrl("/left-cow.png")}
                 alt="Agro cow left"
                 className="w-full h-auto block object-cover"
               />
             </div>
             <div className="flex-[1.265] relative bg-[#0c310c] h-[120px] rounded-t-xl flex items-center justify-center p-2">
               <img
-                src="/milk1.png"
+                src={getAssetUrl("/milk1.png")}
                 alt="Product"
                 className="h-[100px] object-contain relative z-10 -mt-6 drop-shadow-md"
               />
             </div>
             <div className="flex-1 relative bg-[#9ce4b3] rounded-t-xl overflow-hidden">
               <img
-                src="/right-cow.png"
+                src={getAssetUrl("/right-cow.png")}
                 alt="Agro cow right"
                 className="w-full h-auto block object-cover"
               />

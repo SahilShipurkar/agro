@@ -17,9 +17,9 @@ const family = '"Glyph Portal Jakarta", Arial, sans-serif';
 let fontLoad: Promise<void> | undefined; 
 
 export default function GlyphPortalSection({
-  onNavigateHome,
-  onNavigateAbout,
-  onNavigateProducts,
+  onNavigateHome: _onNavigateHome,
+  onNavigateAbout: _onNavigateAbout,
+  onNavigateProducts: _onNavigateProducts,
   onNavigateDiscover,
   word = "NAVBHARAT",
   scrollLength = 2.4,

@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Package,
 } from 'lucide-react';
+import { getAssetUrl } from '@/lib/utils';
 
 interface DiscoverPageProps {
   onNavigateHome?: () => void;
@@ -110,7 +111,7 @@ export default function DiscoverPage({
           idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
           form: 'Powder',
           packaging: '300 g (FatMax – 300 g)',
-          image: '/Heat.png',
+          image: '/fatmax.png',
           highlights: [
             'Formulated specifically for milk fat enhancement',
             'Supports nutritional management of milking animals',
@@ -137,7 +138,7 @@ export default function DiscoverPage({
           usage: 'As per product label / expert recommendation.',
         },
         {
-          name: 'HEAT PLUS',
+          name: 'HEATMAX',
           subtitle: 'Reproductive Nutrition Support',
           category: 'Reproductive Support',
           desc: 'Heat Plus is a nutritional supplement designed to support reproductive management in dairy animals as part of a proper nutrition and herd-management program.',
@@ -412,7 +413,7 @@ export default function DiscoverPage({
             className="flex items-center gap-2.5 cursor-pointer select-none"
           >
             <img
-              src="/Whitte Circle logo(3).png"
+              src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
               className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
@@ -426,12 +427,9 @@ export default function DiscoverPage({
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer"
+              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105"
             >
               <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[#E86A10] border-2 border-[#EFFDF0] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
-                1
-              </span>
             </button>
           </div>
         </div>
@@ -503,11 +501,10 @@ export default function DiscoverPage({
                 <button
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
-                  className={`inline-flex items-center gap-2 px-4.5 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all shadow-sm cursor-pointer ${
-                    isActive
-                      ? 'bg-[#1a3d1a] text-white shadow-md ring-2 ring-[#1a3d1a]/20'
-                      : 'bg-white border-2 border-[#1a3d1a]/15 text-[#123814] hover:bg-white/80'
-                  }`}
+                  className={`inline-flex items-center gap-2 px-4.5 py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all shadow-sm cursor-pointer ${isActive
+                    ? 'bg-[#1a3d1a] text-white shadow-md ring-2 ring-[#1a3d1a]/20'
+                    : 'bg-white border-2 border-[#1a3d1a]/15 text-[#123814] hover:bg-white/80'
+                    }`}
                 >
                   {Icon && <Icon className="w-4 h-4 shrink-0" />}
                   <span>{cat.label}</span>
@@ -558,7 +555,7 @@ export default function DiscoverPage({
                         {/* Image Box */}
                         <div className="w-32 sm:w-44 aspect-square rounded-2xl bg-[#EFFDF0] border border-[#1a3d1a]/10 p-3 flex items-center justify-center shrink-0 self-center sm:self-start">
                           <img
-                            src={prod.image}
+                            src={getAssetUrl(prod.image)}
                             alt={prod.name}
                             className="w-full h-full object-contain drop-shadow-md"
                           />

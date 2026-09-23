@@ -1,4 +1,5 @@
 import { Phone, MessageSquare, MapPin, ArrowUp, Milk, Award, Sparkles, ShieldCheck } from 'lucide-react';
+import { getAssetUrl } from '@/lib/utils';
 
 interface FooterProps {
   onNavigateHome?: () => void;
@@ -31,7 +32,7 @@ export default function Footer({
         <div className="bg-white/90 backdrop-blur-md border border-[#123814]/15 rounded-2xl p-4 sm:p-5 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
             <img
-              src="/Whitte Circle logo(3).png"
+              src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
               className="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-full shadow-sm border border-[#123814]/20"
             />

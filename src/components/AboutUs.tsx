@@ -16,8 +16,8 @@ import {
   Award,
   Layers,
   ShoppingCart,
-  ArrowLeft,
 } from 'lucide-react';
+import { getAssetUrl } from '@/lib/utils';
 
 interface AboutUsProps {
   onNavigateHome?: () => void;
@@ -143,7 +143,7 @@ export default function AboutUs({
             className="flex items-center gap-2.5 cursor-pointer select-none"
           >
             <img
-              src="/Whitte Circle logo(3).png"
+              src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
               className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
@@ -157,12 +157,9 @@ export default function AboutUs({
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer"
+              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105"
             >
               <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-4.5 sm:h-4.5 bg-[#E86A10] border-2 border-[#EFFDF0] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
-                1
-              </span>
             </button>
           </div>
         </div>
