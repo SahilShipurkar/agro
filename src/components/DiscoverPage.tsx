@@ -417,9 +417,9 @@ export default function DiscoverPage({
             <img
               src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
-              className="w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+              className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
-            <span className="font-sans font-extrabold text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+            <span className="font-sans font-black text-[15px] sm:text-lg lg:text-xl text-[#123814] tracking-tight">
               Navbharat Agro Services
             </span>
           </div>
@@ -429,9 +429,9 @@ export default function DiscoverPage({
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105 active:scale-95"
+              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
-              <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <ShoppingCart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -490,57 +490,56 @@ export default function DiscoverPage({
           </div>
         </nav>
 
-        {/* Bottom Row: Mobile Navigation Bar */}
-        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1 px-4 relative">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 text-xs font-bold text-gray-700">
-              <a
-                href="#home"
-                onClick={(e) => {
-                  if (onNavigateHome) {
-                    e.preventDefault();
-                    onNavigateHome();
-                  }
-                }}
-                className="hover:text-[#123814] transition-colors cursor-pointer"
-              >
-                Home
-              </a>
-              <a
-                href="#about"
-                onClick={(e) => {
-                  if (onNavigateAbout) {
-                    e.preventDefault();
-                    onNavigateAbout();
-                  }
-                }}
-                className="hover:text-[#123814] transition-colors cursor-pointer"
-              >
-                About Us
-              </a>
-              <a
-                href="#toonhub"
-                onClick={(e) => {
-                  if (onNavigateProducts) {
-                    e.preventDefault();
-                    onNavigateProducts();
-                  }
-                }}
-                className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors cursor-pointer"
-              >
-                Products
-              </a>
-            </div>
+        {/* Bottom Row: Mobile Navigation Bar (Centered 3 sections + menu icon) */}
+        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 relative flex items-center justify-center">
+          <div className="flex items-center justify-center gap-6 text-xs font-bold text-gray-700">
+            <a
+              href="#home"
+              onClick={(e) => {
+                if (onNavigateHome) {
+                  e.preventDefault();
+                  onNavigateHome();
+                }
+              }}
+              className="hover:text-[#123814] transition-colors cursor-pointer"
+            >
+              Home
+            </a>
+            <a
+              href="#about"
+              onClick={(e) => {
+                if (onNavigateAbout) {
+                  e.preventDefault();
+                  onNavigateAbout();
+                }
+              }}
+              className="hover:text-[#123814] transition-colors cursor-pointer"
+            >
+              About Us
+            </a>
+            <a
+              href="#toonhub"
+              onClick={(e) => {
+                if (onNavigateProducts) {
+                  e.preventDefault();
+                  onNavigateProducts();
+                }
+              }}
+              className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors cursor-pointer"
+            >
+              Products
+            </a>
+          </div>
 
-            {/* List Icon Button for remaining items */}
-            <div className="relative">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="More navigation links"
-                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
-              >
-                <Menu className="w-3.5 h-3.5 text-[#123814]" />
-              </button>
+          {/* List Icon Button for remaining items on right */}
+          <div className="absolute right-3">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="More navigation links"
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] shadow-xs active:scale-95 transition-all cursor-pointer"
+            >
+              <Menu className="w-3.5 h-3.5 text-[#123814]" />
+            </button>
 
               {/* Dropdown Menu */}
               {isMobileMenuOpen && (
@@ -575,7 +574,6 @@ export default function DiscoverPage({
                   </a>
                 </div>
               )}
-            </div>
           </div>
         </nav>
       </header>

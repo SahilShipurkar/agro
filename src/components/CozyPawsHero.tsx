@@ -28,9 +28,9 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             <img
               src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
-              className="w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+              className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
-            <span className="font-sans font-extrabold text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+            <span className="font-sans font-black text-[15px] sm:text-lg lg:text-xl text-[#123814] tracking-tight">
               Navbharat Agro Services
             </span>
           </div>
@@ -40,9 +40,9 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105 active:scale-95"
+              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
-              <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <ShoppingCart className="w-4.5 h-4.5 sm:w-5 sm:h-5" />
             </button>
           </div>
         </div>
@@ -83,74 +83,72 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
           </div>
         </nav>
 
-        {/* Bottom Row: Mobile Navigation Bar (Shows Home, About Us, Products + Menu Icon for remaining) */}
-        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1 px-4 relative">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 text-xs font-bold text-gray-700">
-              <a href="#home" className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors">
-                Home
-              </a>
-              <a
-                href="#about"
-                onClick={(e) => {
-                  if (onNavigateAbout) {
-                    e.preventDefault();
-                    onNavigateAbout();
-                  }
-                }}
-                className="hover:text-[#123814] transition-colors cursor-pointer"
-              >
-                About Us
-              </a>
-              <a href="#toonhub" className="hover:text-[#123814] transition-colors">
-                Products
-              </a>
-            </div>
+        {/* Bottom Row: Mobile Navigation Bar (Centered 3 sections + menu icon) */}
+        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 relative flex items-center justify-center">
+          <div className="flex items-center justify-center gap-6 text-xs font-bold text-gray-700">
+            <a href="#home" className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors">
+              Home
+            </a>
+            <a
+              href="#about"
+              onClick={(e) => {
+                if (onNavigateAbout) {
+                  e.preventDefault();
+                  onNavigateAbout();
+                }
+              }}
+              className="hover:text-[#123814] transition-colors cursor-pointer"
+            >
+              About Us
+            </a>
+            <a href="#toonhub" className="hover:text-[#123814] transition-colors">
+              Products
+            </a>
+          </div>
 
-            {/* List Icon Button for remaining items */}
-            <div className="relative">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="More navigation links"
-                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
-              >
-                <Menu className="w-3.5 h-3.5 text-[#123814]" />
-              </button>
+          {/* List Icon Button for remaining items on right */}
+          <div className="absolute right-3">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="More navigation links"
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] shadow-xs active:scale-95 transition-all cursor-pointer"
+            >
+              <Menu className="w-3.5 h-3.5 text-[#123814]" />
+            </button>
 
-              {/* Dropdown Menu */}
-              {isMobileMenuOpen && (
-                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
-                  <a
-                    href="#gallery"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    Gallery
-                  </a>
-                  <a
-                    href="#business"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    Careers
-                  </a>
-                  <a
-                    href="#blog"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    Blog / Resources
-                  </a>
-                  <a
-                    href="#contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    Contact Us
-                  </a>
-                </div>
-              )}
-            </div>
+            {/* Dropdown Menu */}
+            {isMobileMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
+                <a
+                  href="#gallery"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  Gallery
+                </a>
+                <a
+                  href="#business"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  Careers
+                </a>
+                <a
+                  href="#blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  Blog / Resources
+                </a>
+                <a
+                  href="#contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  Contact Us
+                </a>
+              </div>
+            )}
           </div>
         </nav>
       </header>
@@ -303,48 +301,72 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         {/* ------------------------------------------------------------- */}
         <div className="md:hidden flex flex-col h-full justify-between pt-1 overflow-hidden relative">
           {/* Top section: Title and Subtitle */}
-          <div className="px-4 text-center z-20 flex flex-col items-center gap-1 mt-1">
-            <h1 className="font-serif-display text-[#1a3d1a] text-2xl leading-tight">
-              A Tradition of Quality. A Legacy of Trust.
+          <div className="px-4 text-center z-20 flex flex-col items-center gap-1.5 mt-0.5">
+            <h1 className="font-serif-display text-[#1a3d1a] text-[26px] xs:text-[28px] leading-[1.16] font-bold">
+              A Tradition of Quality.<br className="hidden xs:block" /> A Legacy of Trust.
             </h1>
-            <p className="text-gray-600 text-[11px] max-w-xs leading-tight">
+            <p className="text-gray-700 text-xs max-w-[310px] leading-snug font-medium">
               Premium cattle feed, chelated minerals & essential dairy nutrition supplements.
             </p>
           </div>
 
-          {/* Side-by-side cards: Heat Max and Farmer Reviews */}
-          <div className="px-3 py-1 flex items-center justify-center gap-2.5 z-20">
-            {/* Left Card: Heat Max */}
+          {/* Side-by-side cards: Heat Max (Left) and Farmer Reviews (Right) */}
+          <div className="px-3 py-1 flex items-stretch justify-center gap-3 z-20">
+            {/* Left Card: Heat Max with Buy / Go to Store button */}
             <div
               onClick={onNavigateStore}
-              className="w-[115px] bg-white/70 backdrop-blur-sm p-1.5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center cursor-pointer select-none active:scale-95"
+              className="w-[145px] xs:w-[155px] bg-white/85 backdrop-blur-md p-2 rounded-2xl border border-white/90 shadow-md flex flex-col justify-between items-center cursor-pointer select-none active:scale-[0.98] transition-all hover:border-[#123814]/20"
             >
-              <div className="w-full aspect-square rounded-xl overflow-hidden relative bg-white/60 p-1 flex items-center justify-center">
+              <div className="w-full h-[88px] rounded-xl overflow-hidden relative bg-white/70 p-1 flex items-center justify-center">
                 <img
                   src={getAssetUrl("/heatmax.png")}
                   alt="Heat Max Booster"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain drop-shadow-sm"
                 />
               </div>
-              <span className="text-[10px] font-bold text-gray-800 mt-1 line-clamp-1">Heat Max</span>
-              <span className="text-[11px] font-extrabold text-[#1a3d1a]">₹499</span>
+              <div className="w-full flex items-center justify-between mt-1 px-0.5">
+                <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">Heat Max</span>
+                <span className="text-[11px] font-black text-[#1a3d1a]">₹499</span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (onNavigateStore) onNavigateStore();
+                }}
+                className="w-full mt-1.5 py-1 px-2 rounded-lg bg-[#E86A10] hover:bg-[#d05c0b] text-white text-[10px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 transition-transform cursor-pointer"
+              >
+                <span>Buy / Store</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </button>
             </div>
 
             {/* Right Card: Video Review */}
-            <div className="w-[115px] bg-white/70 backdrop-blur-sm p-1.5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center text-center">
-              <div className="w-full aspect-[4/3] rounded-xl overflow-hidden relative">
+            <div
+              onClick={onNavigateStore}
+              className="w-[145px] xs:w-[155px] bg-white/85 backdrop-blur-md p-2 rounded-2xl border border-white/90 shadow-md flex flex-col justify-between items-center text-center cursor-pointer select-none active:scale-[0.98] transition-all"
+            >
+              <div className="w-full h-[88px] rounded-xl overflow-hidden relative bg-black/10">
                 <img
                   src="https://polo-pecan-73837341.figma.site/_assets/v11/76be6ec3a93a703b15e9cc01e764a4e3f9d7d2c0.png"
-                  alt="Review"
+                  alt="Farmer Video Review"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <div className="w-6 h-6 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white shadow-sm">
-                    <Play className="w-3 h-3 fill-white ml-0.5" />
+                <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-full bg-[#1a3d1a] border border-white/60 flex items-center justify-center text-white shadow-md">
+                    <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
                   </div>
                 </div>
               </div>
-              <span className="text-[9px] font-semibold text-gray-700 mt-1 line-clamp-1">Farmer Reviews</span>
+              <div className="w-full mt-1 px-0.5 flex items-center justify-between">
+                <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">Farmer Reviews</span>
+                <span className="text-[10px] font-bold text-[#E86A10] flex items-center gap-0.5">
+                  <Star className="w-2.5 h-2.5 fill-[#E86A10]" /> 4.9
+                </span>
+              </div>
+              <div className="w-full mt-1.5 py-1 px-2 rounded-lg bg-[#123814]/10 text-[#123814] text-[10px] font-extrabold flex items-center justify-center gap-1">
+                <span>Watch Stories</span>
+                <Play className="w-2.5 h-2.5 fill-[#123814]" />
+              </div>
             </div>
           </div>
 
