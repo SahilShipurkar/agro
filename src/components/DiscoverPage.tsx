@@ -18,6 +18,7 @@ import {
 import { getAssetUrl } from '@/lib/utils';
 import { useLanguage } from '@/lib/languageContext';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
+import { getDiscoverSections } from '@/lib/productsData';
 
 interface DiscoverPageProps {
   onNavigateHome?: () => void;
@@ -32,7 +33,7 @@ export default function DiscoverPage({
   onNavigateProducts,
   onNavigateStore,
 }: DiscoverPageProps = {}) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<string>('dairy-nutrition');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -45,362 +46,7 @@ export default function DiscoverPage({
     { id: 'silage', label: t('discover.tabs.silage', 'Silage'), icon: Layers },
   ];
 
-  const sections = [
-    {
-      id: 'dairy-nutrition',
-      title: 'All Dairy Nutrition',
-      subtitle: 'Complete Dairy & Animal Nutrition Portfolio',
-      description:
-        'Comprehensive nutrition solutions formulated to satisfy daily dietary requirements, improve milk yield, maintain body score, and boost overall dairy health.',
-      icon: Milk,
-      badgeColor: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      items: [
-        {
-          name: 'DUGDHSAMRUDHI SARKI PEND',
-          subtitle: 'Cattle Feed for Dairy Animals',
-          category: 'Cattle Feed',
-          desc: 'Dugdhsamrudhi Sarki Pend is a cattle feed solution designed for dairy farmers looking to provide balanced nutritional support to their milking animals.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Solid Cake / Pend',
-          packaging: '40 kg Bag (Dugdhsamrudhi Sarki Pend – 40 kg)',
-          image: '/sarkhi.png',
-          highlights: [
-            'Designed specifically for milking dairy animals',
-            'Supports nutritional requirements during peak lactation',
-            'Suitable for regular dairy management & commercial operations',
-            'Available in convenient 40 kg bulk packaging',
-          ],
-          usage:
-            '50 g per animal daily. For every additional 1 litre of capacity, increase the dosage by 5 g.',
-        },
-        {
-          name: 'MILKMAX',
-          subtitle: 'Calcium Supplement for Dairy Animals',
-          category: 'Calcium Supplement',
-          desc: 'MilkMax / Milkiyana is a calcium supplement designed to support the nutritional requirements of dairy animals, particularly during important stages of the lactation cycle.',
-          idealFor: '🐄 Cows • 🐃 Buffaloes',
-          form: 'Liquid',
-          packaging: '1 Litre | 5 Litre (MilkMax – 1 L, 5 L)',
-          image: '/milk1.png',
-          highlights: [
-            'Calcium supplementation for high-yielding dairy animals',
-            'Supports nutritional management during lactation',
-            'Convenient, palatable liquid formulation',
-            'Easy to administer with daily feed ration',
-          ],
-          usage: 'As per approved product label / expert recommendation.',
-        },
-        {
-          name: 'NAVMIN',
-          subtitle: 'Mineral & Nutritional Supplement',
-          category: 'Chelated Minerals',
-          desc: 'NavMin is a mineral and nutritional supplement designed to support the nutritional requirements of dairy animals. It can be incorporated into a suitable livestock nutrition program based on the animal’s requirements and professional guidance.',
-          idealFor: '🐄 Cows • 🐃 Buffaloes • 🐐 Goats',
-          form: 'Powder Pack',
-          packaging: '1 kg | 5 kg | 20 kg (NavMin – 1 kg, 5 kg, 20 kg)',
-          image: '/navmin.png',
-          highlights: [
-            'Area-specific chelated mineral & trace element supplement',
-            'Suitable for dairy cows, buffaloes, and goats',
-            'Available in multiple pack sizes for small & commercial farms',
-            'Enhances conception rates and overall vitality',
-          ],
-          usage:
-            'As per product label / veterinary or nutritionist recommendation.',
-        },
-        {
-          name: 'FATMAX',
-          subtitle: 'Dairy Nutrition Supplement',
-          category: 'Milk Fat Booster',
-          desc: 'FatMax is a nutritional supplement designed for dairy animals as part of a balanced feeding and dairy management program to optimize milk fat percentage.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Powder',
-          packaging: '300 g (FatMax – 300 g)',
-          image: '/fatmax.png',
-          highlights: [
-            'Formulated specifically for milk fat enhancement',
-            'Supports nutritional management of milking animals',
-            'Convenient 300 g pack size',
-            'Suitable for regular dairy-farm feeding programs',
-          ],
-          usage: 'As per product label / expert recommendation.',
-        },
-        {
-          name: 'GROWMAX',
-          subtitle: 'Calf Growth & Nutrition Supplement',
-          category: 'Calf Growth',
-          desc: 'GrowMax is a nutritional supplement designed for calves and young livestock as part of a proper feeding and growth-management program.',
-          idealFor: '🐮 Calves • 🐄 Growing Young Stock',
-          form: 'Powder',
-          packaging: '300 g | 1 kg (GrowMax – 300 g, 1 kg)',
-          image: '/growmax.png',
-          highlights: [
-            'Designed specifically for growing calves & young stock',
-            'Supports nutritional requirements during early growth stages',
-            'Convenient 300 g & 1 kg pack options',
-            'Ideal for calf-rearing and weight-gain programs',
-          ],
-          usage: 'As per product label / expert recommendation.',
-        },
-        {
-          name: 'HEATMAX',
-          subtitle: 'Reproductive Nutrition Support',
-          category: 'Reproductive Support',
-          desc: 'Heat Plus is a nutritional supplement designed to support reproductive management in dairy animals as part of a proper nutrition and herd-management program.',
-          idealFor: '🐄 Cows • 🐃 Buffaloes',
-          form: 'Powder / Bolus',
-          packaging: '400 g | 2.75 kg (Heat Plus – 400 g, 2.75 kg)',
-          image: '/heatmax.png',
-          highlights: [
-            'Designed for reproductive nutrition support',
-            'Suitable for dairy cows and buffaloes',
-            'Available in two convenient pack sizes (400 g & 2.75 kg)',
-            'Can be incorporated into a planned dairy reproductive program',
-          ],
-          usage: 'As per product label / veterinary recommendation.',
-          importantNote:
-            'For reproductive problems, repeat breeding, delayed heat, pregnancy-related concerns, or other animal-health conditions, consult a qualified veterinary professional.',
-        },
-        {
-          name: 'GARBHACARE',
-          subtitle: 'Pregnancy Nutrition Supplement',
-          category: 'Pregnancy Care',
-          desc: 'Garbhacare is a nutritional supplement designed to support the nutritional management of pregnant dairy animals during critical gestation periods.',
-          idealFor: '🐄 Pregnant Cows • 🐃 Pregnant Buffaloes',
-          form: 'Liquid / Powder',
-          packaging: '1 kg (Garbhacare – 1 kg)',
-          image: '/garbhaCare.png',
-          highlights: [
-            'Formulated for pregnant dairy cows and buffaloes',
-            'Supports nutritional management during pregnancy',
-            'Convenient 1 kg pack',
-            'Promotes uterine health and calf development',
-          ],
-          usage:
-            'As per product label / veterinary or nutritionist recommendation.',
-        },
-        {
-          name: 'MUSTGUARD',
-          subtitle: 'Mastitis Management Support',
-          category: 'Udder Care',
-          desc: 'MustGuard is a livestock nutrition/management product intended to support dairy-animal management where mastitis-related concerns are being addressed.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Powder / Ointment',
-          packaging: '250 g | 500 g (MustGuard – 250 g, 500 g)',
-          image: '/mastguard.png',
-          highlights: [
-            'Specialized support for udder care & somatic cell count management',
-            'Designed to complement hygiene and herd management',
-            'Available in 250 g & 500 g packs',
-          ],
-          usage: 'As per product label / veterinary recommendation.',
-          importantNote:
-            'Mastitis is an animal-health condition. In case of suspected mastitis, consult a qualified veterinary professional for diagnosis and treatment.',
-        },
-        {
-          name: 'MURGHAS / MAIZE SILAGE',
-          subtitle: 'Quality Maize Silage for Dairy Farming',
-          category: 'Fermented Silage',
-          desc: 'Our Maize Silage is prepared using Advanta 756 maize variety, providing farmers with a convenient stored fodder option for dairy animals.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Wrapped 60 kg Bales',
-          packaging: '60 kg Bag (Maize Silage – Advanta 756 – 60 kg)',
-          image: '/Makka_Sailage.png',
-          highlights: [
-            'Prepared with high-starch Advanta 756 maize variety',
-            '60 kg convenient pack for easy storage & handling',
-            'Ensures year-round green fodder availability',
-            'Helps dairy farmers plan feed costs and availability',
-          ],
-          usage:
-            'Store according to the recommended silage storage and handling instructions.',
-          deliveryNote:
-            'Home delivery availability depends on location. Contact our team for delivery details.',
-        },
-      ],
-    },
-    {
-      id: 'calf-nutrition',
-      title: 'Calf Nutrition',
-      subtitle: 'Specialized Growth & Immunity for Young Stock',
-      description:
-        'Targeted formulas crafted for growing calves to ensure early rumen development, robust immune response, and rapid weight gain.',
-      icon: Baby,
-      badgeColor: 'bg-blue-100 text-blue-900 border-blue-300',
-      items: [
-        {
-          name: 'GROWMAX',
-          subtitle: 'Calf Growth & Nutrition Supplement',
-          category: 'Calf Growth',
-          desc: 'GrowMax is a nutritional supplement designed for calves and young livestock as part of a proper feeding and growth-management program.',
-          idealFor: '🐮 Calves • 🐄 Growing Young Stock',
-          form: 'Powder',
-          packaging: '300 g | 1 kg (GrowMax – 300 g, 1 kg)',
-          image: '/growmax.png',
-          highlights: [
-            'Designed specifically for growing calves & young stock',
-            'Supports nutritional requirements during early growth stages',
-            'Convenient 300 g & 1 kg pack options',
-            'Ideal for calf-rearing and weight-gain programs',
-          ],
-          usage: 'As per product label / expert recommendation.',
-        },
-      ],
-    },
-    {
-      id: 'minerals',
-      title: 'Mineral & Nutritional Supplements',
-      subtitle: 'Essential Micro & Macro Mineral Balance',
-      description:
-        'Bioavailable mineral mixtures and essential trace elements designed to correct nutritional deficiencies and enhance reproductive health.',
-      icon: Award,
-      badgeColor: 'bg-purple-100 text-purple-900 border-purple-300',
-      items: [
-        {
-          name: 'NAVMIN',
-          subtitle: 'Mineral & Nutritional Supplement',
-          category: 'Chelated Minerals',
-          desc: 'NavMin is a mineral and nutritional supplement designed to support the nutritional requirements of dairy animals.',
-          idealFor: '🐄 Cows • 🐃 Buffaloes • 🐐 Goats',
-          form: 'Powder Pack',
-          packaging: '1 kg | 5 kg | 20 kg (NavMin – 1 kg, 5 kg, 20 kg)',
-          image: '/navmin.png',
-          highlights: [
-            'Area-specific chelated mineral & trace element supplement',
-            'Suitable for dairy cows, buffaloes, and goats',
-            'Available in multiple pack sizes',
-            'Enhances conception rates and overall vitality',
-          ],
-          usage:
-            'As per product label / veterinary or nutritionist recommendation.',
-        },
-        {
-          name: 'MUSTGUARD',
-          subtitle: 'Mastitis Management Support',
-          category: 'Udder Care',
-          desc: 'MustGuard is a livestock nutrition/management product intended to support dairy-animal management where mastitis-related concerns are being addressed.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Powder / Ointment',
-          packaging: '250 g | 500 g (MustGuard – 250 g, 500 g)',
-          image: '/mastguard.png',
-          highlights: [
-            'Specialized support for udder care & somatic cell count management',
-            'Designed to complement hygiene and herd management',
-            'Available in 250 g & 500 g packs',
-          ],
-          usage: 'As per product label / veterinary recommendation.',
-          importantNote:
-            'Mastitis is an animal-health condition. In case of suspected mastitis, consult a qualified veterinary professional for diagnosis and treatment.',
-        },
-      ],
-    },
-    {
-      id: 'reproductive',
-      title: 'Reproductive Management',
-      subtitle: 'Fertility & Heat Cycle Regularity Support',
-      description:
-        'Nutritional solutions formulated to support heat induction, reproductive wellness, and optimal breeding efficiency in dairy herds.',
-      icon: Sparkles,
-      badgeColor: 'bg-rose-100 text-rose-900 border-rose-300',
-      items: [
-        {
-          name: 'HEAT PLUS',
-          subtitle: 'Reproductive Nutrition Support',
-          category: 'Reproductive Support',
-          desc: 'Heat Plus is a nutritional supplement designed to support reproductive management in dairy animals as part of a proper nutrition and herd-management program.',
-          idealFor: '🐄 Cows • 🐃 Buffaloes',
-          form: 'Powder / Bolus',
-          packaging: '400 g | 2.75 kg (Heat Plus – 400 g, 2.75 kg)',
-          image: '/heatmax.png',
-          highlights: [
-            'Designed for reproductive nutrition support',
-            'Suitable for dairy cows and buffaloes',
-            'Available in two convenient pack sizes (400 g & 2.75 kg)',
-            'Can be incorporated into a planned dairy reproductive program',
-          ],
-          usage: 'As per product label / veterinary recommendation.',
-          importantNote:
-            'For reproductive problems, repeat breeding, delayed heat, pregnancy-related concerns, or other animal-health conditions, consult a qualified veterinary professional.',
-        },
-        {
-          name: 'GARBHACARE',
-          subtitle: 'Pregnancy Nutrition Supplement',
-          category: 'Pregnancy Care',
-          desc: 'Garbhacare is a nutritional supplement designed to support the nutritional management of pregnant dairy animals during critical gestation periods.',
-          idealFor: '🐄 Pregnant Cows • 🐃 Pregnant Buffaloes',
-          form: 'Liquid / Powder',
-          packaging: '1 kg (Garbhacare – 1 kg)',
-          image: '/garbhaCare.png',
-          highlights: [
-            'Formulated for pregnant dairy cows and buffaloes',
-            'Supports nutritional management during pregnancy',
-            'Convenient 1 kg pack',
-            'Promotes uterine health and calf development',
-          ],
-          usage:
-            'As per product label / veterinary or nutritionist recommendation.',
-        },
-      ],
-    },
-    {
-      id: 'feed-fodder',
-      title: 'Feed & Fodder',
-      subtitle: 'High-Fiber & Balanced Concentrate Solutions',
-      description:
-        'Quality forage, concentrates, and cattle feed solutions engineered for daily digestion, gut health, and continuous energy.',
-      icon: Sprout,
-      badgeColor: 'bg-amber-100 text-amber-900 border-amber-300',
-      items: [
-        {
-          name: 'DUGDHSAMRUDHI SARKI PEND',
-          subtitle: 'Cattle Feed for Dairy Animals',
-          category: 'Protein Feed',
-          desc: 'Dugdhsamrudhi Sarki Pend is a cattle feed solution designed for dairy farmers looking to provide balanced nutritional support to their milking animals.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Solid Cake / Pend',
-          packaging: '40 kg Bag (Dugdhsamrudhi Sarki Pend – 40 kg)',
-          image: '/sarkhi.png',
-          highlights: [
-            'Designed specifically for milking dairy animals',
-            'Supports nutritional requirements during peak lactation',
-            'Available in convenient 40 kg bulk packaging',
-          ],
-          usage:
-            '50 g per animal daily. For every additional 1 litre of capacity, increase dosage by 5 g.',
-        },
-      ],
-    },
-    {
-      id: 'silage',
-      title: 'Silage',
-      subtitle: 'Year-Round Green Fodder Security',
-      description:
-        'Premium quality fermented corn and grass silage enabling farmers to maintain green fodder availability even during dry seasons.',
-      icon: Layers,
-      badgeColor: 'bg-green-100 text-green-900 border-green-300',
-      items: [
-        {
-          name: 'MURGHAS / MAIZE SILAGE',
-          subtitle: 'Quality Maize Silage for Dairy Farming',
-          category: 'Fermented Silage',
-          desc: 'Our Maize Silage is prepared using Advanta 756 maize variety, providing farmers with a convenient stored fodder option for dairy animals.',
-          idealFor: '🐄 Dairy Cows • 🐃 Dairy Buffaloes',
-          form: 'Wrapped 60 kg Bales',
-          packaging: '60 kg Bag (Maize Silage – Advanta 756 – 60 kg)',
-          image: '/Makka_Sailage.png',
-          highlights: [
-            'Prepared with high-starch Advanta 756 maize variety',
-            '60 kg convenient pack for easy storage & handling',
-            'Ensures year-round green fodder availability',
-          ],
-          usage:
-            'Store according to the recommended silage storage and handling instructions.',
-          deliveryNote:
-            'Home delivery availability depends on location. Contact our team for delivery details.',
-        },
-      ],
-    },
-  ];
+  const sections = getDiscoverSections(language);
 
   const filteredSections =
     activeTab === 'all'
@@ -545,39 +191,39 @@ export default function DiscoverPage({
               <Menu className="w-3.5 h-3.5 text-[#123814]" />
             </button>
 
-              {/* Dropdown Menu */}
-              {isMobileMenuOpen && (
-                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
-                  <a
-                    href="#gallery"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.gallery', 'Gallery')}
-                  </a>
-                  <a
-                    href="#business"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.careers', 'Careers')}
-                  </a>
-                  <a
-                    href="#blog"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.blog', 'Blog / Resources')}
-                  </a>
-                  <a
-                    href="#contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.contactUs', 'Contact Us')}
-                  </a>
-                </div>
-              )}
+            {/* Dropdown Menu */}
+            {isMobileMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
+                <a
+                  href="#gallery"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.gallery', 'Gallery')}
+                </a>
+                <a
+                  href="#business"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.careers', 'Careers')}
+                </a>
+                <a
+                  href="#blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.blog', 'Blog / Resources')}
+                </a>
+                <a
+                  href="#contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.contactUs', 'Contact Us')}
+                </a>
+              </div>
+            )}
           </div>
         </nav>
       </header>
@@ -630,7 +276,7 @@ export default function DiscoverPage({
                     <span
                       className={`inline-block px-3.5 py-1 rounded-full text-xs font-bold border ${sec.badgeColor} self-start sm:self-center`}
                     >
-                      {sec.items.length} Product{sec.items.length > 1 ? 's' : ''}
+                      {sec.items.length} {sec.items.length > 1 ? t('store.items', 'Products') : t('store.item', 'Product')}
                     </span>
                   </div>
 

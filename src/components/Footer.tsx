@@ -45,7 +45,7 @@ export default function Footer({
                 {t('nav.shortBrand', 'Navbharat Agro')}
               </h3>
               <p className="text-[9px] text-[#1e5221] font-medium truncate">
-                Dairy & Livestock Nutrition
+                {t('glyphPortal.category', 'Dairy & Livestock Nutrition')}
               </p>
             </div>
           </div>
@@ -147,71 +147,6 @@ export default function Footer({
             <ul className="space-y-0.5 text-[#18441b] font-medium">
               <li>
                 <a
-                  href="#home"
-                  onClick={(e) => {
-                    if (onNavigateHome) {
-                      e.preventDefault();
-                      onNavigateHome();
-                    }
-                  }}
-                  className="hover:text-[#E86A10] transition-colors block py-0.5"
-                >
-                  • Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#about"
-                  onClick={(e) => {
-                    if (onNavigateAbout) {
-                      e.preventDefault();
-                      onNavigateAbout();
-                    }
-                  }}
-                  className="hover:text-[#E86A10] transition-colors block py-0.5"
-                >
-                  • About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#toonhub"
-                  onClick={(e) => {
-                    if (onNavigateProducts) {
-                      e.preventDefault();
-                      onNavigateProducts();
-                    }
-                  }}
-                  className="hover:text-[#E86A10] transition-colors block py-0.5"
-                >
-                  • Products
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#store"
-                  onClick={(e) => {
-                    if (onNavigateStore) {
-                      e.preventDefault();
-                      onNavigateStore();
-                    }
-                  }}
-                  className="hover:text-[#E86A10] font-bold text-[#123814] block py-0.5"
-                >
-                  • Store 🛒
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 2: Products Range */}
-          <div>
-            <span className="font-extrabold text-[#123814] text-[11px] block mb-1 border-b border-[#123814]/10 pb-0.5">
-              Top Products
-            </span>
-            <ul className="space-y-0.5 text-[#18441b] font-medium">
-              <li>
-                <a
                   href="#discover"
                   onClick={(e) => {
                     if (onNavigateDiscover) {
@@ -274,7 +209,7 @@ export default function Footer({
         <div className="flex items-center justify-between text-[10px] text-[#123814] font-semibold bg-white/40 px-2.5 py-1 rounded-lg">
           <div className="flex items-center gap-1">
             <MapPin className="w-3 h-3 text-[#E86A10] shrink-0" />
-            <span>Pan-India Delivery</span>
+            <span>{t('footer.panIndiaDelivery', 'Pan-India Delivery')}</span>
           </div>
           <a href="tel:8237795424" className="flex items-center gap-1 hover:text-[#E86A10]">
             <Phone className="w-3 h-3 text-[#E86A10]" />
@@ -284,19 +219,19 @@ export default function Footer({
 
         {/* Row 4: Copyright & Back to Top in 1 row */}
         <div className="flex items-center justify-between pt-1 border-t border-[#123814]/15 text-[9px] text-[#18441b]">
-          <span>© {new Date().getFullYear()} Navbharat Agro</span>
+          <span>© {new Date().getFullYear()} {t('nav.shortBrand', 'Navbharat Agro')}</span>
           <button
             onClick={scrollToTop}
             className="inline-flex items-center gap-1 bg-white/80 px-2 py-0.5 rounded-full font-bold text-[#123814] border border-[#123814]/15 shadow-2xs"
           >
-            <span>Top</span>
+            <span>{t('footer.top', 'Top')}</span>
             <ArrowUp className="w-2.5 h-2.5 text-[#E86A10]" />
           </button>
         </div>
       </div>
 
       {/* ========================================================= */}
-      {/* DESKTOP FOOTER (hidden md:block) - Preserved Original */}
+      {/* DESKTOP FOOTER (hidden md:block) */}
       {/* ========================================================= */}
       <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-8 relative z-10">
         {/* TOP CALLOUT BAR (COMPACT) */}
@@ -337,7 +272,7 @@ export default function Footer({
           </div>
         </div>
 
-        {/* 4 COLUMNS GRID (MINIMIZED) */}
+        {/* 4 COLUMNS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 pb-6 border-b border-[#123814]/15">
           {/* COLUMN 1: Company Info */}
           <div className="space-y-2">
@@ -568,7 +503,7 @@ export default function Footer({
         {/* BOTTOM COPYRIGHT & BACK TO TOP BAR */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[#18441b] font-medium">
           <p className="text-center sm:text-left">
-            © {new Date().getFullYear()} <strong className="text-[#123814]">Navbharat Agro Services</strong>. {t('footer.copyright', 'All Rights Reserved.')}
+            © {new Date().getFullYear()} <strong className="text-[#123814]">{t('nav.brand', 'Navbharat Agro Services')}</strong>. {t('footer.copyright', 'All Rights Reserved.')}
           </p>
 
           <button
@@ -583,4 +518,3 @@ export default function Footer({
     </footer>
   );
 }
-

@@ -72,7 +72,7 @@ export function ProductRevealCard({
   const [addedSuccess, setAddedSuccess] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const currentUnitPrice = variantPrices[selectedVariant] || (typeof price === 'number' ? price : parseInt(price.replace(/[^0-9]/g, '')) || 0)
+  const currentUnitPrice = variantPrices[selectedVariant] || (typeof price === 'number' ? price : parseInt(String(price).replace(/[^0-9]/g, '')) || 0)
 
   const shouldReduceMotion = useReducedMotion() 
   const shouldAnimate = enableAnimations && !shouldReduceMotion 
@@ -424,7 +424,7 @@ export function ProductRevealCard({
             {/* Variant Selection Options */} 
             <motion.div variants={contentVariants} className="space-y-1.5"> 
               <label className="text-xs font-bold text-[#123814] block">
-                Select Variant / Size:
+                {t('store.selectVariant', 'Select Variant / Size:')}
               </label>
               <div className="flex flex-wrap gap-1.5">
                 {variants.map((v) => (
@@ -454,9 +454,9 @@ export function ProductRevealCard({
             {/* Quantity Selector Counter & Total Price */}
             <motion.div variants={contentVariants} className="flex items-center justify-between pt-1">
               <div>
-                <span className="text-xs font-bold text-[#123814] block">Quantity:</span>
+                <span className="text-xs font-bold text-[#123814] block">{t('store.quantity', 'Quantity:')}</span>
                 <span className="text-[11px] font-extrabold text-[#E86A10]">
-                  Total: ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
+                  {t('store.total', 'Total:')} ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
                 </span>
               </div>
 
@@ -512,12 +512,12 @@ export function ProductRevealCard({
               {addedSuccess ? (
                 <>
                   <Check className="w-4 h-4 text-white" />
-                  Added to Cart! (₹{(currentUnitPrice * quantity).toLocaleString('en-IN')})
+                  {t('store.added', 'Added!')} (₹{(currentUnitPrice * quantity).toLocaleString('en-IN')})
                 </>
               ) : (
                 <>
                   <ShoppingCart className="w-4 h-4" /> 
-                  Add to Cart • ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
+                  {t('store.addToCart', 'Add to Cart')} • ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
                 </>
               )}
             </motion.button> 
@@ -538,7 +538,7 @@ export function ProductRevealCard({
               )} 
             > 
               <Eye className="w-3.5 h-3.5 text-[#123814]" /> 
-              View Details 
+              {t('store.details', 'Details')}
             </motion.button> 
           </motion.div> 
         </motion.div> 
@@ -576,24 +576,24 @@ export function ProductRevealCard({
               <img ref={modalImageRef} src={getAssetUrl(image)} alt={name} className="h-44 object-contain drop-shadow-lg" />
               <div className="space-y-2 text-xs font-bold text-[#123814]">
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs flex items-center justify-between gap-4">
-                  <span>💰 Price:</span>
+                  <span>💰 {t('store.total', 'Price')}:</span>
                   <span className="text-[#E86A10] font-black text-sm">₹{currentUnitPrice.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs">
-                  📦 Variant: <span className="text-[#E86A10]">{selectedVariant}</span>
+                  📦 {t('discover.packaging', 'Packaging')}: <span className="text-[#E86A10]">{selectedVariant}</span>
                 </div>
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs">
-                  🥣 Form: <span className="text-gray-700">{form}</span>
+                  🥣 {t('discover.form', 'Form')}: <span className="text-gray-700">{form}</span>
                 </div>
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs">
-                  🐾 Ideal For: <span className="text-gray-700">{idealFor}</span>
+                  🐾 {t('discover.idealFor', 'Ideal For')}: <span className="text-gray-700">{idealFor}</span>
                 </div>
               </div>
             </div>
 
             {/* Product Overview & Description */}
             <div className="space-y-2">
-              <h4 className="font-extrabold text-sm text-[#123814]">Product Description</h4>
+              <h4 className="font-extrabold text-sm text-[#123814]">{t('store.productDetailsTitle', 'Product Description')}</h4>
               <p className="text-xs text-gray-700 leading-relaxed font-medium bg-gray-50 p-4 rounded-xl border border-gray-200">
                 {description}
               </p>
@@ -602,7 +602,7 @@ export function ProductRevealCard({
             {/* Highlights List */}
             {highlights && highlights.length > 0 && (
               <div className="space-y-2">
-                <h4 className="font-extrabold text-sm text-[#123814]">Key Highlights & Benefits</h4>
+                <h4 className="font-extrabold text-sm text-[#123814]">{t('store.keyHighlightsTitle', 'Key Highlights & Benefits')}</h4>
                 <ul className="space-y-1.5">
                   {highlights.map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2 text-xs text-gray-800 font-medium">
@@ -617,14 +617,14 @@ export function ProductRevealCard({
             {/* Recommended Usage */}
             {usage && (
               <div className="bg-[#EFFDF0] border border-[#123814]/20 p-4 rounded-2xl space-y-1">
-                <h5 className="font-extrabold text-xs text-[#123814]">💡 Recommended Dosage & Usage</h5>
+                <h5 className="font-extrabold text-xs text-[#123814]">💡 {t('store.dosageTitle', 'Recommended Dosage & Usage')}</h5>
                 <p className="text-xs text-gray-700 font-medium leading-relaxed">{usage}</p>
               </div>
             )}
 
             {importantNote && (
               <div className="bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-xs text-amber-900 font-medium">
-                ⚠️ <strong>Note:</strong> {importantNote}
+                ⚠️ <strong>{t('discover.importantNoteTitle', 'Important')}:</strong> {importantNote}
               </div>
             )}
 
@@ -639,7 +639,7 @@ export function ProductRevealCard({
                 className="w-full sm:w-1/2 bg-[#E86A10] hover:bg-[#d05c0b] text-white py-3 rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <ShoppingCart className="w-4 h-4" />
-                Add to Cart (₹{currentUnitPrice.toLocaleString('en-IN')})
+                {t('store.addToCart', 'Add to Cart')} (₹{currentUnitPrice.toLocaleString('en-IN')})
               </button>
               <a
                 href={`https://wa.me/918237795424?text=${encodeURIComponent(`Hello Navbharat Agro! I am interested in ordering ${name} (${selectedVariant}) for ₹${currentUnitPrice}.`)}`}
@@ -648,7 +648,7 @@ export function ProductRevealCard({
                 className="w-full sm:w-1/2 bg-[#25D366] hover:bg-[#1eb956] text-white py-3 rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4 fill-white" />
-                Inquire on WhatsApp
+                {t('store.inquireWhatsApp', 'Inquire on WhatsApp')}
               </a>
             </div>
           </div>

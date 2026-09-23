@@ -1,6 +1,7 @@
 "use client"; 
 import { useEffect, useState } from "react"; 
 import GlyphPortal from "./ui/glyph-portal"; 
+import { useLanguage } from "@/lib/languageContext";
 
 interface GlyphPortalSectionProps {
   onNavigateHome?: () => void;
@@ -28,6 +29,7 @@ export default function GlyphPortalSection({
   interactive = true,
   annotations = false,
 }: GlyphPortalSectionProps = {}) { 
+  const { t } = useLanguage();
   const [face, setFace] = useState<string | null>(null); 
   useEffect(() => { 
     let settled = false; 
@@ -58,7 +60,7 @@ export default function GlyphPortalSection({
         [data-sublime-support]{position:absolute;inset:calc(var(--gp-word-bottom,50%) + 32px) 24px auto;margin:0;text-align:center;font-size:16px;font-weight:400;line-height:1.5;color:#646a63;} 
         [data-sublime-scroll]{position:absolute;inset:auto 24px 7%;text-align:center;color:#7c817b;font-size:11px;letter-spacing:.01em;} 
         @media(any-pointer:coarse){[data-sublime-scroll]{bottom:13%;}} 
-        @container(max-width:450px){[data-sublime-category]{max-width:12ch;text-align:right;}[data-sublime-eyebrow]{font-size:12px;}[data-sublime-support]{font-size:14px;}[data-slipstream-demo] [data-gp-caption]{top:calc(var(--gp-word-bottom,50%) + 76px);}} 
+        @container(max-width:450px){[data-sublime-category]{max-width:18ch;text-align:right;}[data-sublime-eyebrow]{font-size:12px;}[data-sublime-support]{font-size:14px;}[data-slipstream-demo] [data-gp-caption]{top:calc(var(--gp-word-bottom,50%) + 76px);}} 
         @container(max-height:479px){[data-sublime-header]{top:18px;}[data-sublime-support]{top:calc(var(--gp-word-bottom,50%) + 16px);}[data-slipstream-demo] [data-gp-caption]{top:calc(var(--gp-word-bottom,50%) + 60px);}[data-sublime-scroll]{display:none;}} 
         [data-slipstream-demo] [data-gp-content]{padding:3.5rem clamp(1.25rem,5cqw,5rem) 2rem;font-family:inherit;} 
         [data-slipstream-demo] section,[data-slipstream-demo] [data-gp-caption]{font-family:inherit;} 
@@ -71,21 +73,21 @@ export default function GlyphPortalSection({
         [data-slipstream-no]{display:inline-block;margin-right:.7rem;color:rgba(251,251,250,.85);font:500 .75rem ui-monospace,monospace;letter-spacing:.08em;transform:translateY(-.1em);} 
         @container(min-width:768px){[data-slipstream-features]{grid-template-columns:repeat(3,minmax(0,1fr));gap:3.5rem;}} 
       `}</style> 
-      {face ? <GlyphPortal word={word} fontFamily={face} fontWeight={700} style={{ fontFamily: face }} scrollLength={scrollLength} interactive={interactive} annotations={annotations} enterLabel="Explore Products" onEnterClick={onNavigateStore || onNavigateDiscover} front={<> 
-          <div data-sublime-header><span data-sublime-logo>navbharat.</span><span data-sublime-category>Dairy & Livestock Nutrition</span></div> 
-          <p data-sublime-eyebrow>A Tradition of Quality. A Legacy of Trust.</p> 
-          <p data-sublime-support>Step into superior herd productivity.</p> 
-          <span data-sublime-scroll>Scroll for a closer look ↓</span> 
+      {face ? <GlyphPortal word={word} fontFamily={face} fontWeight={700} style={{ fontFamily: face }} scrollLength={scrollLength} interactive={interactive} annotations={annotations} enterLabel={t('glyphPortal.enterLabel', 'Explore Products')} onEnterClick={onNavigateStore || onNavigateDiscover} front={<> 
+          <div data-sublime-header><span data-sublime-logo>navbharat.</span><span data-sublime-category>{t('glyphPortal.category', 'Dairy & Livestock Nutrition')}</span></div> 
+          <p data-sublime-eyebrow>{t('glyphPortal.eyebrow', 'A Tradition of Quality. A Legacy of Trust.')}</p> 
+          <p data-sublime-support>{t('glyphPortal.support', 'Step into superior herd productivity.')}</p> 
+          <span data-sublime-scroll>{t('glyphPortal.scrollHint', 'Scroll for a closer look ↓')}</span> 
         </>}> 
         <div data-slipstream-copy> 
-          <h2>A different way into optimal dairy farming & health.</h2> 
+          <h2>{t('glyphPortal.heading', 'A different way into optimal dairy farming & health.')}</h2> 
           <div data-slipstream-features> 
-            <div data-slipstream-feature><h3><span data-slipstream-no>01</span>Scientifically Formulated</h3><p>Area-specific minerals and balanced energy feeds tailored for milking cows and buffaloes.</p></div> 
-            <div data-slipstream-feature><h3><span data-slipstream-no>02</span>Complete Portfolio</h3><p>From calf growth promoters to high-grade Advanta 756 maize silage and calcium supplements.</p></div> 
-            <div data-slipstream-feature><h3><span data-slipstream-no>03</span>Direct Farmer Support</h3><p>Fast delivery, direct WhatsApp support, and expert guidance for commercial dairy operations.</p></div> 
+            <div data-slipstream-feature><h3><span data-slipstream-no>01</span>{t('glyphPortal.f1Title', 'Scientifically Formulated')}</h3><p>{t('glyphPortal.f1Desc', 'Area-specific minerals and balanced energy feeds tailored for milking cows and buffaloes.')}</p></div> 
+            <div data-slipstream-feature><h3><span data-slipstream-no>02</span>{t('glyphPortal.f2Title', 'Complete Portfolio')}</h3><p>{t('glyphPortal.f2Desc', 'From calf growth promoters to high-grade Advanta 756 maize silage and calcium supplements.')}</p></div> 
+            <div data-slipstream-feature><h3><span data-slipstream-no>03</span>{t('glyphPortal.f3Title', 'Direct Farmer Support')}</h3><p>{t('glyphPortal.f3Desc', 'Fast delivery, direct WhatsApp support, and expert guidance for commercial dairy operations.')}</p></div> 
           </div> 
         </div> 
-      </GlyphPortal> : <div role="status" style={{ height: "100%", display: "grid", placeItems: "center", color: "#555", fontSize: 12 }}>Loading type…</div>} 
+      </GlyphPortal> : <div role="status" style={{ height: "100%", display: "grid", placeItems: "center", color: "#555", fontSize: 12 }}>Loading…</div>} 
     </div> 
   ); 
 } 

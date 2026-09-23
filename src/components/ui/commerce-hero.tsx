@@ -15,6 +15,7 @@ import { ProductRevealCard } from "@/components/ui/product-reveal-card";
 import { getAssetUrl } from "@/lib/utils";
 import { useLanguage } from "@/lib/languageContext";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { getStoreCategories, getStoreProducts } from "@/lib/productsData";
 
 interface CommerceHeroProps {
   onNavigateHome?: () => void;
@@ -33,235 +34,6 @@ interface CartItem {
   category: string;
 }
 
-const categories = [
-  {
-    title: "Cattle Feed",
-    subtitle: "Dugdhsamrudhi Sarki Pend",
-    image: "/sarkhi.png",
-    filterKey: "Cattle Feed",
-  },
-  {
-    title: "Liquid Calcium",
-    subtitle: "MilkMax Calcium Supplement",
-    image: "/milk1.png",
-    filterKey: "Calcium Supplement",
-  },
-  {
-    title: "Chelated Minerals",
-    subtitle: "NavMin Mineral Mixture",
-    image: "/navmin.png",
-    filterKey: "Chelated Minerals",
-  },
-  {
-    title: "Maize Silage",
-    subtitle: "Advanta 756 Quality Silage",
-    image: "/Makka_Sailage.png",
-    filterKey: "Fermented Silage",
-  },
-];
-
-const STORE_PRODUCTS = [
-  {
-    name: "DUGDHSAMRUDHI SARKI PEND",
-    subtitle: "Cattle Feed for Dairy Animals",
-    category: "Cattle Feed",
-    description: "Dugdhsamrudhi Sarki Pend is a cattle feed solution designed for dairy farmers looking to provide balanced nutritional support to their milking animals.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes",
-    form: "Solid Cake / Pend",
-    packaging: "40 kg Bag",
-    variants: ["40 kg Bag"],
-    variantPrices: { "40 kg Bag": 1800 },
-    price: 1800,
-    image: "/sarkhi.png",
-    rating: 4.9,
-    reviewCount: 142,
-    highlights: [
-      "Designed specifically for milking dairy animals",
-      "Supports nutritional requirements during peak lactation",
-      "Suitable for regular dairy management & commercial operations",
-      "Available in convenient 40 kg bulk packaging"
-    ],
-    usage: "50 g per animal daily. For every additional 1 litre of capacity, increase the dosage by 5 g.",
-  },
-  {
-    name: "MILKMAX",
-    subtitle: "Calcium Supplement for Dairy Animals",
-    category: "Calcium Supplement",
-    description: "MilkMax / Milkiyana is a calcium supplement designed to support the nutritional requirements of dairy animals, particularly during lactation.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes",
-    form: "Liquid",
-    packaging: "1 Litre | 5 Litre",
-    variants: ["1 Litre", "5 Litre"],
-    variantPrices: { "1 Litre": 399, "5 Litre": 599 },
-    price: 399,
-    image: "/milk1.png",
-    rating: 4.8,
-    reviewCount: 98,
-    highlights: [
-      "Calcium supplementation for high-yielding dairy animals",
-      "Supports nutritional management during lactation",
-      "Convenient, palatable liquid formulation",
-      "Easy to administer with daily feed ration"
-    ],
-    usage: "As per approved product label / expert recommendation.",
-  },
-  {
-    name: "NAVMIN",
-    subtitle: "Mineral & Nutritional Supplement",
-    category: "Chelated Minerals",
-    description: "NavMin is a mineral and nutritional supplement designed to support the nutritional requirements of dairy animals, enhancing conception rates and vitality.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes • 🐐 Goats",
-    form: "Powder Pack",
-    packaging: "1 kg | 5 kg | 20 kg",
-    variants: ["1 kg", "5 kg", "20 kg"],
-    variantPrices: { "1 kg": 217, "5 kg": 1015, "20 kg": 4060 },
-    price: 217,
-    image: "/navmin.png",
-    rating: 4.9,
-    reviewCount: 186,
-    highlights: [
-      "Area-specific chelated mineral & trace element supplement",
-      "Suitable for dairy cows, buffaloes, and goats",
-      "Available in multiple pack sizes for small & commercial farms",
-      "Enhances conception rates and overall vitality"
-    ],
-    usage: "As per product label / veterinary or nutritionist recommendation.",
-  },
-  {
-    name: "FATMAX",
-    subtitle: "Dairy Nutrition Supplement",
-    category: "Milk Fat Booster",
-    description: "FatMax is a nutritional supplement designed for dairy animals as part of a balanced feeding program to optimize milk fat percentage.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes",
-    form: "Powder",
-    packaging: "300 g",
-    variants: ["300 g"],
-    variantPrices: { "300 g": 260 },
-    price: 260,
-    image: "/fatmax.png",
-    rating: 4.7,
-    reviewCount: 85,
-    highlights: [
-      "Formulated specifically for milk fat enhancement",
-      "Supports nutritional management of milking animals",
-      "Convenient 300 g pack size",
-      "Suitable for regular dairy-farm feeding programs"
-    ],
-    usage: "As per product label / expert recommendation.",
-  },
-  {
-    name: "GROWMAX",
-    subtitle: "Calf Growth & Nutrition Supplement",
-    category: "Calf Growth",
-    description: "GrowMax is a nutritional supplement designed for calves and young livestock as part of a proper feeding and growth-management program.",
-    idealFor: "🐮 Calves • 🐄 Young Stock",
-    form: "Powder",
-    packaging: "300 g | 1 kg",
-    variants: ["300 g", "1 kg"],
-    variantPrices: { "300 g": 230, "1 kg": 595 },
-    price: 230,
-    image: "/growmax.png",
-    rating: 4.8,
-    reviewCount: 76,
-    highlights: [
-      "Designed specifically for growing calves & young stock",
-      "Supports nutritional requirements during early growth stages",
-      "Convenient 300 g & 1 kg pack options",
-      "Ideal for calf-rearing and weight-gain programs"
-    ],
-    usage: "As per product label / expert recommendation.",
-  },
-  {
-    name: "HEAT PLUS",
-    subtitle: "Reproductive Nutrition Support",
-    category: "Reproductive Support",
-    description: "Heat Plus is a nutritional supplement designed to support reproductive management in dairy animals as part of a proper nutrition program.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes",
-    form: "Powder / Bolus",
-    packaging: "400 g | 2.75 kg",
-    variants: ["400 g", "2.75 kg"],
-    variantPrices: { "400 g": 480, "2.75 kg": 1280 },
-    price: 480,
-    image: "/heatmax.png",
-    rating: 4.9,
-    reviewCount: 110,
-    highlights: [
-      "Designed for reproductive nutrition support",
-      "Suitable for dairy cows and buffaloes",
-      "Available in two convenient pack sizes (400 g & 2.75 kg)",
-      "Can be incorporated into a planned dairy reproductive program"
-    ],
-    usage: "As per product label / veterinary recommendation.",
-    importantNote: "For reproductive problems, repeat breeding, delayed heat, pregnancy-related concerns, or other animal-health conditions, consult a qualified veterinary professional."
-  },
-  {
-    name: "GARBHACARE",
-    subtitle: "Pregnancy Nutrition Supplement",
-    category: "Pregnancy Care",
-    description: "Garbhacare is a nutritional supplement designed to support the nutritional management of pregnant dairy animals during critical gestation periods.",
-    idealFor: "🐄 Pregnant Cows • 🐃 Buffaloes",
-    form: "Liquid / Powder",
-    packaging: "1 kg",
-    variants: ["1 kg"],
-    variantPrices: { "1 kg": 576 },
-    price: 576,
-    image: "/garbhaCare.png",
-    rating: 4.9,
-    reviewCount: 94,
-    highlights: [
-      "Formulated for pregnant dairy cows and buffaloes",
-      "Supports nutritional management during pregnancy",
-      "Convenient 1 kg pack",
-      "Promotes uterine health and calf development"
-    ],
-    usage: "As per product label / veterinary or nutritionist recommendation.",
-  },
-  {
-    name: "MUSTGUARD",
-    subtitle: "Mastitis Management Support",
-    category: "Udder Care",
-    description: "MustGuard is a livestock nutrition/management product intended to support udder care and somatic cell count management in milking herds.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes",
-    form: "Powder / Ointment",
-    packaging: "250 g | 500 g",
-    variants: ["250 g", "500 g"],
-    variantPrices: { "250 g": 420, "500 g": 770 },
-    price: 420,
-    image: "/mastguard.png",
-    rating: 4.8,
-    reviewCount: 63,
-    highlights: [
-      "Specialized support for udder care & somatic cell count management",
-      "Designed to complement hygiene and herd management",
-      "Available in 250 g & 500 g packs"
-    ],
-    usage: "As per product label / veterinary recommendation.",
-    importantNote: "Mastitis is an animal-health condition. In case of suspected mastitis, consult a qualified veterinary professional for diagnosis and treatment."
-  },
-  {
-    name: "MAIZE SILAGE (ADVANTA 756)",
-    subtitle: "Quality Maize Silage for Dairy Farming",
-    category: "Fermented Silage",
-    description: "Our Maize Silage is prepared using Advanta 756 maize variety, providing farmers with a convenient stored fodder option for year-round green feeding.",
-    idealFor: "🐄 Cows • 🐃 Buffaloes",
-    form: "60 kg Bales",
-    packaging: "60 kg Bag",
-    variants: ["60 kg Bag"],
-    variantPrices: { "60 kg Bag": 1800 },
-    price: 1800,
-    image: "/Makka_Sailage.png",
-    rating: 5.0,
-    reviewCount: 210,
-    highlights: [
-      "Prepared with high-starch Advanta 756 maize variety",
-      "60 kg convenient pack for easy storage & handling",
-      "Ensures year-round green fodder availability",
-      "Helps dairy farmers plan feed costs and availability"
-    ],
-    usage: "Store according to the recommended silage storage and handling instructions.",
-  },
-];
-
 interface FlyingCartItem {
   id: string;
   image: string;
@@ -275,7 +47,10 @@ export function CommerceHero({
   onNavigateHome,
   onNavigateAbout,
 }: CommerceHeroProps = {}) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const categories = getStoreCategories(language);
+  const storeProducts = getStoreProducts(language);
+
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -482,16 +257,16 @@ export function CommerceHero({
   };
 
   const filteredProducts = activeFilter === "All"
-    ? STORE_PRODUCTS
-    : STORE_PRODUCTS.filter(p => p.category === activeFilter);
+    ? storeProducts
+    : storeProducts.filter(p => p.category.toLowerCase().includes(activeFilter.toLowerCase()) || activeFilter.toLowerCase().includes(p.category.toLowerCase()));
 
   const filterTabs = [
     { label: t('store.filterAll', 'All Products'), key: "All" },
-    { label: t('discover.tabs.feed', 'Cattle Feed'), key: "Cattle Feed" },
-    { label: t('discover.tabs.all', 'Calcium'), key: "Calcium Supplement" },
-    { label: t('discover.tabs.minerals', 'Chelated Minerals'), key: "Chelated Minerals" },
-    { label: t('discover.tabs.silage', 'Silage'), key: "Fermented Silage" },
-    { label: t('discover.tabs.reproductive', 'Reproductive & Care'), key: "Reproductive Support" },
+    { label: t('discover.tabs.feed', 'Cattle Feed'), key: "Feed" },
+    { label: t('discover.tabs.all', 'Calcium'), key: "Calcium" },
+    { label: t('discover.tabs.minerals', 'Chelated Minerals'), key: "Minerals" },
+    { label: t('discover.tabs.silage', 'Silage'), key: "Silage" },
+    { label: t('discover.tabs.reproductive', 'Reproductive & Care'), key: "Reproduction" },
   ];
 
   return (
@@ -745,12 +520,12 @@ export function CommerceHero({
                   {totalCartCount}
                 </span>
               </div>
-              <span className="text-xs font-bold">{totalCartCount} Item{totalCartCount > 1 ? 's' : ''}</span>
+              <span className="text-xs font-bold">{totalCartCount} {totalCartCount > 1 ? t('store.items', 'Items') : t('store.item', 'Item')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm font-black text-[#E86A10]">₹{totalBillAmount.toLocaleString('en-IN')}</span>
               <span className="text-xs font-bold bg-[#E86A10] text-white px-2.5 py-1 rounded-full flex items-center gap-1">
-                Cart <ArrowRight className="w-3 h-3" />
+                {t('nav.cart', 'Cart')} <ArrowRight className="w-3 h-3" />
               </span>
             </div>
           </button>
@@ -774,23 +549,23 @@ export function CommerceHero({
                     </button>
                     <span className="text-[#123814] font-extrabold text-base sm:text-lg flex items-center gap-1.5">
                       <MapPin className="w-4.5 h-4.5 text-[#E86A10]" />
-                      Delivery & Farm Address
+                      {t('store.checkoutTitle', 'Delivery & Farm Address')}
                     </span>
                   </div>
                 ) : checkoutStep === 'success' ? (
                   <div className="flex items-center gap-2 text-[#123814] font-extrabold text-base sm:text-lg">
                     <CheckCircle2 className="w-5 h-5 text-[#25D366]" />
-                    <span>Order Placed</span>
+                    <span>{t('store.orderSuccessTitle', 'Order Placed')}</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-2 text-[#123814] font-extrabold text-base sm:text-lg">
                     <ShoppingBasket className="w-5 h-5 text-[#E86A10]" />
-                    <span>Your Shopping Cart</span>
+                    <span>{t('store.cartSummary', 'Your Shopping Cart')}</span>
                   </div>
                 )}
                 {checkoutStep === 'cart' && totalCartCount > 0 && (
                   <span className="bg-[#E86A10] text-white text-xs px-2.5 py-0.5 rounded-full font-bold shadow-xs">
-                    {totalCartCount} {totalCartCount === 1 ? 'Item' : 'Items'}
+                    {totalCartCount} {totalCartCount === 1 ? t('store.item', 'Item') : t('store.items', 'Items')}
                   </span>
                 )}
               </SheetTitle>
@@ -822,7 +597,7 @@ export function CommerceHero({
                           <img src={getAssetUrl(item.image)} alt={item.name} className="w-12 h-12 sm:w-14 sm:h-14 object-contain rounded-xl bg-white p-1 border border-[#123814]/10 shadow-xs" />
                           <div>
                             <h5 className="font-extrabold text-xs text-[#123814] leading-snug">{item.name}</h5>
-                            <p className="text-[11px] font-bold text-[#E86A10]">Variant: {item.variant}</p>
+                            <p className="text-[11px] font-bold text-[#E86A10]">{item.variant}</p>
                             <p className="text-[11px] font-bold text-[#123814]">₹{item.unitPrice.toLocaleString('en-IN')} × {item.quantity} = <span className="text-[#E86A10] font-black">₹{lineTotal.toLocaleString('en-IN')}</span></p>
                           </div>
                         </div>
@@ -1040,11 +815,11 @@ export function CommerceHero({
                   </p>
                 </div>
                 <div className="bg-[#EFFDF0] p-4 rounded-2xl border border-[#123814]/15 text-left text-xs space-y-1.5 font-medium text-[#123814]">
-                  <p>👤 <strong>Recipient:</strong> {customerAddress.fullName}</p>
-                  <p>📞 <strong>Phone:</strong> {customerAddress.phone}</p>
-                  <p>📍 <strong>Deliver To:</strong> {customerAddress.deliveryAddress}, Tal. {customerAddress.taluka}, Dist. {customerAddress.cityDistrict} ({customerAddress.pincode})</p>
-                  {customerAddress.landmark && <p>🚩 <strong>Landmark:</strong> {customerAddress.landmark}</p>}
-                  <p>💰 <strong>Total Amount:</strong> <span className="font-bold text-[#E86A10]">₹{totalBillAmount.toLocaleString('en-IN')}</span></p>
+                  <p>👤 <strong>{t('store.fullName', 'Recipient')}:</strong> {customerAddress.fullName}</p>
+                  <p>📞 <strong>{t('store.phone', 'Phone')}:</strong> {customerAddress.phone}</p>
+                  <p>📍 <strong>{t('store.address', 'Deliver To')}:</strong> {customerAddress.deliveryAddress}, Tal. {customerAddress.taluka}, Dist. {customerAddress.cityDistrict} ({customerAddress.pincode})</p>
+                  {customerAddress.landmark && <p>🚩 <strong>{t('store.landmark', 'Landmark')}:</strong> {customerAddress.landmark}</p>}
+                  <p>💰 <strong>{t('store.total', 'Total Amount')}:</strong> <span className="font-bold text-[#E86A10]">₹{totalBillAmount.toLocaleString('en-IN')}</span></p>
                 </div>
                 <Button
                   onClick={() => {
@@ -1067,7 +842,7 @@ export function CommerceHero({
                 <>
                   <div className="bg-white p-3.5 rounded-2xl border border-[#123814]/15 shadow-xs space-y-1.5">
                     <div className="flex items-center justify-between text-xs text-gray-600 font-medium">
-                      <span>{t('store.subtotal', 'Subtotal')} ({totalCartCount} items):</span>
+                      <span>{t('store.subtotal', 'Subtotal')} ({totalCartCount} {totalCartCount > 1 ? t('store.items', 'items') : t('store.item', 'item')}):</span>
                       <span className="font-bold text-[#123814]">₹{totalBillAmount.toLocaleString('en-IN')}</span>
                     </div>
                     <div className="flex items-center justify-between text-xs text-gray-600 font-medium">
@@ -1110,7 +885,7 @@ export function CommerceHero({
                     onClick={() => setCheckoutStep('cart')}
                     className="w-full text-center text-xs font-bold text-gray-600 hover:text-[#123814] transition-colors py-1 cursor-pointer"
                   >
-                    ← Back to Cart Items
+                    ← {t('nav.cart', 'Back to Cart Items')}
                   </button>
                 </div>
               )}
@@ -1165,4 +940,4 @@ export function CommerceHero({
       </div>
     </div>
   );
-} 
+}

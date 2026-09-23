@@ -2,125 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
 import { useLanguage } from '@/lib/languageContext';
-
-interface ProductItem {
-  id: string;
-  name: string;
-  subtitle: string;
-  description: string;
-  idealFor: string;
-  form?: string;
-  src: string;
-  bg: string;
-  panel: string;
-  scale?: number;
-}
+import { getCarouselProducts } from '@/lib/productsData';
 
 interface ToonhubCarouselProps {
   onSwitchToCozyPaws?: () => void;
   onNavigateDiscover?: () => void;
 }
-
-const PRODUCTS: ProductItem[] = [
-  {
-    id: 'milk-max',
-    name: 'Milk Max',
-    subtitle: 'Calcium Supplement for Dairy Animals',
-    description:
-      'MilkMax / Milkiyana is a calcium supplement designed to support the nutritional requirements of dairy animals, particularly during important stages of the lactation cycle.',
-    idealFor: '🐄 Cows • 🐃 Buffaloes',
-    form: 'Liquid',
-    src: '/milk1.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-  {
-    id: 'sarki-pend',
-    name: 'Dugdhsamrudhi Sarki Pend',
-    subtitle: 'Cattle Feed for Dairy Animals',
-    description:
-      'Dugdhsamrudhi Sarki Pend is a cattle feed solution designed for dairy farmers looking to provide balanced nutritional support to their milking animals.',
-    idealFor: '🐄 Cows • 🐃 Buffaloes',
-    form: 'Solid Cake',
-    src: '/sarkhi.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-    scale: 1.35,
-  },
-  {
-    id: 'navmin',
-    name: 'NavMin',
-    subtitle: 'Mineral & Nutritional Supplement',
-    description:
-      "NavMin is a mineral and nutritional supplement designed to support the nutritional requirements of dairy animals. It can be incorporated into a suitable livestock nutrition program based on the animal's requirements and professional guidance.",
-    idealFor: '🐄 Cows • 🐃 Buffaloes • 🐐 Goats',
-    form: 'Chelated Mineral Powder',
-    src: '/navmin.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-  {
-    id: 'fat-max',
-    name: 'FatMax',
-    subtitle: 'Milk Fat Booster Supplement',
-    description:
-      'FatMax is a specialized nutritional supplement designed for dairy animals as part of a balanced feeding program to optimize milk fat percentage and yield.',
-    idealFor: '🐄 Cows • 🐃 Buffaloes',
-    form: 'Powder',
-    src: '/fatmax.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-  {
-    id: 'garbha-care',
-    name: 'Garbha Care',
-    subtitle: 'Uterine & Pregnancy Care Supplement',
-    description:
-      'Garbha Care is a specialized tonic formulated to support uterine health, post-calving cleansing, and overall pregnancy wellness in dairy animals.',
-    idealFor: '🐄 Cows • 🐃 Buffaloes',
-    form: 'Liquid Tonic',
-    src: '/garbhaCare.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-  {
-    id: 'grow-max',
-    name: 'Grow Max',
-    subtitle: 'Calf Growth & Muscle Development',
-    description:
-      'Grow Max is a growth promoter and weight-gain supplement for calves and young cattle, supporting early muscle development and gut digestion.',
-    idealFor: '🐄 Calves • 🐃 Young Cattle',
-    form: 'Powder',
-    src: '/growmax.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-  {
-    id: 'heat-max',
-    name: 'Heat Max',
-    subtitle: 'Advanced Estrous & Reproductive Booster',
-    description:
-      'Heat Max is an advanced reproductive formulation enriched with vitamins and chelated minerals to induce timely heat and optimize breeding results.',
-    idealFor: '🐄 Cows • 🐃 Buffaloes',
-    form: 'Bolus / Powder Pack',
-    src: '/heatmax.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-  {
-    id: 'mast-guard',
-    name: 'Mast Guard',
-    subtitle: 'Udder Care & Mastitis Protection',
-    description:
-      'Mast Guard is an udder immunity and tissue recovery supplement designed to protect against mastitis, support teat health, and preserve milk purity.',
-    idealFor: '🐄 Cows • 🐃 Buffaloes',
-    form: 'Powder / Ointment',
-    src: '/mastguard.png',
-    bg: '#6BBF7A',
-    panel: '#85CC92',
-  },
-
-];
 
 const grainDataUrl =
   "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='noise'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23noise)' opacity='0.08'/></svg>";
@@ -128,7 +15,8 @@ const grainDataUrl =
 export default function ToonhubCarousel({
   onNavigateDiscover,
 }: ToonhubCarouselProps = {}) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const products = getCarouselProducts(language);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -137,7 +25,7 @@ export default function ToonhubCarousel({
   );
 
   useEffect(() => {
-    PRODUCTS.forEach((item) => {
+    products.forEach((item) => {
       const img = new Image();
       img.src = getAssetUrl(item.src);
     });
@@ -148,23 +36,23 @@ export default function ToonhubCarousel({
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [products]);
 
-  // Auto-scroll every 3 seconds and rotate continuously
+  // Auto-scroll every 3.5 seconds and rotate continuously
   useEffect(() => {
     if (isPaused) return;
 
     const timer = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % PRODUCTS.length);
-    }, 3000);
+      setActiveIndex((prev) => (prev + 1) % products.length);
+    }, 3500);
 
     return () => clearInterval(timer);
-  }, [isPaused, activeIndex]);
+  }, [isPaused, products.length]);
 
   const navigate = (direction: 'next' | 'prev') => {
     if (isAnimating) return;
     setIsAnimating(true);
-    const N = PRODUCTS.length;
+    const N = products.length;
     setActiveIndex((prev) =>
       direction === 'next' ? (prev + 1) % N : (prev + N - 1) % N
     );
@@ -174,7 +62,7 @@ export default function ToonhubCarousel({
   };
 
   const getRoleStyle = (index: number) => {
-    const N = PRODUCTS.length;
+    const N = products.length;
     const isCenter = index === activeIndex;
     const isLeft = index === (activeIndex + N - 1) % N;
     const isRight = index === (activeIndex + 1) % N;
@@ -226,7 +114,7 @@ export default function ToonhubCarousel({
     };
   };
 
-  const currentProduct = PRODUCTS[activeIndex];
+  const currentProduct = products[activeIndex] || products[0];
 
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
@@ -305,7 +193,7 @@ export default function ToonhubCarousel({
 
         {/* Carousel */}
         <div className="absolute inset-0" style={{ zIndex: 3 }}>
-          {PRODUCTS.map((item, index) => {
+          {products.map((item, index) => {
             const roleStyle = getRoleStyle(index);
             return (
               <div
@@ -445,11 +333,11 @@ export default function ToonhubCarousel({
             className="p-3.5 rounded-2xl bg-black/30 backdrop-blur-xl border border-white/30 shadow-2xl text-white"
           >
             <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-[10px] font-bold tracking-wider uppercase text-white bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
+              <span className="text-[10px] font-bold tracking-wider uppercase text-white bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm truncate max-w-[70%]">
                 {currentProduct.subtitle}
               </span>
               <span className="text-[10px] font-bold text-white/80">
-                {activeIndex + 1} / {PRODUCTS.length}
+                {activeIndex + 1} / {products.length}
               </span>
             </div>
 
@@ -507,4 +395,3 @@ export default function ToonhubCarousel({
     </div>
   );
 }
-

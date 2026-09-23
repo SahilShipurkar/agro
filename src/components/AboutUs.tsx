@@ -1,11 +1,5 @@
 import { useState } from 'react';
 import {
-  ShieldCheck,
-  GraduationCap,
-  Users,
-  HeartHandshake,
-  Sprout,
-  Briefcase,
   Target,
   Eye,
   CheckCircle2,
@@ -22,6 +16,7 @@ import {
 import { getAssetUrl } from '@/lib/utils';
 import { useLanguage } from '@/lib/languageContext';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
+import { getAboutUsData } from '@/lib/productsData';
 
 interface AboutUsProps {
   onNavigateHome?: () => void;
@@ -34,8 +29,10 @@ export default function AboutUs({
   onNavigateProducts,
   onNavigateStore,
 }: AboutUsProps = {}) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { whyChooseUs, commitments } = getAboutUsData(language);
+
   const handleScrollToProducts = () => {
     if (onNavigateProducts) {
       onNavigateProducts();
@@ -48,94 +45,69 @@ export default function AboutUs({
     {
       title: t('discover.tabs.feed', 'Cattle Nutrition Supplements'),
       description:
-        'Nutritional solutions designed to support the daily nutritional requirements of dairy animals.',
+        language === 'mr'
+          ? 'दुभत्या जनावरांच्या दैनंदिन पोषणाच्या गरजा पूर्ण करणारी उत्पादने.'
+          : language === 'hi'
+          ? 'दुधारू पशुओं की दैनिक पोषण आवश्यकताओं को पूरा करने वाले उत्पाद।'
+          : 'Nutritional solutions designed to support the daily nutritional requirements of dairy animals.',
       icon: Milk,
       color: 'bg-emerald-50 text-emerald-700',
     },
     {
       title: t('discover.tabs.all', 'Dairy & Milk Production Support'),
       description:
-        'Products formulated to complement proper nutrition and dairy management practices.',
+        language === 'mr'
+          ? 'दूध उत्पादन व फॅट वाढवण्यासाठी गोठा व्यवस्थापनाला पूरक पोषण आहार.'
+          : language === 'hi'
+          ? 'दूध उत्पादन और फैट बढ़ाने के लिए पशु प्रबंधन को समर्पित पूरक आहार।'
+          : 'Products formulated to complement proper nutrition and dairy management practices.',
       icon: Activity,
       color: 'bg-amber-50 text-amber-700',
     },
     {
       title: t('discover.tabs.calf', 'Calf Nutrition'),
       description:
-        'Specialized nutritional support for growing calves and young Dairy Animals.',
+        language === 'mr'
+          ? 'लहान वासरांच्या जलद वाढीसाठी आणि रोगप्रतिकारशक्तीसाठी विशेष पोषण.'
+          : language === 'hi'
+          ? 'छोटे बछड़ों के त्वरित विकास और रोग प्रतिरोधक क्षमता के लिए विशेष पोषण।'
+          : 'Specialized nutritional support for growing calves and young Dairy Animals.',
       icon: Baby,
       color: 'bg-blue-50 text-blue-700',
     },
     {
       title: t('discover.tabs.reproductive', 'Reproductive & Dairy Animals Management'),
       description:
-        'Nutrition-focused solutions that can support Dairy Animals reproductive and overall management when used appropriately.',
+        language === 'mr'
+          ? 'वेळेवर माज व सशक्त गर्भाशयासाठी आवश्यक असणारे शास्त्रोक्त पोषण.'
+          : language === 'hi'
+          ? 'समय पर मद (हीट) और स्वस्थ गर्भाशय के लिए आवश्यक वैज्ञानिक पोषण।'
+          : 'Nutrition-focused solutions that can support Dairy Animals reproductive and overall management when used appropriately.',
       icon: Sparkles,
       color: 'bg-rose-50 text-rose-700',
     },
     {
       title: t('discover.tabs.minerals', 'Mineral & Nutritional Supplements'),
       description:
-        'Essential nutritional support for maintaining proper Dairy Animals nutrition and overall well-being.',
+        language === 'mr'
+          ? 'खनिजांची कमतरता दूर करून जनावरांचे आरोग्य व ऊर्जा टिकवणारे मिश्रण.'
+          : language === 'hi'
+          ? 'खनिजों की कमी को दूर कर पशु स्वास्थ्य व ऊर्जा बनाए रखने वाले मिश्रण।'
+          : 'Essential nutritional support for maintaining proper Dairy Animals nutrition and overall well-being.',
       icon: Award,
       color: 'bg-purple-50 text-purple-700',
     },
     {
       title: t('discover.tabs.silage', 'Silage & Fodder Solutions'),
       description:
-        'Quality fodder solutions that help farmers plan and manage feed availability throughout the year.',
+        language === 'mr'
+          ? 'वर्षभर हिरव्या चाऱ्याची सुरक्षितता देणारा उच्च प्रतीचा मका मुरघास.'
+          : language === 'hi'
+          ? 'साल भर हरे चारे की सुरक्षा प्रदान करने वाला उच्च गुणवत्ता मक्का साइलेज।'
+          : 'Quality fodder solutions that help farmers plan and manage feed availability throughout the year.',
       icon: Layers,
       color: 'bg-green-50 text-green-700',
     },
-  ];
-
-  const whyChooseUs = [
-    {
-      title: 'Quality First',
-      description:
-        'We place strong emphasis on product quality and consistency.',
-      icon: ShieldCheck,
-    },
-    {
-      title: 'Expert Guidance',
-      description:
-        'Our approach is supported by knowledge from veterinary and animal nutrition professionals.',
-      icon: GraduationCap,
-    },
-    {
-      title: 'Farmer-Centric Approach',
-      description:
-        'Our products and services are developed with the practical needs of dairy farmers in mind.',
-      icon: Users,
-    },
-    {
-      title: 'Reliable Support',
-      description:
-        'We focus on building long-term relationships with farmers, dealers, and business partners.',
-      icon: HeartHandshake,
-    },
-    {
-      title: 'Rural Entrepreneurship',
-      description:
-        'We create opportunities for rural entrepreneurs, dealers, and women-led groups to participate in the Dairy Animals nutrition ecosystem.',
-      icon: Sprout,
-    },
-    {
-      title: 'Technology & Innovation',
-      description:
-        'We believe technology can make rural businesses more connected, efficient, and accessible.',
-      icon: Briefcase,
-    },
-  ];
-
-  const commitments = [
-    'Better Dairy Animals nutrition practices',
-    'Appropriate product selection',
-    'Practical animal management guidance',
-    'Dairy productivity support',
-    'Calf and young-stock nutrition',
-    'Feed and fodder management',
-    'Access to business and market opportunities',
   ];
 
   return (
@@ -264,39 +236,39 @@ export default function AboutUs({
               <Menu className="w-3.5 h-3.5 text-[#123814]" />
             </button>
 
-              {/* Dropdown Menu */}
-              {isMobileMenuOpen && (
-                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
-                  <a
-                    href="#gallery"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.gallery', 'Gallery')}
-                  </a>
-                  <a
-                    href="#business"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.careers', 'Careers')}
-                  </a>
-                  <a
-                    href="#blog"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.blog', 'Blog / Resources')}
-                  </a>
-                  <a
-                    href="#contact"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                  >
-                    {t('nav.contactUs', 'Contact Us')}
-                  </a>
-                </div>
-              )}
+            {/* Dropdown Menu */}
+            {isMobileMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
+                <a
+                  href="#gallery"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.gallery', 'Gallery')}
+                </a>
+                <a
+                  href="#business"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.careers', 'Careers')}
+                </a>
+                <a
+                  href="#blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.blog', 'Blog / Resources')}
+                </a>
+                <a
+                  href="#contact"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                >
+                  {t('nav.contactUs', 'Contact Us')}
+                </a>
+              </div>
+            )}
           </div>
         </nav>
       </header>
@@ -317,11 +289,11 @@ export default function AboutUs({
             </h1>
 
             <p className="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed pt-1 font-medium">
-              {t('about.overviewP1', 'Navbharat Agro Services is an animal nutrition company dedicated to supporting dairy farmers, Dairy Animals owners, rural entrepreneurs, dealers, and veterinary professionals. We develop and provide cattle feed, nutritional supplements, silage, and Dairy Animals nutrition solutions designed around the practical needs of farmers.')}
+              {t('about.overviewP1', 'Navbharat Agro Services is an animal nutrition company dedicated to supporting dairy farmers, Dairy Animals owners, rural entrepreneurs, dealers, and veterinary professionals.')}
             </p>
 
             <p className="text-gray-800 text-sm sm:text-base lg:text-lg leading-relaxed font-medium">
-              {t('about.overviewP2', 'Our approach goes beyond selling products. We aim to create long-term value by combining quality nutrition, expert knowledge, farmer education, and reliable support. Our goal is to contribute to healthier Dairy Animals, better dairy management, improved productivity, and stronger rural livelihoods.')}
+              {t('about.overviewP2', 'Our approach goes beyond selling products. We aim to create long-term value by combining quality nutrition, expert knowledge, farmer education, and reliable support.')}
             </p>
           </div>
         </div>
@@ -338,12 +310,10 @@ export default function AboutUs({
                 <Target className="w-6 h-6" />
               </div>
               <h2 className="font-serif-display text-2xl sm:text-3xl text-white font-bold">
-                Our Mission
+                {t('about.missionTitle', 'Our Mission')}
               </h2>
               <p className="text-emerald-50 text-sm sm:text-base leading-relaxed font-medium">
-                To provide quality cattle feed and animal nutrition solutions
-                that support Dairy Animals health, dairy productivity, and the
-                economic well-being of farmers.
+                {t('about.missionDesc', 'To provide quality cattle feed and animal nutrition solutions that support Dairy Animals health, dairy productivity, and the economic well-being of farmers.')}
               </p>
             </div>
           </div>
@@ -355,33 +325,28 @@ export default function AboutUs({
                 <Eye className="w-6 h-6" />
               </div>
               <h2 className="font-serif-display text-2xl sm:text-3xl text-[#123814] font-bold">
-                Our Vision
+                {t('about.visionTitle', 'Our Vision')}
               </h2>
               <p className="text-gray-800 text-sm sm:text-base leading-relaxed font-medium">
-                To become a trusted animal nutrition brand by combining quality,
-                innovation, technology, expert knowledge, and farmer-focused
-                solutions to contribute to the growth of India&apos;s rural
-                economy.
+                {t('about.visionDesc', 'To become a trusted animal nutrition brand by combining quality, innovation, technology, expert knowledge, and farmer-focused solutions.')}
               </p>
             </div>
           </div>
         </div>
 
         {/* ========================================== */}
-        {/* SECTION 3: OUR PRODUCTS */}
+        {/* SECTION 3: OUR PRODUCTS CATEGORIES */}
         {/* ========================================== */}
         <div className="space-y-10">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="px-4 py-1.5 rounded-full bg-[#E86A10] text-white font-bold text-xs tracking-wider uppercase shadow-md">
-              Product Range
+              {t('footer.productRange', 'Product Range')}
             </span>
             <h2 className="font-serif-display text-3xl sm:text-4xl text-[#123814] font-bold">
-              Our Products
+              {t('nav.products', 'Our Products')}
             </h2>
             <p className="text-gray-700 text-sm sm:text-base font-medium">
-              We offer a growing range of Dairy Animals nutrition products
-              developed to address different stages and requirements of dairy
-              farming.
+              {t('about.categoriesSubtitle', 'Targeted nutritional formulations for every life stage and dairy management requirement.')}
             </p>
           </div>
 
@@ -428,10 +393,10 @@ export default function AboutUs({
         <div className="space-y-10">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="px-4 py-1.5 rounded-full bg-[#1a3d1a] text-white font-bold text-xs tracking-wider uppercase shadow-md">
-              Core Strengths
+              {t('about.coreStrengths', 'Core Strengths')}
             </span>
             <h2 className="font-serif-display text-3xl sm:text-4xl text-[#123814] font-bold">
-              Why Choose Navbharat Agro Services?
+              {t('about.whyChooseTitle', 'Why Leading Dairy Farmers Trust Navbharat')}
             </h2>
           </div>
 
@@ -466,15 +431,13 @@ export default function AboutUs({
 
           <div className="max-w-3xl space-y-4 relative z-10">
             <span className="px-4 py-1.5 rounded-full bg-white/20 text-emerald-200 font-bold text-xs tracking-wider uppercase border border-white/30 shadow-sm">
-              Our Core Promise
+              {t('about.corePromise', 'Our Core Promise')}
             </span>
             <h2 className="font-serif-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
-              Our Commitment to Farmers
+              {t('about.commitmentTitle', 'Our Commitment to Farmers')}
             </h2>
             <p className="text-emerald-50 text-sm sm:text-base lg:text-lg leading-relaxed font-medium">
-              At Navbharat Agro Services, farmers are at the heart of everything
-              we do. We believe that better Dairy Animals management begins with
-              the right nutrition, the right knowledge, and the right support.
+              {t('about.commitmentSubtitle', 'At Navbharat Agro Services, farmers are at the heart of everything we do. We believe that better Dairy Animals management begins with the right nutrition, the right knowledge, and the right support.')}
             </p>
           </div>
 
@@ -492,8 +455,7 @@ export default function AboutUs({
 
           <div className="pt-6 border-t border-white/20 text-center relative z-10">
             <p className="font-serif-display text-xl sm:text-2xl lg:text-3xl text-emerald-200 font-medium italic">
-              &ldquo;Our goal is to grow together with the farming
-              community.&rdquo;
+              {t('about.commitmentQuote', '“Our goal is to grow together with the farming community.”')}
             </p>
           </div>
         </div>
