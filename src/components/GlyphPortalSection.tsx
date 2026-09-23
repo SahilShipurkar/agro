@@ -1,6 +1,6 @@
-"use client"; 
-import { useEffect, useState } from "react"; 
-import GlyphPortal from "./ui/glyph-portal"; 
+"use client";
+import { useEffect, useState } from "react";
+import GlyphPortal from "./ui/glyph-portal";
 import { useLanguage } from "@/lib/languageContext";
 
 interface GlyphPortalSectionProps {
@@ -15,8 +15,8 @@ interface GlyphPortalSectionProps {
   annotations?: boolean;
 }
 
-const family = '"Glyph Portal Jakarta", Arial, sans-serif'; 
-let fontLoad: Promise<void> | undefined; 
+const family = '"Glyph Portal Jakarta", Arial, sans-serif';
+let fontLoad: Promise<void> | undefined;
 
 export default function GlyphPortalSection({
   onNavigateHome: _onNavigateHome,
@@ -24,27 +24,35 @@ export default function GlyphPortalSection({
   onNavigateProducts: _onNavigateProducts,
   onNavigateDiscover,
   onNavigateStore,
-  word = "NAVBHARAT",
+  word,
   scrollLength = 2.4,
   interactive = true,
   annotations = false,
-}: GlyphPortalSectionProps = {}) { 
-  const { t } = useLanguage();
-  const [face, setFace] = useState<string | null>(null); 
-  useEffect(() => { 
-    let settled = false; 
-    const finish = (value: string) => { if (!settled) { settled = true; setFace(value); } }; 
-    fontLoad ??= new FontFace("Glyph Portal Jakarta", 
-    'url("https://cdn.21st.dev/assets/mirror/15/153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79.woff2")', { weight: "400 700" }) 
-    .load().then((font) => { document.fonts.add(font); }); 
-    const timeout = window.setTimeout(() => finish("Arial, sans-serif"), 1600); 
-    void fontLoad.then(() => finish(family), () => finish("Arial, sans-serif")); 
-    return () => { settled = true; clearTimeout(timeout); }; 
-  }, []); 
+}: GlyphPortalSectionProps = {}) {
+  const { language, t } = useLanguage();
+  const [face, setFace] = useState<string | null>(null);
 
-  return ( 
-    <div data-demo-scroll data-slipstream-demo tabIndex={0} role="region" aria-label="Navbharat Agro Services. Scroll to explore." 
-      style={{ width: "100%", height: "min(720px, 100svh)", overflowY: "auto", background: "#082d22", containerType: "inline-size", fontFamily: face ?? "Arial, sans-serif" }}> 
+  const displayWord = word || (language === 'mr' || language === 'hi' ? 'नवभारत' : 'NAVBHARAT');
+  const displayLogo = language === 'mr' || language === 'hi' ? 'नवभारत.' : 'navbharat.';
+
+  useEffect(() => {
+    let settled = false;
+    const finish = (value: string) => { if (!settled) { settled = true; setFace(value); } };
+    fontLoad ??= new FontFace("Glyph Portal Jakarta",
+      'url("https://cdn.21st.dev/assets/mirror/15/153fc85b70298beeb1d61a5f723331649e7f23bb77302a66e61cb3e2fbdb5e79.woff2")', { weight: "400 700" })
+      .load().then((font) => { document.fonts.add(font); });
+    const timeout = window.setTimeout(() => finish("Arial, sans-serif"), 1600);
+    void fontLoad.then(() => finish(family), () => finish("Arial, sans-serif"));
+    return () => { settled = true; clearTimeout(timeout); };
+  }, []);
+
+  const activeFont = language === 'mr' || language === 'hi'
+    ? '"Noto Sans Devanagari", "Inter", Arial, sans-serif'
+    : (face ?? "Arial, sans-serif");
+
+  return (
+    <div data-demo-scroll data-slipstream-demo tabIndex={0} role="region" aria-label="Navbharat Agro Services. Scroll to explore."
+      style={{ width: "100%", height: "min(720px, 100svh)", overflowY: "auto", background: "#082d22", containerType: "inline-size", fontFamily: activeFont }}>
       <style>{` 
         [data-slipstream-demo] [data-gp-caption]{inset:calc(var(--gp-word-bottom,50%) + 82px) 24px auto;justify-content:center;} 
         [data-slipstream-demo] [data-gp-hint]{display:none;} 
@@ -54,7 +62,7 @@ export default function GlyphPortalSection({
         [data-slipstream-demo] [data-gp-touch-picker]{top:auto;bottom:18px;left:50%;} 
         [data-slipstream-demo] [data-gp-select]{border-color:transparent;border-radius:8px;font-size:12px;color:#626964;} 
         [data-sublime-header]{position:absolute;inset:clamp(24px,4.5cqw,48px) clamp(24px,5cqw,64px) auto;display:flex;align-items:center;justify-content:space-between;gap:20px;} 
-        [data-sublime-logo]{font-size:19px;font-weight:600;letter-spacing:-.065em;color:#18251e;} 
+        [data-sublime-logo]{font-size:19px;font-weight:700;letter-spacing:-.02em;color:#18251e;} 
         [data-sublime-category]{font-size:12px;line-height:1.5;color:#71766f;} 
         [data-sublime-eyebrow]{position:absolute;inset:auto 24px calc(100% - var(--gp-word-top,35%) + 32px);margin:0;text-align:center;font-size:13px;font-weight:400;line-height:1.5;letter-spacing:.005em;color:#71766f;} 
         [data-sublime-support]{position:absolute;inset:calc(var(--gp-word-bottom,50%) + 32px) 24px auto;margin:0;text-align:center;font-size:16px;font-weight:400;line-height:1.5;color:#646a63;} 
@@ -72,22 +80,48 @@ export default function GlyphPortalSection({
         [data-slipstream-feature] p{margin:.55rem 0 0;color:rgba(251,251,250,.85);font-size:.9375rem;line-height:1.55;} 
         [data-slipstream-no]{display:inline-block;margin-right:.7rem;color:rgba(251,251,250,.85);font:500 .75rem ui-monospace,monospace;letter-spacing:.08em;transform:translateY(-.1em);} 
         @container(min-width:768px){[data-slipstream-features]{grid-template-columns:repeat(3,minmax(0,1fr));gap:3.5rem;}} 
-      `}</style> 
-      {face ? <GlyphPortal word={word} fontFamily={face} fontWeight={700} style={{ fontFamily: face }} scrollLength={scrollLength} interactive={interactive} annotations={annotations} enterLabel={t('glyphPortal.enterLabel', 'Explore Products')} onEnterClick={onNavigateStore || onNavigateDiscover} front={<> 
-          <div data-sublime-header><span data-sublime-logo>navbharat.</span><span data-sublime-category>{t('glyphPortal.category', 'Dairy & Livestock Nutrition')}</span></div> 
-          <p data-sublime-eyebrow>{t('glyphPortal.eyebrow', 'A Tradition of Quality. A Legacy of Trust.')}</p> 
-          <p data-sublime-support>{t('glyphPortal.support', 'Step into superior herd productivity.')}</p> 
-          <span data-sublime-scroll>{t('glyphPortal.scrollHint', 'Scroll for a closer look ↓')}</span> 
-        </>}> 
-        <div data-slipstream-copy> 
-          <h2>{t('glyphPortal.heading', 'A different way into optimal dairy farming & health.')}</h2> 
-          <div data-slipstream-features> 
-            <div data-slipstream-feature><h3><span data-slipstream-no>01</span>{t('glyphPortal.f1Title', 'Scientifically Formulated')}</h3><p>{t('glyphPortal.f1Desc', 'Area-specific minerals and balanced energy feeds tailored for milking cows and buffaloes.')}</p></div> 
-            <div data-slipstream-feature><h3><span data-slipstream-no>02</span>{t('glyphPortal.f2Title', 'Complete Portfolio')}</h3><p>{t('glyphPortal.f2Desc', 'From calf growth promoters to high-grade Advanta 756 maize silage and calcium supplements.')}</p></div> 
-            <div data-slipstream-feature><h3><span data-slipstream-no>03</span>{t('glyphPortal.f3Title', 'Direct Farmer Support')}</h3><p>{t('glyphPortal.f3Desc', 'Fast delivery, direct WhatsApp support, and expert guidance for commercial dairy operations.')}</p></div> 
-          </div> 
-        </div> 
-      </GlyphPortal> : <div role="status" style={{ height: "100%", display: "grid", placeItems: "center", color: "#555", fontSize: 12 }}>Loading…</div>} 
-    </div> 
-  ); 
-} 
+      `}</style>
+      <GlyphPortal
+        key={displayWord}
+        word={displayWord}
+        fontFamily={activeFont}
+        fontWeight={800}
+        style={{ fontFamily: activeFont }}
+        scrollLength={scrollLength}
+        interactive={interactive}
+        annotations={annotations}
+        enterLabel={t('glyphPortal.enterLabel', 'Explore Products')}
+        onEnterClick={onNavigateStore || onNavigateDiscover}
+        front={
+          <>
+            <div data-sublime-header>
+              <span data-sublime-logo>{displayLogo}</span>
+              <span data-sublime-category>{t('glyphPortal.category', 'Dairy & Livestock Nutrition')}</span>
+            </div>
+            <p data-sublime-eyebrow>{t('glyphPortal.eyebrow', 'A Tradition of Quality. A Legacy of Trust.')}</p>
+            <p data-sublime-support>{t('glyphPortal.support', 'Step into superior herd productivity.')}</p>
+            <span data-sublime-scroll>{t('glyphPortal.scrollHint', 'Scroll for a closer look ↓')}</span>
+          </>
+        }
+      >
+        <div data-slipstream-copy>
+          <h2>{t('glyphPortal.heading', 'A different way into optimal dairy farming & health.')}</h2>
+          <div data-slipstream-features>
+            <div data-slipstream-feature>
+              <h3><span data-slipstream-no>01</span>{t('glyphPortal.f1Title', 'Scientifically Formulated')}</h3>
+              <p>{t('glyphPortal.f1Desc', 'Area-specific minerals and balanced energy feeds tailored for milking cows and buffaloes.')}</p>
+            </div>
+            <div data-slipstream-feature>
+              <h3><span data-slipstream-no>02</span>{t('glyphPortal.f2Title', 'Complete Portfolio')}</h3>
+              <p>{t('glyphPortal.f2Desc', 'From calf growth promoters to high-grade Advanta 756 maize silage and calcium supplements.')}</p>
+            </div>
+            <div data-slipstream-feature>
+              <h3><span data-slipstream-no>03</span>{t('glyphPortal.f3Title', 'Direct Farmer Support')}</h3>
+              <p>{t('glyphPortal.f3Desc', 'Fast delivery, direct WhatsApp support, and expert guidance for commercial dairy operations.')}</p>
+            </div>
+          </div>
+        </div>
+      </GlyphPortal>
+    </div>
+  );
+}
