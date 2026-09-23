@@ -26,8 +26,212 @@ export default function Footer({
       <div className="absolute -top-24 -left-24 w-72 h-72 bg-white/20 rounded-full blur-2xl pointer-events-none" />
       <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-[#123814]/10 rounded-full blur-2xl pointer-events-none" />
 
-      {/* Main Compact Footer Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-8 relative z-10">
+      {/* ========================================================= */}
+      {/* MOBILE COMPACT FOOTER (md:hidden) - Minimal, Rows-aligned */}
+      {/* ========================================================= */}
+      <div className="md:hidden px-3.5 py-3 relative z-10 space-y-2.5">
+        {/* Row 1: Brand Logo + Name + Action Buttons in one compact row */}
+        <div className="bg-white/90 backdrop-blur-md border border-[#123814]/15 rounded-xl p-2.5 flex items-center justify-between gap-2 shadow-xs">
+          <div className="flex items-center gap-2 min-w-0">
+            <img
+              src={getAssetUrl("/Whitte Circle logo(3).png")}
+              alt="Navbharat Agro Services Logo"
+              className="w-7 h-7 object-contain rounded-full shadow-xs border border-[#123814]/20 shrink-0"
+            />
+            <div className="truncate">
+              <h3 className="text-xs font-extrabold text-[#123814] leading-tight truncate">
+                Navbharat Agro
+              </h3>
+              <p className="text-[9px] text-[#1e5221] font-medium truncate">
+                Dairy & Livestock Nutrition
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 shrink-0">
+            <a
+              href="https://wa.me/918237795424"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp Inquiry"
+              className="inline-flex items-center gap-1 bg-[#25D366] text-white px-2 py-1 rounded-full font-bold text-[10px] shadow-xs active:scale-95 transition-transform"
+            >
+              <MessageSquare className="w-2.5 h-2.5 fill-white" />
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href="tel:8237795424"
+              aria-label="Call Helpline"
+              className="inline-flex items-center gap-1 bg-[#E86A10] text-white px-2 py-1 rounded-full font-bold text-[10px] shadow-xs active:scale-95 transition-transform"
+            >
+              <Phone className="w-2.5 h-2.5" />
+              <span>Call</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Row 2: 2-Column Compact Links Grid */}
+        <div className="grid grid-cols-2 gap-2 bg-white/60 backdrop-blur-xs rounded-xl p-2.5 border border-[#123814]/10 text-[10px]">
+          {/* Col 1: Navigation */}
+          <div>
+            <span className="font-extrabold text-[#123814] text-[11px] block mb-1 border-b border-[#123814]/10 pb-0.5">
+              Pages
+            </span>
+            <ul className="space-y-0.5 text-[#18441b] font-medium">
+              <li>
+                <a
+                  href="#home"
+                  onClick={(e) => {
+                    if (onNavigateHome) {
+                      e.preventDefault();
+                      onNavigateHome();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5"
+                >
+                  • Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  onClick={(e) => {
+                    if (onNavigateAbout) {
+                      e.preventDefault();
+                      onNavigateAbout();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5"
+                >
+                  • About Us
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#toonhub"
+                  onClick={(e) => {
+                    if (onNavigateProducts) {
+                      e.preventDefault();
+                      onNavigateProducts();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5"
+                >
+                  • Products
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#store"
+                  onClick={(e) => {
+                    if (onNavigateStore) {
+                      e.preventDefault();
+                      onNavigateStore();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] font-bold text-[#123814] block py-0.5"
+                >
+                  • Store 🛒
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Col 2: Products Range */}
+          <div>
+            <span className="font-extrabold text-[#123814] text-[11px] block mb-1 border-b border-[#123814]/10 pb-0.5">
+              Top Products
+            </span>
+            <ul className="space-y-0.5 text-[#18441b] font-medium">
+              <li>
+                <a
+                  href="#discover"
+                  onClick={(e) => {
+                    if (onNavigateDiscover) {
+                      e.preventDefault();
+                      onNavigateDiscover();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5 truncate"
+                >
+                  • MilkMax Calcium
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#discover"
+                  onClick={(e) => {
+                    if (onNavigateDiscover) {
+                      e.preventDefault();
+                      onNavigateDiscover();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5 truncate"
+                >
+                  • Sarki Pend Feed
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#discover"
+                  onClick={(e) => {
+                    if (onNavigateDiscover) {
+                      e.preventDefault();
+                      onNavigateDiscover();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5 truncate"
+                >
+                  • NavMin Minerals
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#discover"
+                  onClick={(e) => {
+                    if (onNavigateDiscover) {
+                      e.preventDefault();
+                      onNavigateDiscover();
+                    }
+                  }}
+                  className="hover:text-[#E86A10] transition-colors block py-0.5 truncate"
+                >
+                  • Advanta 756 Silage
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Row 3: Helpline Info & Nationwide delivery */}
+        <div className="flex items-center justify-between text-[10px] text-[#123814] font-semibold bg-white/40 px-2.5 py-1 rounded-lg">
+          <div className="flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-[#E86A10] shrink-0" />
+            <span>Pan-India Delivery</span>
+          </div>
+          <a href="tel:8237795424" className="flex items-center gap-1 hover:text-[#E86A10]">
+            <Phone className="w-3 h-3 text-[#E86A10]" />
+            <span>8237795424</span>
+          </a>
+        </div>
+
+        {/* Row 4: Copyright & Back to Top in 1 row */}
+        <div className="flex items-center justify-between pt-1 border-t border-[#123814]/15 text-[9px] text-[#18441b]">
+          <span>© {new Date().getFullYear()} Navbharat Agro</span>
+          <button
+            onClick={scrollToTop}
+            className="inline-flex items-center gap-1 bg-white/80 px-2 py-0.5 rounded-full font-bold text-[#123814] border border-[#123814]/15 shadow-2xs"
+          >
+            <span>Top</span>
+            <ArrowUp className="w-2.5 h-2.5 text-[#E86A10]" />
+          </button>
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* DESKTOP FOOTER (hidden md:block) - Preserved Original */}
+      {/* ========================================================= */}
+      <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-6 sm:py-8 relative z-10">
         {/* TOP CALLOUT BAR (COMPACT) */}
         <div className="bg-white/90 backdrop-blur-md border border-[#123814]/15 rounded-2xl p-4 sm:p-5 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-3">
@@ -312,3 +516,4 @@ export default function Footer({
     </footer>
   );
 }
+

@@ -42,7 +42,7 @@ export default function GlyphPortalSection({
 
   return ( 
     <div data-demo-scroll data-slipstream-demo tabIndex={0} role="region" aria-label="Navbharat Agro Services. Scroll to explore." 
-      style={{ width: "100%", height: "min(720px, 100svh)", overflowY: "auto", background: "#fff", containerType: "inline-size", fontFamily: face ?? "Arial, sans-serif" }}> 
+      style={{ width: "100%", height: "min(720px, 100svh)", overflowY: "auto", background: "#082d22", containerType: "inline-size", fontFamily: face ?? "Arial, sans-serif" }}> 
       <style>{` 
         [data-slipstream-demo] [data-gp-caption]{inset:calc(var(--gp-word-bottom,50%) + 82px) 24px auto;justify-content:center;} 
         [data-slipstream-demo] [data-gp-hint]{display:none;} 
@@ -60,7 +60,7 @@ export default function GlyphPortalSection({
         @media(any-pointer:coarse){[data-sublime-scroll]{bottom:13%;}} 
         @container(max-width:450px){[data-sublime-category]{max-width:12ch;text-align:right;}[data-sublime-eyebrow]{font-size:12px;}[data-sublime-support]{font-size:14px;}[data-slipstream-demo] [data-gp-caption]{top:calc(var(--gp-word-bottom,50%) + 76px);}} 
         @container(max-height:479px){[data-sublime-header]{top:18px;}[data-sublime-support]{top:calc(var(--gp-word-bottom,50%) + 16px);}[data-slipstream-demo] [data-gp-caption]{top:calc(var(--gp-word-bottom,50%) + 60px);}[data-sublime-scroll]{display:none;}} 
-        [data-slipstream-demo] [data-gp-content]{padding:5.5rem clamp(1.25rem,5cqw,5rem) 6.5rem;font-family:inherit;} 
+        [data-slipstream-demo] [data-gp-content]{padding:3.5rem clamp(1.25rem,5cqw,5rem) 2rem;font-family:inherit;} 
         [data-slipstream-demo] section,[data-slipstream-demo] [data-gp-caption]{font-family:inherit;} 
         [data-slipstream-copy]{display:flex;width:min(100%,80rem);margin:auto;flex-direction:column;align-items:flex-start;gap:clamp(2rem,5svh,3.5rem);} 
         [data-slipstream-copy] h2{max-width:48rem;margin:0;color:inherit;font-size:clamp(1.75rem,1.1rem + 2.1cqw,2.25rem);font-weight:400;line-height:1.25;letter-spacing:0;text-wrap:balance;} 
