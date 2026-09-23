@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ShoppingCart,
   Star,
@@ -5,6 +6,7 @@ import {
   Play,
   ArrowRight,
   Plus,
+  Menu,
 } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
 
@@ -14,8 +16,10 @@ interface CozyPawsHeroProps {
 }
 
 export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyPawsHeroProps = {}) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
-    <div className="min-h-[100dvh] md:h-screen w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
+    <div className="h-[100dvh] w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
       {/* HEADER WITH NAVBAR BELOW */}
       <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
         {/* Top Row: Logo, Brand Name & Cart Button */}
@@ -43,10 +47,10 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
           </div>
         </div>
 
-        {/* Bottom Row: Navigation Bar Below Logo & Name (Horizontal swipe on mobile) */}
-        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-3 sm:px-8 lg:px-12">
-          <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-between overflow-x-auto scrollbar-none gap-4 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700 no-scrollbar py-0.5">
-            <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap px-1 py-0.5">
+        {/* Bottom Row: Desktop Navigation Bar */}
+        <nav className="hidden md:block w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
+          <div className="max-w-5xl mx-auto flex items-center justify-between gap-6 text-xs sm:text-sm font-semibold text-gray-700">
+            <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap">
               Home
             </a>
             <a
@@ -57,25 +61,96 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   onNavigateAbout();
                 }
               }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
               About Us
             </a>
-            <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Products
             </a>
-            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Gallery
             </a>
-            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Careers
             </a>
-            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Blog / Resources
             </a>
-            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Contact Us
             </a>
+          </div>
+        </nav>
+
+        {/* Bottom Row: Mobile Navigation Bar (Shows Home, About Us, Products + Menu Icon for remaining) */}
+        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1 px-4 relative">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4 text-xs font-bold text-gray-700">
+              <a href="#home" className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors">
+                Home
+              </a>
+              <a
+                href="#about"
+                onClick={(e) => {
+                  if (onNavigateAbout) {
+                    e.preventDefault();
+                    onNavigateAbout();
+                  }
+                }}
+                className="hover:text-[#123814] transition-colors cursor-pointer"
+              >
+                About Us
+              </a>
+              <a href="#toonhub" className="hover:text-[#123814] transition-colors">
+                Products
+              </a>
+            </div>
+
+            {/* List Icon Button for remaining items */}
+            <div className="relative">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="More navigation links"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+              >
+                <Menu className="w-3.5 h-3.5 text-[#123814]" />
+              </button>
+
+              {/* Dropdown Menu */}
+              {isMobileMenuOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
+                  <a
+                    href="#gallery"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Gallery
+                  </a>
+                  <a
+                    href="#business"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Careers
+                  </a>
+                  <a
+                    href="#blog"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Blog / Resources
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Contact Us
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       </header>
@@ -224,32 +299,25 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         </div>
 
         {/* ------------------------------------------------------------- */}
-        {/* MOBILE LAYOUT (below md) */}
+        {/* MOBILE LAYOUT (below md) - Pixel-perfect match to website view */}
         {/* ------------------------------------------------------------- */}
-        <div className="md:hidden flex flex-col h-full justify-between pt-3 pb-1">
-          {/* Top section: Title, Subtitle, Button */}
-          <div className="px-4 text-center z-20 flex flex-col items-center gap-2">
-            <h1 className="font-serif-display text-[#1a3d1a] text-2xl sm:text-3xl leading-tight">
+        <div className="md:hidden flex flex-col h-full justify-between pt-1 overflow-hidden relative">
+          {/* Top section: Title and Subtitle */}
+          <div className="px-4 text-center z-20 flex flex-col items-center gap-1 mt-1">
+            <h1 className="font-serif-display text-[#1a3d1a] text-2xl leading-tight">
               A Tradition of Quality. A Legacy of Trust.
             </h1>
-            <p className="text-gray-600 text-xs max-w-xs leading-relaxed">
+            <p className="text-gray-600 text-[11px] max-w-xs leading-tight">
               Premium cattle feed, chelated minerals & essential dairy nutrition supplements.
             </p>
-            <button
-              onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] active:scale-95 text-white text-xs font-bold shadow-md mt-1 cursor-pointer"
-            >
-              <ArrowRight className="w-3.5 h-3.5" />
-              Explore Products
-            </button>
           </div>
 
-          {/* Cards row: Product & Video side by side */}
-          <div className="px-4 py-2 flex items-center justify-center gap-3 z-20">
-            {/* Product Card */}
+          {/* Side-by-side cards: Heat Max and Farmer Reviews */}
+          <div className="px-3 py-1 flex items-center justify-center gap-2.5 z-20">
+            {/* Left Card: Heat Max */}
             <div
               onClick={onNavigateStore}
-              className="w-[120px] bg-white/70 backdrop-blur-sm p-2 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center cursor-pointer hover:bg-white transition-all select-none active:scale-95"
+              className="w-[115px] bg-white/70 backdrop-blur-sm p-1.5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center cursor-pointer select-none active:scale-95"
             >
               <div className="w-full aspect-square rounded-xl overflow-hidden relative bg-white/60 p-1 flex items-center justify-center">
                 <img
@@ -258,12 +326,12 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   className="w-full h-full object-contain"
                 />
               </div>
-              <span className="text-[11px] font-bold text-gray-800 mt-1 line-clamp-1">Heat Max</span>
-              <span className="text-xs font-extrabold text-[#1a3d1a]">₹499</span>
+              <span className="text-[10px] font-bold text-gray-800 mt-1 line-clamp-1">Heat Max</span>
+              <span className="text-[11px] font-extrabold text-[#1a3d1a]">₹499</span>
             </div>
 
-            {/* Video Card */}
-            <div className="w-[120px] bg-white/70 backdrop-blur-sm p-2 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center text-center">
+            {/* Right Card: Video Review */}
+            <div className="w-[115px] bg-white/70 backdrop-blur-sm p-1.5 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center text-center">
               <div className="w-full aspect-[4/3] rounded-xl overflow-hidden relative">
                 <img
                   src="https://polo-pecan-73837341.figma.site/_assets/v11/76be6ec3a93a703b15e9cc01e764a4e3f9d7d2c0.png"
@@ -271,59 +339,81 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                  <div className="w-7 h-7 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white shadow-md">
-                    <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
+                  <div className="w-6 h-6 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white shadow-sm">
+                    <Play className="w-3 h-3 fill-white ml-0.5" />
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] font-semibold text-gray-700 mt-1 line-clamp-1">Farmer Reviews</span>
+              <span className="text-[9px] font-semibold text-gray-700 mt-1 line-clamp-1">Farmer Reviews</span>
             </div>
           </div>
 
-          {/* Stats row */}
-          <div className="px-4 flex items-center justify-center gap-3 text-xs font-semibold text-[#1a3d1a] z-20">
-            <div className="flex items-center gap-1.5 bg-white/85 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-xs">
-              <div className="flex items-center -space-x-1.5">
-                <img
-                  src="https://polo-pecan-73837341.figma.site/_assets/v11/e62173d41f91350a59628e8a9a55ae078a886fb9.png?w=128"
-                  alt="Avatar"
-                  className="w-5 h-5 rounded-full object-cover border border-white"
-                />
-                <div className="w-5 h-5 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white text-[9px] font-bold">
-                  +
-                </div>
-              </div>
-              <span className="font-bold">98K+ Farmers</span>
-            </div>
-            <div className="h-4 w-px bg-[#123814]/20" />
-            <div className="flex items-center gap-1.5 bg-white/85 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-xs">
-              <Star className="w-3.5 h-3.5 text-[#E86A10] fill-[#E86A10]" />
-              <span className="font-bold">4.8 Rating</span>
-            </div>
-          </div>
+          {/* Bottom 3-panel images resting at the bottom with cows over light green boxes and 98K+/4.8 badges */}
+          <div className="relative z-10 flex items-end justify-center w-full mt-auto pointer-events-auto">
+            {/* Left Image & Box (Cow Left) */}
+            <div className="flex-1 relative overflow-visible flex items-end justify-center">
+              {/* Light green box */}
+              <div className="absolute bottom-0 left-0 right-0 h-[68px] bg-[#9ce4b3] rounded-t-xl z-0" />
 
-          {/* Bottom 3-panel images without max-height constraint */}
-          <div className="relative z-10 flex items-end justify-center w-full mt-auto">
-            <div className="flex-1 relative bg-[#9ce4b3] rounded-t-xl overflow-hidden">
+              {/* Cow image with hooves resting on top edge of light green box */}
               <img
                 src={getAssetUrl("/left-cow.png")}
                 alt="Agro cow left"
-                className="w-full h-auto block object-cover"
+                className="w-full h-auto block object-contain relative z-10"
+                style={{ transform: 'translateY(-34px) scale(0.85)', transformOrigin: 'bottom center' }}
               />
+
+              {/* Bottom-left 98K+ Badge */}
+              <div className="absolute bottom-1.5 left-1.5 z-20 bg-white/90 backdrop-blur-md px-1.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm border border-white/70">
+                <div className="flex items-center -space-x-1">
+                  <img
+                    src="https://polo-pecan-73837341.figma.site/_assets/v11/e62173d41f91350a59628e8a9a55ae078a886fb9.png?w=128"
+                    alt="User"
+                    className="w-3.5 h-3.5 rounded-full object-cover"
+                  />
+                  <div className="w-3.5 h-3.5 rounded-full bg-[#1a3d1a] text-white flex items-center justify-center text-[7px] font-bold">
+                    +
+                  </div>
+                </div>
+                <span className="font-extrabold text-[#1a3d1a] text-[9px]">98K+</span>
+              </div>
             </div>
-            <div className="flex-[1.265] relative bg-[#0c310c] h-[120px] rounded-t-xl flex items-center justify-center p-2">
+
+            {/* Center Dark Green Box Panel with milk bottle */}
+            <div className="flex-[1.28] h-[95px] bg-[#0c310c] relative overflow-visible flex flex-col items-center justify-end pb-2.5 text-center shadow-lg rounded-t-xl">
+              {/* Milk Max bottle popping up over dark green box */}
               <img
                 src={getAssetUrl("/milk1.png")}
-                alt="Product"
-                className="h-[100px] object-contain relative z-10 -mt-6 drop-shadow-md"
+                alt="Milk Max Product"
+                className="h-[80px] object-contain relative z-20 -mt-10 drop-shadow-md transition-transform duration-300 hover:scale-105"
               />
+              <button
+                onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
+                className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white font-bold text-[9px] shadow-md active:scale-95 transition-transform z-20 cursor-pointer"
+              >
+                <span>Explore Products</span>
+                <ArrowRight className="w-2.5 h-2.5" />
+              </button>
             </div>
-            <div className="flex-1 relative bg-[#9ce4b3] rounded-t-xl overflow-hidden">
+
+            {/* Right Image & Box (Cow Right) */}
+            <div className="flex-1 relative overflow-visible flex items-end justify-center">
+              {/* Light green box */}
+              <div className="absolute bottom-0 left-0 right-0 h-[68px] bg-[#9ce4b3] rounded-t-xl z-0" />
+
+              {/* Cow image with hooves resting on top edge of light green box */}
               <img
                 src={getAssetUrl("/right-cow.png")}
                 alt="Agro cow right"
-                className="w-full h-auto block object-cover"
+                className="w-full h-auto block object-contain relative z-10"
+                style={{ transform: 'translateY(-34px) scale(0.85)', transformOrigin: 'bottom center' }}
               />
+
+              {/* Bottom-right 4.8 Rating Badge */}
+              <div className="absolute bottom-1.5 right-1.5 z-20 bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm border border-white/70">
+                <Star className="w-2.5 h-2.5 text-[#E86A10] fill-[#E86A10]" />
+                <span className="font-extrabold text-[#1a3d1a] text-[9px]">4.8</span>
+              </div>
             </div>
           </div>
         </div>

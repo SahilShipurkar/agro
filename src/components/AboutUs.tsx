@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ShieldCheck,
   GraduationCap,
@@ -16,6 +17,7 @@ import {
   Award,
   Layers,
   ShoppingCart,
+  Menu,
 } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
 
@@ -30,6 +32,7 @@ export default function AboutUs({
   onNavigateProducts,
   onNavigateStore,
 }: AboutUsProps = {}) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const handleScrollToProducts = () => {
     if (onNavigateProducts) {
       onNavigateProducts();
@@ -164,9 +167,9 @@ export default function AboutUs({
           </div>
         </div>
 
-        {/* Bottom Row: Navigation Bar Below Logo & Name */}
-        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-3 sm:px-8 lg:px-12">
-          <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-between overflow-x-auto scrollbar-none gap-4 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700 no-scrollbar py-0.5">
+        {/* Bottom Row: Desktop Navigation Bar */}
+        <nav className="hidden md:block w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
+          <div className="max-w-5xl mx-auto flex items-center justify-between gap-6 text-xs sm:text-sm font-semibold text-gray-700">
             <a
               href="#home"
               onClick={(e) => {
@@ -175,13 +178,13 @@ export default function AboutUs({
                   onNavigateHome();
                 }
               }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
               Home
             </a>
             <a
               href="#about"
-              className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
+              className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap cursor-pointer"
             >
               About Us
             </a>
@@ -193,22 +196,105 @@ export default function AboutUs({
                   onNavigateProducts();
                 }
               }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
             >
               Products
             </a>
-            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Gallery
             </a>
-            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Careers
             </a>
-            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Blog / Resources
             </a>
-            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
+            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
               Contact Us
             </a>
+          </div>
+        </nav>
+
+        {/* Bottom Row: Mobile Navigation Bar */}
+        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1 px-4 relative">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4 text-xs font-bold text-gray-700">
+              <a
+                href="#home"
+                onClick={(e) => {
+                  if (onNavigateHome) {
+                    e.preventDefault();
+                    onNavigateHome();
+                  }
+                }}
+                className="hover:text-[#123814] transition-colors cursor-pointer"
+              >
+                Home
+              </a>
+              <a
+                href="#about"
+                className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors cursor-pointer"
+              >
+                About Us
+              </a>
+              <a
+                href="#toonhub"
+                onClick={(e) => {
+                  if (onNavigateProducts) {
+                    e.preventDefault();
+                    onNavigateProducts();
+                  }
+                }}
+                className="hover:text-[#123814] transition-colors cursor-pointer"
+              >
+                Products
+              </a>
+            </div>
+
+            {/* List Icon Button for remaining items */}
+            <div className="relative">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="More navigation links"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer"
+              >
+                <Menu className="w-3.5 h-3.5 text-[#123814]" />
+              </button>
+
+              {/* Dropdown Menu */}
+              {isMobileMenuOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
+                  <a
+                    href="#gallery"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Gallery
+                  </a>
+                  <a
+                    href="#business"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Careers
+                  </a>
+                  <a
+                    href="#blog"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Blog / Resources
+                  </a>
+                  <a
+                    href="#contact"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
+                  >
+                    Contact Us
+                  </a>
+                </div>
+              )}
+            </div>
           </div>
         </nav>
       </header>
