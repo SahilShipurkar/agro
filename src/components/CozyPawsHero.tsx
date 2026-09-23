@@ -299,32 +299,32 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         {/* ------------------------------------------------------------- */}
         {/* MOBILE LAYOUT (below md) - Pixel-perfect match to website view */}
         {/* ------------------------------------------------------------- */}
-        <div className="md:hidden flex flex-col h-full justify-between pt-1 overflow-hidden relative">
-          {/* Top section: Title and Subtitle */}
-          <div className="px-4 text-center z-20 flex flex-col items-center gap-1.5 mt-0.5">
-            <h1 className="font-serif-display text-[#1a3d1a] text-[26px] xs:text-[28px] leading-[1.16] font-bold">
-              A Tradition of Quality.<br className="hidden xs:block" /> A Legacy of Trust.
+        <div className="md:hidden flex flex-col h-full justify-between pt-2 pb-0 overflow-hidden relative">
+          {/* Top section: Title and Subtitle with increased spacing to fill page nicely */}
+          <div className="px-5 text-center z-20 flex flex-col items-center gap-2 pt-1.5">
+            <h1 className="font-serif-display text-[#1a3d1a] text-[27px] xs:text-[29px] leading-[1.18] font-bold tracking-tight">
+              A Tradition of Quality.<br /> A Legacy of Trust.
             </h1>
-            <p className="text-gray-700 text-xs max-w-[310px] leading-snug font-medium">
+            <p className="text-gray-700 text-[12px] xs:text-sm max-w-[320px] leading-relaxed font-medium">
               Premium cattle feed, chelated minerals & essential dairy nutrition supplements.
             </p>
           </div>
 
-          {/* Side-by-side cards: Heat Max (Left) and Farmer Reviews (Right) */}
-          <div className="px-3 py-1 flex items-stretch justify-center gap-3 z-20">
+          {/* Middle section: Side-by-side cards shifted down into red-circle alignment */}
+          <div className="px-4 xs:px-6 py-2 my-auto flex items-stretch justify-between w-full max-w-[360px] mx-auto gap-3.5 z-20">
             {/* Left Card: Heat Max with Buy / Go to Store button */}
             <div
               onClick={onNavigateStore}
-              className="w-[145px] xs:w-[155px] bg-white/85 backdrop-blur-md p-2 rounded-2xl border border-white/90 shadow-md flex flex-col justify-between items-center cursor-pointer select-none active:scale-[0.98] transition-all hover:border-[#123814]/20"
+              className="flex-1 bg-white/85 backdrop-blur-md p-2.5 rounded-2xl border border-white/90 shadow-md flex flex-col justify-between items-center cursor-pointer select-none active:scale-[0.98] transition-all hover:border-[#123814]/20"
             >
-              <div className="w-full h-[88px] rounded-xl overflow-hidden relative bg-white/70 p-1 flex items-center justify-center">
+              <div className="w-full h-[90px] rounded-xl overflow-hidden relative bg-white/70 p-1 flex items-center justify-center">
                 <img
                   src={getAssetUrl("/heatmax.png")}
                   alt="Heat Max Booster"
                   className="w-full h-full object-contain drop-shadow-sm"
                 />
               </div>
-              <div className="w-full flex items-center justify-between mt-1 px-0.5">
+              <div className="w-full flex items-center justify-between mt-1.5 px-0.5">
                 <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">Heat Max</span>
                 <span className="text-[11px] font-black text-[#1a3d1a]">₹499</span>
               </div>
@@ -333,7 +333,7 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   e.stopPropagation();
                   if (onNavigateStore) onNavigateStore();
                 }}
-                className="w-full mt-1.5 py-1 px-2 rounded-lg bg-[#E86A10] hover:bg-[#d05c0b] text-white text-[10px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 transition-transform cursor-pointer"
+                className="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-[#E86A10] hover:bg-[#d05c0b] text-white text-[10px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 transition-transform cursor-pointer"
               >
                 <span>Buy / Store</span>
                 <ArrowUpRight className="w-3 h-3" />
@@ -343,9 +343,9 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             {/* Right Card: Video Review */}
             <div
               onClick={onNavigateStore}
-              className="w-[145px] xs:w-[155px] bg-white/85 backdrop-blur-md p-2 rounded-2xl border border-white/90 shadow-md flex flex-col justify-between items-center text-center cursor-pointer select-none active:scale-[0.98] transition-all"
+              className="flex-1 bg-white/85 backdrop-blur-md p-2.5 rounded-2xl border border-white/90 shadow-md flex flex-col justify-between items-center text-center cursor-pointer select-none active:scale-[0.98] transition-all"
             >
-              <div className="w-full h-[88px] rounded-xl overflow-hidden relative bg-black/10">
+              <div className="w-full h-[90px] rounded-xl overflow-hidden relative bg-black/10">
                 <img
                   src="https://polo-pecan-73837341.figma.site/_assets/v11/76be6ec3a93a703b15e9cc01e764a4e3f9d7d2c0.png"
                   alt="Farmer Video Review"
@@ -357,13 +357,13 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   </div>
                 </div>
               </div>
-              <div className="w-full mt-1 px-0.5 flex items-center justify-between">
+              <div className="w-full mt-1.5 px-0.5 flex items-center justify-between">
                 <span className="text-[11px] font-extrabold text-gray-800 line-clamp-1">Farmer Reviews</span>
                 <span className="text-[10px] font-bold text-[#E86A10] flex items-center gap-0.5">
                   <Star className="w-2.5 h-2.5 fill-[#E86A10]" /> 4.9
                 </span>
               </div>
-              <div className="w-full mt-1.5 py-1 px-2 rounded-lg bg-[#123814]/10 text-[#123814] text-[10px] font-extrabold flex items-center justify-center gap-1">
+              <div className="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-[#123814]/10 text-[#123814] text-[10px] font-extrabold flex items-center justify-center gap-1">
                 <span>Watch Stories</span>
                 <Play className="w-2.5 h-2.5 fill-[#123814]" />
               </div>
