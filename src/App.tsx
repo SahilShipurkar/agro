@@ -122,7 +122,10 @@ export default function App() {
 
       {/* Page Section 3: Glyph Portal (Interactive section below Product page) */}
       <section id="glyph-portal" className="w-full relative min-h-screen">
-        <GlyphPortalSection onNavigateDiscover={() => navigateTo('discover')} />
+        <GlyphPortalSection
+          onNavigateStore={() => navigateTo('store')}
+          onNavigateDiscover={() => navigateTo('discover')}
+        />
       </section>
 
       {/* Website Footer at the very bottom */}

@@ -281,6 +281,7 @@ export function CommerceHero({
     fullName: '',
     phone: '',
     deliveryAddress: '',
+    taluka: '',
     cityDistrict: '',
     pincode: '',
     landmark: '',
@@ -414,17 +415,23 @@ export function CommerceHero({
     e.preventDefault();
     const errors: Record<string, string> = {};
     if (!customerAddress.fullName.trim()) errors.fullName = 'Please enter your full name';
-    if (!customerAddress.phone.trim()) {
-      errors.phone = 'Please enter your phone number';
-    } else if (!/^[0-9+ -]{10,15}$/.test(customerAddress.phone.trim())) {
-      errors.phone = 'Please enter a valid 10-digit phone number';
+    
+    const cleanPhone = customerAddress.phone.trim();
+    if (!cleanPhone) {
+      errors.phone = 'Please enter your 10-digit mobile number';
+    } else if (!/^[6-9]\d{9}$/.test(cleanPhone)) {
+      errors.phone = 'Mobile number must be 10 digits starting with 6, 7, 8, or 9';
     }
-    if (!customerAddress.deliveryAddress.trim()) errors.deliveryAddress = 'Please enter your farm / delivery address';
-    if (!customerAddress.cityDistrict.trim()) errors.cityDistrict = 'Please enter village / city / district';
-    if (!customerAddress.pincode.trim()) {
+
+    if (!customerAddress.deliveryAddress.trim()) errors.deliveryAddress = 'Please enter farm / village address';
+    if (!customerAddress.taluka.trim()) errors.taluka = 'Please enter taluka / tehsil';
+    if (!customerAddress.cityDistrict.trim()) errors.cityDistrict = 'Please enter district / city';
+
+    const cleanPincode = customerAddress.pincode.trim();
+    if (!cleanPincode) {
       errors.pincode = 'Please enter pincode';
-    } else if (!/^\d{6}$/.test(customerAddress.pincode.trim().replace(/\s/g, ''))) {
-      errors.pincode = 'Please enter a valid 6-digit pincode';
+    } else if (!/^\d{6}$/.test(cleanPincode)) {
+      errors.pincode = 'Pincode must be exactly 6 digits';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -448,10 +455,11 @@ export function CommerceHero({
     text += `👤 *Name:* ${customerAddress.fullName.trim()}\n`;
     text += `📞 *Phone / WhatsApp:* ${customerAddress.phone.trim()}\n`;
     text += `🏡 *Address:* ${customerAddress.deliveryAddress.trim()}\n`;
-    text += `🏙️ *City / District:* ${customerAddress.cityDistrict.trim()}\n`;
+    text += `🏛️ *Taluka / Tehsil:* ${customerAddress.taluka.trim()}\n`;
+    text += `🏙️ *District / City:* ${customerAddress.cityDistrict.trim()}\n`;
     text += `📮 *Pincode:* ${customerAddress.pincode.trim()}\n`;
     if (customerAddress.landmark.trim()) {
-      text += `🚩 *Landmark / Note:* ${customerAddress.landmark.trim()}\n`;
+      text += `🚩 *Landmark / Instructions:* ${customerAddress.landmark.trim()}\n`;
     }
     text += `\nPlease confirm order acceptance and delivery dispatch schedule. Thank you!`;
 
@@ -824,7 +832,7 @@ export function CommerceHero({
 
             {/* STEP 2: DELIVERY ADDRESS FORM */}
             {checkoutStep === 'address' && (
-              <form onSubmit={handleProceedToWhatsApp} id="checkout-form" className="p-4 sm:p-6 space-y-3.5 max-h-[55vh] overflow-y-auto">
+              <form onSubmit={handleProceedToWhatsApp} id="checkout-form" className="p-4 sm:p-6 space-y-3.5 max-h-[62vh] sm:max-h-[68vh] overflow-y-auto pb-8">
                 <div className="bg-[#EFFDF0] p-3 rounded-xl border border-[#123814]/15 flex items-center justify-between text-xs font-bold text-[#123814]">
                   <span>Items: <span className="text-[#E86A10]">{totalCartCount}</span></span>
                   <span>Total Amount: <span className="text-[#E86A10] text-sm font-black">₹{totalBillAmount.toLocaleString('en-IN')}</span></span>
@@ -856,16 +864,19 @@ export function CommerceHero({
                 {/* Phone Number Field */}
                 <div>
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    WhatsApp / Contact Number <span className="text-red-500">*</span>
+                    WhatsApp / Mobile Number (10 digits) <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <Phone className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
                     <input
                       type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
                       placeholder="e.g. 9823456789"
                       value={customerAddress.phone}
                       onChange={(e) => {
-                        setCustomerAddress({ ...customerAddress, phone: e.target.value });
+                        const digits = e.target.value.replace(/\D/g, '').slice(0, 10);
+                        setCustomerAddress({ ...customerAddress, phone: digits });
                         if (formErrors.phone) setFormErrors({ ...formErrors, phone: '' });
                       }}
                       className={`w-full pl-9 pr-3 py-2 text-xs rounded-xl border bg-white focus:outline-none focus:ring-2 ${
@@ -899,11 +910,33 @@ export function CommerceHero({
                   {formErrors.deliveryAddress && <p className="text-[11px] text-red-500 font-medium mt-0.5">{formErrors.deliveryAddress}</p>}
                 </div>
 
-                {/* City / District & Pincode Grid */}
+                {/* Taluka & District Grid */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                      City / District <span className="text-red-500">*</span>
+                      Taluka / Tehsil <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Building2 className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+                      <input
+                        type="text"
+                        placeholder="e.g. Karveer / Shirol"
+                        value={customerAddress.taluka}
+                        onChange={(e) => {
+                          setCustomerAddress({ ...customerAddress, taluka: e.target.value });
+                          if (formErrors.taluka) setFormErrors({ ...formErrors, taluka: '' });
+                        }}
+                        className={`w-full pl-9 pr-3 py-2 text-xs rounded-xl border bg-white focus:outline-none focus:ring-2 ${
+                          formErrors.taluka ? 'border-red-400 focus:ring-red-300' : 'border-gray-300 focus:ring-[#123814]/20'
+                        }`}
+                      />
+                    </div>
+                    {formErrors.taluka && <p className="text-[11px] text-red-500 font-medium mt-0.5">{formErrors.taluka}</p>}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-[#123814] mb-1">
+                      District / City <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Building2 className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
@@ -922,36 +955,39 @@ export function CommerceHero({
                     </div>
                     {formErrors.cityDistrict && <p className="text-[11px] text-red-500 font-medium mt-0.5">{formErrors.cityDistrict}</p>}
                   </div>
-
-                  <div>
-                    <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                      Pincode <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. 416001"
-                      maxLength={6}
-                      value={customerAddress.pincode}
-                      onChange={(e) => {
-                        setCustomerAddress({ ...customerAddress, pincode: e.target.value });
-                        if (formErrors.pincode) setFormErrors({ ...formErrors, pincode: '' });
-                      }}
-                      className={`w-full px-3 py-2 text-xs rounded-xl border bg-white focus:outline-none focus:ring-2 ${
-                        formErrors.pincode ? 'border-red-400 focus:ring-red-300' : 'border-gray-300 focus:ring-[#123814]/20'
-                      }`}
-                    />
-                    {formErrors.pincode && <p className="text-[11px] text-red-500 font-medium mt-0.5">{formErrors.pincode}</p>}
-                  </div>
                 </div>
 
-                {/* Landmark / Notes (Optional) */}
+                {/* Pincode Field */}
                 <div>
                   <label className="block text-xs font-extrabold text-[#123814] mb-1">
-                    Landmark / Instructions <span className="text-gray-400 font-normal">(Optional)</span>
+                    Pincode (6 digits) <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Near Primary School / Milk Dairy"
+                    inputMode="numeric"
+                    placeholder="e.g. 416001"
+                    maxLength={6}
+                    value={customerAddress.pincode}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, '').slice(0, 6);
+                      setCustomerAddress({ ...customerAddress, pincode: digits });
+                      if (formErrors.pincode) setFormErrors({ ...formErrors, pincode: '' });
+                    }}
+                    className={`w-full px-3 py-2 text-xs rounded-xl border bg-white focus:outline-none focus:ring-2 ${
+                      formErrors.pincode ? 'border-red-400 focus:ring-red-300' : 'border-gray-300 focus:ring-[#123814]/20'
+                    }`}
+                  />
+                  {formErrors.pincode && <p className="text-[11px] text-red-500 font-medium mt-0.5">{formErrors.pincode}</p>}
+                </div>
+
+                {/* Landmark / Notes (Optional) */}
+                <div className="pb-2">
+                  <label className="block text-xs font-extrabold text-[#123814] mb-1">
+                    Landmark / Delivery Instructions <span className="text-gray-400 font-normal">(Optional)</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Near Primary School / Milk Dairy / Temple"
                     value={customerAddress.landmark}
                     onChange={(e) => setCustomerAddress({ ...customerAddress, landmark: e.target.value })}
                     className="w-full px-3 py-2 text-xs rounded-xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#123814]/20"
@@ -975,7 +1011,8 @@ export function CommerceHero({
                 <div className="bg-[#EFFDF0] p-4 rounded-2xl border border-[#123814]/15 text-left text-xs space-y-1.5 font-medium text-[#123814]">
                   <p>👤 <strong>Recipient:</strong> {customerAddress.fullName}</p>
                   <p>📞 <strong>Phone:</strong> {customerAddress.phone}</p>
-                  <p>📍 <strong>Deliver To:</strong> {customerAddress.deliveryAddress}, {customerAddress.cityDistrict} ({customerAddress.pincode})</p>
+                  <p>📍 <strong>Deliver To:</strong> {customerAddress.deliveryAddress}, Tal. {customerAddress.taluka}, Dist. {customerAddress.cityDistrict} ({customerAddress.pincode})</p>
+                  {customerAddress.landmark && <p>🚩 <strong>Landmark:</strong> {customerAddress.landmark}</p>}
                   <p>💰 <strong>Total Amount:</strong> <span className="font-bold text-[#E86A10]">₹{totalBillAmount.toLocaleString('en-IN')}</span></p>
                 </div>
                 <Button

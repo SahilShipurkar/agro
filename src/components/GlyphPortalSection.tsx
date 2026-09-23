@@ -7,6 +7,7 @@ interface GlyphPortalSectionProps {
   onNavigateAbout?: () => void;
   onNavigateProducts?: () => void;
   onNavigateDiscover?: () => void;
+  onNavigateStore?: () => void;
   word?: string;
   scrollLength?: number;
   interactive?: boolean;
@@ -21,6 +22,7 @@ export default function GlyphPortalSection({
   onNavigateAbout: _onNavigateAbout,
   onNavigateProducts: _onNavigateProducts,
   onNavigateDiscover,
+  onNavigateStore,
   word = "NAVBHARAT",
   scrollLength = 2.4,
   interactive = true,
@@ -69,7 +71,7 @@ export default function GlyphPortalSection({
         [data-slipstream-no]{display:inline-block;margin-right:.7rem;color:rgba(251,251,250,.85);font:500 .75rem ui-monospace,monospace;letter-spacing:.08em;transform:translateY(-.1em);} 
         @container(min-width:768px){[data-slipstream-features]{grid-template-columns:repeat(3,minmax(0,1fr));gap:3.5rem;}} 
       `}</style> 
-      {face ? <GlyphPortal word={word} fontFamily={face} fontWeight={700} style={{ fontFamily: face }} scrollLength={scrollLength} interactive={interactive} annotations={annotations} enterLabel="Explore Products" onEnterClick={onNavigateDiscover} front={<> 
+      {face ? <GlyphPortal word={word} fontFamily={face} fontWeight={700} style={{ fontFamily: face }} scrollLength={scrollLength} interactive={interactive} annotations={annotations} enterLabel="Explore Products" onEnterClick={onNavigateStore || onNavigateDiscover} front={<> 
           <div data-sublime-header><span data-sublime-logo>navbharat.</span><span data-sublime-category>Dairy & Livestock Nutrition</span></div> 
           <p data-sublime-eyebrow>A Tradition of Quality. A Legacy of Trust.</p> 
           <p data-sublime-support>Step into superior herd productivity.</p> 
