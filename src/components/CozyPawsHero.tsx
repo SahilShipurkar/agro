@@ -15,7 +15,7 @@ interface CozyPawsHeroProps {
 
 export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyPawsHeroProps = {}) {
   return (
-    <div className="h-screen w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
+    <div className="min-h-[100dvh] md:h-screen w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
       {/* HEADER WITH NAVBAR BELOW */}
       <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
         {/* Top Row: Logo, Brand Name & Cart Button */}
@@ -24,9 +24,9 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             <img
               src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+              className="w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
-            <span className="font-sans font-extrabold text-base sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+            <span className="font-sans font-extrabold text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
               Navbharat Agro Services
             </span>
           </div>
@@ -36,17 +36,17 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105"
+              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
               <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </button>
           </div>
         </div>
 
-        {/* Bottom Row: Navigation Bar Below Logo & Name */}
-        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
-          <div className="max-w-5xl mx-auto flex items-center justify-center sm:justify-between flex-wrap gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700">
-            <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap">
+        {/* Bottom Row: Navigation Bar Below Logo & Name (Horizontal swipe on mobile) */}
+        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-3 sm:px-8 lg:px-12">
+          <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-between overflow-x-auto scrollbar-none gap-4 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700 no-scrollbar py-0.5">
+            <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap px-1 py-0.5">
               Home
             </a>
             <a
@@ -57,23 +57,23 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
                   onNavigateAbout();
                 }
               }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
             >
               About Us
             </a>
-            <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Products
             </a>
-            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Gallery
             </a>
-            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Careers
             </a>
-            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Blog / Resources
             </a>
-            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Contact Us
             </a>
           </div>
@@ -226,18 +226,18 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
         {/* ------------------------------------------------------------- */}
         {/* MOBILE LAYOUT (below md) */}
         {/* ------------------------------------------------------------- */}
-        <div className="md:hidden flex flex-col h-full justify-between pt-2">
+        <div className="md:hidden flex flex-col h-full justify-between pt-3 pb-1">
           {/* Top section: Title, Subtitle, Button */}
           <div className="px-4 text-center z-20 flex flex-col items-center gap-2">
-            <h1 className="font-serif-display text-[#1a3d1a] text-[34px] leading-tight">
+            <h1 className="font-serif-display text-[#1a3d1a] text-2xl sm:text-3xl leading-tight">
               A Tradition of Quality. A Legacy of Trust.
             </h1>
-            <p className="text-gray-600 text-xs max-w-xs">
-              Discover top quality treats, cozy beds, and essential pet supplies.
+            <p className="text-gray-600 text-xs max-w-xs leading-relaxed">
+              Premium cattle feed, chelated minerals & essential dairy nutrition supplements.
             </p>
             <button
               onClick={() => document.getElementById('toonhub')?.scrollIntoView({ behavior: 'smooth' })}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] text-white text-xs font-semibold shadow-md mt-1 cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#E86A10] hover:bg-[#d45e0d] active:scale-95 text-white text-xs font-bold shadow-md mt-1 cursor-pointer"
             >
               <ArrowRight className="w-3.5 h-3.5" />
               Explore Products
@@ -249,54 +249,56 @@ export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyP
             {/* Product Card */}
             <div
               onClick={onNavigateStore}
-              className="w-[110px] bg-white/50 p-2 rounded-xl border border-white/70 shadow-sm flex flex-col items-center cursor-pointer hover:bg-white/80 transition-all select-none hover:scale-105"
+              className="w-[120px] bg-white/70 backdrop-blur-sm p-2 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center cursor-pointer hover:bg-white transition-all select-none active:scale-95"
             >
-              <div className="w-full aspect-square rounded-lg overflow-hidden relative bg-white/40 p-1">
+              <div className="w-full aspect-square rounded-xl overflow-hidden relative bg-white/60 p-1 flex items-center justify-center">
                 <img
                   src={getAssetUrl("/heatmax.png")}
                   alt="Heat Max Booster"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <span className="text-[10px] font-medium text-gray-800 mt-1 line-clamp-1">Heat Max</span>
-              <span className="text-xs font-bold text-[#1a3d1a]">499rs</span>
+              <span className="text-[11px] font-bold text-gray-800 mt-1 line-clamp-1">Heat Max</span>
+              <span className="text-xs font-extrabold text-[#1a3d1a]">₹499</span>
             </div>
 
             {/* Video Card */}
-            <div className="w-[110px] bg-white/50 p-2 rounded-xl border border-white/70 shadow-sm flex flex-col items-center text-center">
-              <div className="w-full aspect-[3/4] rounded-lg overflow-hidden relative">
+            <div className="w-[120px] bg-white/70 backdrop-blur-sm p-2 rounded-2xl border border-white/80 shadow-sm flex flex-col items-center text-center">
+              <div className="w-full aspect-[4/3] rounded-xl overflow-hidden relative">
                 <img
                   src="https://polo-pecan-73837341.figma.site/_assets/v11/76be6ec3a93a703b15e9cc01e764a4e3f9d7d2c0.png"
                   alt="Review"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white">
-                  <Play className="w-3 h-3 fill-white ml-0.5" />
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white shadow-md">
+                    <Play className="w-3.5 h-3.5 fill-white ml-0.5" />
+                  </div>
                 </div>
               </div>
-              <span className="text-[9px] text-gray-700 mt-1 line-clamp-1">Watch Reviews</span>
+              <span className="text-[10px] font-semibold text-gray-700 mt-1 line-clamp-1">Farmer Reviews</span>
             </div>
           </div>
 
           {/* Stats row */}
-          <div className="px-4 flex items-center justify-center gap-4 text-xs font-semibold text-[#1a3d1a] z-20">
-            <div className="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-full border border-white">
+          <div className="px-4 flex items-center justify-center gap-3 text-xs font-semibold text-[#1a3d1a] z-20">
+            <div className="flex items-center gap-1.5 bg-white/85 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-xs">
               <div className="flex items-center -space-x-1.5">
                 <img
                   src="https://polo-pecan-73837341.figma.site/_assets/v11/e62173d41f91350a59628e8a9a55ae078a886fb9.png?w=128"
                   alt="Avatar"
-                  className="w-5 h-5 rounded-full object-cover"
+                  className="w-5 h-5 rounded-full object-cover border border-white"
                 />
-                <div className="w-5 h-5 rounded-full bg-[#1a3d1a] flex items-center justify-center">
-                  <Plus className="w-2.5 h-2.5 text-white" />
+                <div className="w-5 h-5 rounded-full bg-[#1a3d1a] flex items-center justify-center text-white text-[9px] font-bold">
+                  +
                 </div>
               </div>
-              <span>98K+ Happy Pets</span>
+              <span className="font-bold">98K+ Farmers</span>
             </div>
-            <div className="h-4 w-px bg-gray-300" />
-            <div className="flex items-center gap-1 bg-white/80 px-3 py-1.5 rounded-full border border-white">
-              <Star className="w-4 h-4 text-[#E86A10] fill-[#E86A10]" />
-              <span>4.6 Rating</span>
+            <div className="h-4 w-px bg-[#123814]/20" />
+            <div className="flex items-center gap-1.5 bg-white/85 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white shadow-xs">
+              <Star className="w-3.5 h-3.5 text-[#E86A10] fill-[#E86A10]" />
+              <span className="font-bold">4.8 Rating</span>
             </div>
           </div>
 

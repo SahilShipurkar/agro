@@ -145,9 +145,9 @@ export default function AboutUs({
             <img
               src={getAssetUrl("/Whitte Circle logo(3).png")}
               alt="Navbharat Agro Services Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
+              className="w-9 h-9 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
             />
-            <span className="font-sans font-extrabold text-base sm:text-lg lg:text-xl text-[#123814] tracking-tight">
+            <span className="font-sans font-extrabold text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
               Navbharat Agro Services
             </span>
           </div>
@@ -157,7 +157,7 @@ export default function AboutUs({
             <button
               aria-label="Cart"
               onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105"
+              className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-gray-300 flex items-center justify-center text-gray-700 hover:border-gray-400 bg-white/50 transition-colors cursor-pointer hover:scale-105 active:scale-95"
             >
               <ShoppingCart className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </button>
@@ -165,8 +165,8 @@ export default function AboutUs({
         </div>
 
         {/* Bottom Row: Navigation Bar Below Logo & Name */}
-        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
-          <div className="max-w-5xl mx-auto flex items-center justify-center sm:justify-between flex-wrap gap-3 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700">
+        <nav className="w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-3 sm:px-8 lg:px-12">
+          <div className="max-w-5xl mx-auto flex items-center justify-start sm:justify-between overflow-x-auto scrollbar-none gap-4 sm:gap-6 text-xs sm:text-sm font-semibold text-gray-700 no-scrollbar py-0.5">
             <a
               href="#home"
               onClick={(e) => {
@@ -175,13 +175,13 @@ export default function AboutUs({
                   onNavigateHome();
                 }
               }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
             >
               Home
             </a>
             <a
               href="#about"
-              className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap cursor-pointer"
+              className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
             >
               About Us
             </a>
@@ -193,20 +193,20 @@ export default function AboutUs({
                   onNavigateProducts();
                 }
               }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
+              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer px-1 py-0.5"
             >
               Products
             </a>
-            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Gallery
             </a>
-            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Careers
             </a>
-            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Blog / Resources
             </a>
-            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
+            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap px-1 py-0.5">
               Contact Us
             </a>
           </div>

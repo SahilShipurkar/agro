@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
 
@@ -226,13 +226,40 @@ export default function ToonhubCarousel({
 
   const currentProduct = PRODUCTS[activeIndex];
 
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsPaused(true);
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setIsPaused(false);
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+
+    // Horizontal swipe threshold 40px
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+      if (diffX > 0) {
+        navigate('next');
+      } else {
+        navigate('prev');
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
   return (
     <div
       className="relative w-full overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      onTouchStart={() => setIsPaused(true)}
-      onTouchEnd={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       style={{
         backgroundColor: currentProduct.bg,
         transition: 'background-color 650ms cubic-bezier(0.4,0,0.2,1)',
@@ -240,8 +267,7 @@ export default function ToonhubCarousel({
       }}
     >
       <div
-        className="relative w-full"
-        style={{ height: '100vh', overflow: 'hidden' }}
+        className="relative w-full h-[100dvh] md:h-screen overflow-hidden"
       >
         {/* Grain overlay */}
         <div
@@ -260,9 +286,9 @@ export default function ToonhubCarousel({
           className="absolute inset-x-0 flex items-center justify-center pointer-events-none select-none"
           style={{
             zIndex: 2,
-            top: '18%',
+            top: isMobile ? '12%' : '18%',
             fontFamily: "'Anton', sans-serif",
-            fontSize: 'clamp(60px, 18vw, 320px)',
+            fontSize: 'clamp(44px, 16vw, 320px)',
             fontWeight: 900,
             color: 'white',
             opacity: 1,
@@ -315,92 +341,165 @@ export default function ToonhubCarousel({
           })}
         </div>
 
-        {/* Bottom-left product info text + nav buttons */}
-        <div
-          className="absolute bottom-4 left-4 sm:bottom-6 sm:left-8 lg:left-12 flex flex-col gap-2.5"
-          style={{ zIndex: 60, maxWidth: isMobile ? '300px' : '420px' }}
-        >
-          {/* Glassmorphic Card Container */}
+        {/* ------------------------------------------------------------- */}
+        {/* DESKTOP (sm+) CONTROLS LAYOUT */}
+        {/* ------------------------------------------------------------- */}
+        <div className="hidden sm:block">
+          {/* Bottom-left product info text */}
           <div
-            key={currentProduct.id}
-            className="p-4 sm:p-5 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] transition-all duration-300"
+            className="absolute bottom-6 left-8 lg:left-12 flex flex-col gap-2.5"
+            style={{ zIndex: 60, maxWidth: '420px' }}
           >
-            <span className="inline-block text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-white bg-black/30 px-2.5 py-0.5 rounded-full mb-1.5 backdrop-blur-sm shadow-inner">
-              {currentProduct.subtitle}
-            </span>
-            <h2 className="font-extrabold uppercase mb-1.5 text-lg sm:text-2xl text-white tracking-wide drop-shadow-md">
-              {currentProduct.name}
-            </h2>
-            <p className="text-xs sm:text-sm text-white/95 mb-2.5 leading-relaxed font-medium drop-shadow-sm">
-              {currentProduct.description}
-            </p>
-            <div className="inline-flex flex-wrap items-center gap-2 text-xs text-white bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/25 shadow-sm">
-              <div>
-                <span className="font-bold text-white">Ideal For:</span>{' '}
-                {currentProduct.idealFor}
-              </div>
-              {currentProduct.form && (
-                <div className="border-l border-white/30 pl-2">
-                  <span className="font-bold text-white">Form:</span>{' '}
-                  {currentProduct.form}
+            <div
+              key={currentProduct.id}
+              className="p-5 rounded-2xl bg-white/20 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.25)] transition-all duration-300"
+            >
+              <span className="inline-block text-xs font-semibold tracking-wider uppercase text-white bg-black/30 px-2.5 py-0.5 rounded-full mb-1.5 backdrop-blur-sm shadow-inner">
+                {currentProduct.subtitle}
+              </span>
+              <h2 className="font-extrabold uppercase mb-1.5 text-2xl text-white tracking-wide drop-shadow-md">
+                {currentProduct.name}
+              </h2>
+              <p className="text-sm text-white/95 mb-2.5 leading-relaxed font-medium drop-shadow-sm">
+                {currentProduct.description}
+              </p>
+              <div className="inline-flex flex-wrap items-center gap-2 text-xs text-white bg-black/30 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/25 shadow-sm">
+                <div>
+                  <span className="font-bold text-white">Ideal For:</span>{' '}
+                  {currentProduct.idealFor}
                 </div>
-              )}
+                {currentProduct.form && (
+                  <div className="border-l border-white/30 pl-2">
+                    <span className="font-bold text-white">Form:</span>{' '}
+                    {currentProduct.form}
+                  </div>
+                )}
+              </div>
             </div>
+          </div>
+
+          {/* Center Navigation Arrows */}
+          <div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center gap-4 pointer-events-auto"
+            style={{ zIndex: 60 }}
+          >
+            <button
+              onClick={() => navigate('prev')}
+              aria-label="Previous product"
+              className="w-12 h-12 rounded-full border border-white/80 bg-black/30 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-110 hover:bg-black/50 active:scale-95 shadow-lg"
+            >
+              <ArrowLeft size={20} strokeWidth={2.5} />
+            </button>
+            <button
+              onClick={() => navigate('next')}
+              aria-label="Next product"
+              className="w-12 h-12 rounded-full border border-white/80 bg-black/30 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-110 hover:bg-black/50 active:scale-95 shadow-lg"
+            >
+              <ArrowRight size={20} strokeWidth={2.5} />
+            </button>
+          </div>
+
+          {/* Bottom-right link "DISCOVER IT" */}
+          <div
+            className="absolute bottom-10 right-10"
+            style={{ zIndex: 60 }}
+          >
+            <a
+              href="#discover"
+              onClick={(e) => {
+                if (onNavigateDiscover) {
+                  e.preventDefault();
+                  onNavigateDiscover();
+                }
+              }}
+              className="group inline-flex items-center gap-3 text-white no-underline uppercase cursor-pointer select-none transition-all duration-300 animate-live-pulse hover:scale-110 active:scale-95"
+              style={{
+                fontFamily: "'Anton', sans-serif",
+                fontSize: 'clamp(28px, 4.5vw, 58px)',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+                lineHeight: 1,
+              }}
+              aria-label="Discover all products - Click here"
+            >
+              <span className="drop-shadow-lg group-hover:drop-shadow-[0_0_18px_rgba(255,255,255,0.9)] transition-all">
+                DISCOVER IT
+              </span>
+              <ArrowRight
+                className="w-8 h-8 animate-arrow-bounce drop-shadow-md group-hover:translate-x-2 transition-transform duration-300"
+                strokeWidth={2.5}
+              />
+            </a>
           </div>
         </div>
 
-        {/* Center Navigation Arrows */}
-        <div
-          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center gap-3 sm:gap-4 pointer-events-auto"
-          style={{ zIndex: 60 }}
-        >
-          <button
-            onClick={() => navigate('prev')}
-            aria-label="Previous product"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/80 bg-black/30 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-110 hover:bg-black/50 active:scale-95 shadow-lg"
+        {/* ------------------------------------------------------------- */}
+        {/* MOBILE (below sm) DEDICATED TOUCH-FRIENDLY CONTROLS */}
+        {/* ------------------------------------------------------------- */}
+        <div className="sm:hidden absolute bottom-3 inset-x-3 z-[60] flex flex-col gap-2">
+          {/* Mobile Info Card */}
+          <div
+            key={currentProduct.id}
+            className="p-3.5 rounded-2xl bg-black/30 backdrop-blur-xl border border-white/30 shadow-2xl text-white"
           >
-            <ArrowLeft size={20} strokeWidth={2.5} />
-          </button>
-          <button
-            onClick={() => navigate('next')}
-            aria-label="Next product"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/80 bg-black/30 backdrop-blur-md text-white flex items-center justify-center cursor-pointer select-none transition-all duration-200 hover:scale-110 hover:bg-black/50 active:scale-95 shadow-lg"
-          >
-            <ArrowRight size={20} strokeWidth={2.5} />
-          </button>
-        </div>
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <span className="text-[10px] font-bold tracking-wider uppercase text-white bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                {currentProduct.subtitle}
+              </span>
+              <span className="text-[10px] font-bold text-white/80">
+                {activeIndex + 1} / {PRODUCTS.length}
+              </span>
+            </div>
 
-        {/* Bottom-right link "DISCOVER IT" */}
-        <div
-          className="absolute bottom-6 right-4 sm:bottom-12 sm:right-10"
-          style={{ zIndex: 60 }}
-        >
-          <a
-            href="#discover"
-            onClick={(e) => {
-              if (onNavigateDiscover) {
-                e.preventDefault();
-                onNavigateDiscover();
-              }
-            }}
-            className="group inline-flex items-center gap-2 sm:gap-3 text-white no-underline uppercase cursor-pointer select-none transition-all duration-300 animate-live-pulse hover:scale-110 active:scale-95"
-            style={{
-              fontFamily: "'Anton', sans-serif",
-              fontSize: 'clamp(22px, 4.5vw, 58px)',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
-              lineHeight: 1,
-            }}
-            aria-label="Discover all products - Click here"
-          >
-            <span className="drop-shadow-lg group-hover:drop-shadow-[0_0_18px_rgba(255,255,255,0.9)] transition-all">
-              DISCOVER IT
-            </span>
-            <ArrowRight
-              className="w-5 h-5 sm:w-8 sm:h-8 animate-arrow-bounce drop-shadow-md group-hover:translate-x-2 transition-transform duration-300"
-              strokeWidth={2.5}
-            />
-          </a>
+            <h2 className="font-extrabold uppercase text-base text-white tracking-wide leading-tight mb-1">
+              {currentProduct.name}
+            </h2>
+
+            <p className="text-xs text-white/90 leading-snug line-clamp-2 mb-2">
+              {currentProduct.description}
+            </p>
+
+            <div className="flex items-center justify-between text-[11px] text-white/95 bg-black/30 px-2.5 py-1 rounded-xl border border-white/20">
+              <span className="font-semibold truncate">{currentProduct.idealFor}</span>
+              {currentProduct.form && (
+                <span className="border-l border-white/30 pl-2 font-bold shrink-0">{currentProduct.form}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Mobile Bottom Bar: Prev / Next Buttons + Discover It CTA */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => navigate('prev')}
+                aria-label="Previous product"
+                className="w-10 h-10 rounded-full border border-white/60 bg-black/40 backdrop-blur-md text-white flex items-center justify-center active:scale-90 shadow-md cursor-pointer"
+              >
+                <ArrowLeft size={18} strokeWidth={2.5} />
+              </button>
+              <button
+                onClick={() => navigate('next')}
+                aria-label="Next product"
+                className="w-10 h-10 rounded-full border border-white/60 bg-black/40 backdrop-blur-md text-white flex items-center justify-center active:scale-90 shadow-md cursor-pointer"
+              >
+                <ArrowRight size={18} strokeWidth={2.5} />
+              </button>
+            </div>
+
+            <a
+              href="#discover"
+              onClick={(e) => {
+                if (onNavigateDiscover) {
+                  e.preventDefault();
+                  onNavigateDiscover();
+                }
+              }}
+              className="flex-1 max-w-[190px] h-10 inline-flex items-center justify-center gap-2 rounded-full bg-[#E86A10] text-white font-bold text-xs uppercase tracking-wide shadow-lg active:scale-95 transition-transform"
+            >
+              <span>Discover All</span>
+              <ArrowRight size={15} strokeWidth={2.5} />
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -203,6 +203,7 @@ export function ProductRevealCard({
         initial="rest" 
         whileHover="hover" 
         variants={containerVariants} 
+        onClick={handleOpenDetails}
         className={cn( 
           "relative w-full max-w-sm rounded-3xl border-2 border-[#123814]/15 bg-white text-card-foreground overflow-hidden", 
           "shadow-lg shadow-black/5 cursor-pointer group flex flex-col justify-between", 
@@ -250,7 +251,7 @@ export function ProductRevealCard({
         </div> 
    
         {/* Content */} 
-        <div className="p-6 space-y-3 flex-1 flex flex-col justify-between"> 
+        <div className="p-5 sm:p-6 space-y-3 flex-1 flex flex-col justify-between"> 
           <div>
             {/* Rating & Price Badge */} 
             <div className="flex items-center justify-between gap-2 mb-1.5"> 
@@ -291,14 +292,56 @@ export function ProductRevealCard({
             </div>
           </div>
 
-          <div className="pt-2 border-t border-[#123814]/10 flex items-center justify-between"> 
-            <span className="text-xs font-bold text-[#123814] bg-[#EFFDF0] px-3 py-1 rounded-full border border-[#123814]/15">
-              📦 {packaging}
-            </span> 
-            <span className="text-xs font-extrabold text-[#E86A10]">
-              ₹{currentUnitPrice.toLocaleString('en-IN')}
-            </span>
-          </div> 
+          <div>
+            <div className="pt-2 border-t border-[#123814]/10 flex items-center justify-between"> 
+              <span className="text-xs font-bold text-[#123814] bg-[#EFFDF0] px-3 py-1 rounded-full border border-[#123814]/15">
+                📦 {packaging}
+              </span> 
+              <span className="text-xs font-extrabold text-[#E86A10]">
+                ₹{currentUnitPrice.toLocaleString('en-IN')}
+              </span>
+            </div> 
+
+            {/* Direct Touch Action Buttons for Mobile Screen */}
+            <div className="sm:hidden pt-3 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAdd();
+                }}
+                className={cn(
+                  "flex-1 py-2 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95",
+                  addedSuccess
+                    ? "bg-[#25D366] text-white"
+                    : "bg-[#E86A10] text-white hover:bg-[#d05c0b]"
+                )}
+              >
+                {addedSuccess ? (
+                  <>
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Added!</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-3.5 h-3.5" />
+                    <span>Add to Cart</span>
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenDetails();
+                }}
+                className="py-2 px-3 rounded-full text-xs font-bold border border-[#123814]/30 text-[#123814] bg-white hover:bg-gray-50 flex items-center justify-center gap-1 shadow-xs active:scale-95"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>Details</span>
+              </button>
+            </div>
+          </div>
         </div> 
    
         {/* Reveal Overlay */} 

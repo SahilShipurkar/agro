@@ -651,33 +651,33 @@ export function CommerceHero({
           </motion.section>
         </div>
 
-      {/* Category Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-7xl mx-auto mt-6">
+      {/* Category Cards (2 columns on mobile, 4 on desktop) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 max-w-7xl mx-auto mt-6">
         {categories.map((category, index) => (
           <motion.div
             key={category.title}
-            className="group relative bg-white border-2 border-[#123814]/15 rounded-3xl p-6 min-h-[260px] w-full overflow-hidden shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-[#123814]/30 cursor-pointer"
+            className="group relative bg-white border-2 border-[#123814]/15 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 min-h-[190px] sm:min-h-[260px] w-full overflow-hidden shadow-md sm:shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-[#123814]/30 cursor-pointer flex flex-col justify-between"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
             onClick={() => scrollToProducts(category.filterKey)}
           >
             <div className="relative z-20">
-              <h2 className="text-xl sm:text-2xl font-extrabold text-[#123814] group-hover:text-[#E86A10] transition-colors duration-300">
+              <h2 className="text-sm sm:text-2xl font-extrabold text-[#123814] group-hover:text-[#E86A10] transition-colors duration-300 leading-tight">
                 {category.title}
               </h2>
-              <p className="text-xs text-gray-600 font-medium mt-1">
+              <p className="text-[10px] sm:text-xs text-gray-600 font-medium mt-0.5 sm:mt-1 line-clamp-1">
                 {category.subtitle}
               </p>
-              <div className="mt-6 flex items-center justify-center p-2">
+              <div className="mt-2 sm:mt-6 flex items-center justify-center p-1 sm:p-2">
                 <img
                   src={getAssetUrl(category.image)}
                   alt={category.title}
-                  className="w-auto h-36 max-h-36 object-contain group-hover:scale-110 transition-all duration-500 drop-shadow-md"
+                  className="w-auto h-20 sm:h-36 max-h-36 object-contain group-hover:scale-110 transition-all duration-500 drop-shadow-md"
                 />
               </div>
-              <div className="absolute bottom-3 right-3 w-10 h-10 bg-[#123814] text-white rounded-full flex items-center justify-center group-hover:bg-[#E86A10] group-hover:scale-110 transition-all duration-300 shadow-md">
-                <ArrowUpRight className="w-5 h-5" />
+              <div className="absolute bottom-1 right-1 sm:bottom-3 sm:right-3 w-7 h-7 sm:w-10 sm:h-10 bg-[#123814] text-white rounded-full flex items-center justify-center group-hover:bg-[#E86A10] group-hover:scale-110 transition-all duration-300 shadow-md">
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
               </div>
             </div>
           </motion.div>
@@ -685,25 +685,25 @@ export function CommerceHero({
       </div>
 
       {/* Store Products Reveal Cards Section */}
-      <div id="store-products" className="mt-14 mb-10 max-w-7xl mx-auto px-2 scroll-mt-6">
-        <div className="text-center max-w-2xl mx-auto mb-8">
+      <div id="store-products" className="mt-10 sm:mt-14 mb-10 max-w-7xl mx-auto px-2 scroll-mt-6">
+        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
           <span className="text-xs font-extrabold uppercase tracking-widest text-[#E86A10] bg-[#E86A10]/10 px-3 py-1 rounded-full border border-[#E86A10]/20">
             Complete Dairy Nutrition Range
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#123814] tracking-tight mt-3">
             Explore All Store Products
           </h2>
-          <p className="text-sm text-[#1e4d21] font-medium mt-2 leading-relaxed">
-            Select a category filter or hover over any product card to select variant, set quantity, and add to cart with real-time billing!
+          <p className="text-xs sm:text-sm text-[#1e4d21] font-medium mt-2 leading-relaxed">
+            Select a category filter or tap any product card to select variant, set quantity, and add to cart with real-time billing!
           </p>
 
           {/* Filter Pills */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          <div className="mt-5 flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 py-1 px-1">
             {filterTabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveFilter(tab.key)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${activeFilter === tab.key
+                className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap active:scale-95 ${activeFilter === tab.key
                     ? "bg-[#123814] text-white shadow-md scale-105"
                     : "bg-white text-[#123814] border border-[#123814]/20 hover:border-[#123814]/50 hover:bg-[#EFFDF0]"
                   }`}
@@ -714,7 +714,7 @@ export function CommerceHero({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 justify-items-center">
           {filteredProducts.map((product) => (
             <ProductRevealCard
               key={product.name}
@@ -726,11 +726,37 @@ export function CommerceHero({
       </div>
     </main>
 
+      {/* Mobile Floating Cart Summary Bar */}
+      {totalCartCount > 0 && !isCartOpen && (
+        <div className="sm:hidden fixed bottom-4 inset-x-3 z-40 animate-fade-up">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="w-full bg-[#123814] text-white py-3 px-4 rounded-2xl shadow-2xl flex items-center justify-between border border-white/20 active:scale-98 cursor-pointer"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="relative">
+                <ShoppingBasket className="w-5 h-5 text-white" />
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#E86A10] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {totalCartCount}
+                </span>
+              </div>
+              <span className="text-xs font-bold">{totalCartCount} Item{totalCartCount > 1 ? 's' : ''}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-black text-[#E86A10]">₹{totalBillAmount.toLocaleString('en-IN')}</span>
+              <span className="text-xs font-bold bg-[#E86A10] text-white px-2.5 py-1 rounded-full flex items-center gap-1">
+                Cart <ArrowRight className="w-3 h-3" />
+              </span>
+            </div>
+          </button>
+        </div>
+      )}
+
       {/* Slide-out Cart & Delivery Address Drawer */}
       <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-        <SheetContent side="right" className="w-[340px] sm:w-[480px] p-0 bg-white/98 backdrop-blur-xl flex flex-col justify-between border-l-2 border-[#123814]/20">
+        <SheetContent side="right" className="w-full sm:w-[480px] max-w-full p-0 bg-white/98 backdrop-blur-xl flex flex-col justify-between border-l-2 border-[#123814]/20">
           <div>
-            <SheetHeader className="p-5 sm:p-6 border-b border-[#123814]/10 bg-[#EFFDF0]">
+            <SheetHeader className="p-4 sm:p-6 border-b border-[#123814]/10 bg-[#EFFDF0]">
               <SheetTitle className="flex items-center justify-between">
                 {checkoutStep === 'address' ? (
                   <div className="flex items-center gap-2">

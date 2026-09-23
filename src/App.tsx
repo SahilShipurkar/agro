@@ -105,7 +105,7 @@ export default function App() {
   return (
     <div className="w-full bg-[#EFFDF0] min-h-screen overflow-x-hidden flex flex-col">
       {/* Page Section 1: CozyPaws Hero (First Page) */}
-      <section id="cozypaws" className="h-screen w-full relative">
+      <section id="cozypaws" className="min-h-[100dvh] md:h-screen w-full relative">
         <CozyPawsHero
           onNavigateAbout={() => navigateTo('about')}
           onNavigateStore={() => navigateTo('store')}
@@ -113,7 +113,7 @@ export default function App() {
       </section>
 
       {/* Page Section 2: TOONHUB Carousel (Appears on Scroll) */}
-      <section id="toonhub" className="h-screen w-full relative">
+      <section id="toonhub" className="min-h-[100dvh] md:h-screen w-full relative">
         <ToonhubCarousel
           onSwitchToCozyPaws={() => navigateTo('home', 'cozypaws')}
           onNavigateDiscover={() => navigateTo('discover')}
