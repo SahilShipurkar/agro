@@ -2,18 +2,14 @@ import { useState, useEffect } from 'react';
 import CozyPawsHero from './components/CozyPawsHero';
 import ToonhubCarousel from './components/ToonhubCarousel';
 import AboutUs from './components/AboutUs';
-import DiscoverPage from './components/DiscoverPage';
-import GlyphPortalSection from './components/GlyphPortalSection';
 import Footer from './components/Footer';
 import { CommerceHero } from './components/ui/commerce-hero';
 import { LanguageProvider } from './lib/languageContext';
 
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'discover' | 'store'>(() => {
+  const [currentPage, setCurrentPage] = useState<'home' | 'store'>(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.hash === '#about') return 'about';
-      if (window.location.hash === '#discover') return 'discover';
-      if (window.location.hash === '#store') return 'store';
+      if (window.location.hash === '#store' || window.location.hash === '#discover') return 'store';
     }
     return 'home';
   });
@@ -21,10 +17,11 @@ function AppContent() {
   useEffect(() => {
     const handleHashChange = () => {
       if (window.location.hash === '#about') {
-        setCurrentPage('about');
-      } else if (window.location.hash === '#discover') {
-        setCurrentPage('discover');
-      } else if (window.location.hash === '#store') {
+        setCurrentPage('home');
+        setTimeout(() => {
+          document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+      } else if (window.location.hash === '#store' || window.location.hash === '#discover') {
         setCurrentPage('store');
       } else {
         setCurrentPage('home');
@@ -36,8 +33,24 @@ function AppContent() {
   }, []);
 
   const navigateTo = (page: 'home' | 'about' | 'discover' | 'store', sectionId?: string) => {
+    if (page === 'about') {
+      setCurrentPage('home');
+      window.location.hash = 'about';
+      setTimeout(() => {
+        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+      return;
+    }
+
+    if (page === 'discover' || page === 'store') {
+      setCurrentPage('store');
+      window.location.hash = 'store';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     setCurrentPage(page);
-    window.location.hash = page === 'about' ? 'about' : page === 'discover' ? 'discover' : page === 'store' ? 'store' : sectionId ? sectionId : '';
+    window.location.hash = sectionId ? sectionId : '';
     if (page === 'home') {
       setTimeout(() => {
         if (sectionId) {
@@ -51,45 +64,6 @@ function AppContent() {
     }
   };
 
-  if (currentPage === 'about') {
-    return (
-      <div className="w-full bg-[#EFFDF0] min-h-screen flex flex-col justify-between">
-        <AboutUs
-          onNavigateHome={() => navigateTo('home', 'cozypaws')}
-          onNavigateProducts={() => navigateTo('home', 'toonhub')}
-          onNavigateStore={() => navigateTo('store')}
-        />
-        <Footer
-          onNavigateHome={() => navigateTo('home', 'cozypaws')}
-          onNavigateAbout={() => navigateTo('about')}
-          onNavigateProducts={() => navigateTo('home', 'toonhub')}
-          onNavigateDiscover={() => navigateTo('discover')}
-          onNavigateStore={() => navigateTo('store')}
-        />
-      </div>
-    );
-  }
-
-  if (currentPage === 'discover') {
-    return (
-      <div className="w-full bg-[#EFFDF0] min-h-screen flex flex-col justify-between">
-        <DiscoverPage
-          onNavigateHome={() => navigateTo('home', 'cozypaws')}
-          onNavigateAbout={() => navigateTo('about')}
-          onNavigateProducts={() => navigateTo('home', 'toonhub')}
-          onNavigateStore={() => navigateTo('store')}
-        />
-        <Footer
-          onNavigateHome={() => navigateTo('home', 'cozypaws')}
-          onNavigateAbout={() => navigateTo('about')}
-          onNavigateProducts={() => navigateTo('home', 'toonhub')}
-          onNavigateDiscover={() => navigateTo('discover')}
-          onNavigateStore={() => navigateTo('store')}
-        />
-      </div>
-    );
-  }
-
   if (currentPage === 'store') {
     return (
       <div className="w-full bg-[#EFFDF0] min-h-screen">
@@ -97,7 +71,7 @@ function AppContent() {
           onNavigateHome={() => navigateTo('home', 'cozypaws')}
           onNavigateAbout={() => navigateTo('about')}
           onNavigateProducts={() => navigateTo('home', 'toonhub')}
-          onNavigateDiscover={() => navigateTo('discover')}
+          onNavigateDiscover={() => navigateTo('store')}
         />
       </div>
     );
@@ -117,15 +91,17 @@ function AppContent() {
       <section id="toonhub" className="h-[100svh] min-h-[100svh] max-h-[100svh] md:h-screen md:min-h-screen md:max-h-none w-full relative snap-start snap-always overflow-hidden">
         <ToonhubCarousel
           onSwitchToCozyPaws={() => navigateTo('home', 'cozypaws')}
-          onNavigateDiscover={() => navigateTo('discover')}
+          onNavigateDiscover={() => navigateTo('store')}
         />
       </section>
 
-      {/* Page Section 3: Glyph Portal (Interactive section below Product page) */}
-      <section id="glyph-portal" className="w-full relative">
-        <GlyphPortalSection
+      {/* Page Section 3: About Us (Shown directly on landing page to make it longer & informative) */}
+      <section id="about" className="w-full relative">
+        <AboutUs
+          embedded={true}
+          onNavigateHome={() => navigateTo('home', 'cozypaws')}
+          onNavigateProducts={() => navigateTo('home', 'toonhub')}
           onNavigateStore={() => navigateTo('store')}
-          onNavigateDiscover={() => navigateTo('discover')}
         />
       </section>
 
@@ -134,7 +110,7 @@ function AppContent() {
         onNavigateHome={() => navigateTo('home', 'cozypaws')}
         onNavigateAbout={() => navigateTo('about')}
         onNavigateProducts={() => navigateTo('home', 'toonhub')}
-        onNavigateDiscover={() => navigateTo('discover')}
+        onNavigateDiscover={() => navigateTo('store')}
         onNavigateStore={() => navigateTo('store')}
       />
     </div>

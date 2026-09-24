@@ -295,7 +295,7 @@ export default function ToonhubCarousel({
             style={{ zIndex: 60 }}
           >
             <a
-              href="#discover"
+              href="#store"
               onClick={(e) => {
                 if (onNavigateDiscover) {
                   e.preventDefault();
@@ -377,7 +377,7 @@ export default function ToonhubCarousel({
             </div>
 
             <a
-              href="#discover"
+              href="#store"
               onClick={(e) => {
                 if (onNavigateDiscover) {
                   e.preventDefault();
