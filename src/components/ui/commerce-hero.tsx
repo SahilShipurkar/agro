@@ -1,12 +1,11 @@
 "use client";
-import { useState } from "react";
-import { ArrowUpRight, Menu, Search, ShoppingBasket, Trash2, Plus, Minus, MessageSquare, Receipt, ArrowLeft, ArrowRight, MapPin, User, Phone, Building2, CheckCircle2 } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { ArrowUpRight, Search, ShoppingBasket, ShoppingBag, Trash2, Plus, Minus, MessageSquare, Receipt, ArrowLeft, ArrowRight, MapPin, User, Phone, Building2, CheckCircle2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -14,8 +13,9 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ProductRevealCard } from "@/components/ui/product-reveal-card";
 import { getAssetUrl } from "@/lib/utils";
 import { useLanguage } from "@/lib/languageContext";
-import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 import { getStoreCategories, getStoreProducts } from "@/lib/productsData";
+import { getLocalCachedPrices, fetchLivePrices, applyLivePrices } from "@/lib/priceStore";
+import GlobalNavbar from "@/components/GlobalNavbar";
 
 interface CommerceHeroProps {
   onNavigateHome?: () => void;
@@ -49,9 +49,26 @@ export function CommerceHero({
 }: CommerceHeroProps = {}) {
   const { language, t } = useLanguage();
   const categories = getStoreCategories(language);
-  const storeProducts = getStoreProducts(language);
+  const baseStoreProducts = useMemo(() => getStoreProducts(language), [language]);
+  const [customPrices, setCustomPrices] = useState(() => getLocalCachedPrices());
+
+  useEffect(() => {
+    fetchLivePrices().then((live) => setCustomPrices(live)).catch(() => {});
+
+    const onPricesUpdated = () => {
+      setCustomPrices(getLocalCachedPrices());
+    };
+    window.addEventListener('navbharat_prices_updated', onPricesUpdated);
+    return () => window.removeEventListener('navbharat_prices_updated', onPricesUpdated);
+  }, []);
+
+  const storeProducts = useMemo(
+    () => applyLivePrices(baseStoreProducts, customPrices),
+    [baseStoreProducts, customPrices]
+  );
 
   const [activeFilter, setActiveFilter] = useState<string>("All");
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState<'cart' | 'address' | 'success'>('cart');
@@ -256,9 +273,20 @@ export function CommerceHero({
     }
   };
 
-  const filteredProducts = activeFilter === "All"
-    ? storeProducts
-    : storeProducts.filter(p => p.category.toLowerCase().includes(activeFilter.toLowerCase()) || activeFilter.toLowerCase().includes(p.category.toLowerCase()));
+  const filteredProducts = useMemo(() => {
+    return storeProducts.filter((p) => {
+      const matchesCat =
+        activeFilter === "All" ||
+        p.category.toLowerCase().includes(activeFilter.toLowerCase()) ||
+        activeFilter.toLowerCase().includes(p.category.toLowerCase());
+      const matchesSearch =
+        !searchQuery.trim() ||
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCat && matchesSearch;
+    });
+  }, [storeProducts, activeFilter, searchQuery]);
 
   const filterTabs = [
     { label: t('store.filterAll', 'All Products'), key: "All" },
@@ -271,133 +299,77 @@ export function CommerceHero({
 
   return (
     <div className="w-full min-h-screen font-['Inter',sans-serif] bg-[#EFFDF0]">
-      {/* Sticky Top Navigation Bar */}
-      <header className="sticky top-0 z-40 w-full bg-[#EFFDF0]/90 backdrop-blur-md py-3 px-2 sm:px-4 border-b border-[#123814]/10 shadow-xs transition-all">
-        <div className="max-w-7xl mx-auto bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl flex items-center justify-between border border-[#123814]/10 shadow-sm">
+      {/* GLOBAL NAVBAR AT TOP */}
+      <GlobalNavbar
+        currentPage="store"
+        onNavigateHome={onNavigateHome}
+        onNavigateAbout={onNavigateAbout}
+        onNavigateProducts={() => scrollToProducts("All")}
+        onNavigateStore={() => scrollToProducts("All")}
+        onNavigateAdmin={() => {
+          window.location.hash = 'admin';
+        }}
+        cartCount={totalCartCount}
+        onOpenCart={() => setIsCartOpen(true)}
+        sticky={true}
+      />
+
+      {/* STORE ACTION SUB-NAVBAR: Search & Cart (Shown below global navbar as requested) */}
+      <div className="sticky top-[73px] sm:top-[79px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[#123814]/10 py-2 sm:py-2.5 px-3 sm:px-6 shadow-xs">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6">
+          {/* Store Title */}
           <div
-            onClick={onNavigateHome}
-            className="flex items-center gap-3 cursor-pointer select-none"
+            onClick={() => scrollToProducts("All")}
+            className="flex items-center gap-2 cursor-pointer select-none shrink-0"
           >
-            <img
-              src={getAssetUrl("/Whitte Circle logo(3).png")}
-              alt="Navbharat Agro Services Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-full shadow-sm"
-            />
-            <span className="font-extrabold text-base sm:text-xl text-[#123814] tracking-tight">
+            <div className="w-8 h-8 rounded-full bg-[#EFFDF0] border border-[#123814]/15 flex items-center justify-center text-[#123814]">
+              <ShoppingBag className="w-4 h-4 text-[#E86A10]" />
+            </div>
+            <span className="font-extrabold text-xs sm:text-base text-[#123814] tracking-tight whitespace-nowrap">
               {t('nav.storeBrand', 'Navbharat Store')}
             </span>
           </div>
 
-          <nav className="hidden lg:flex items-center justify-end gap-5 w-full ml-6">
-            <Button
-              variant="link"
-              onClick={onNavigateHome}
-              className="cursor-pointer text-[#123814] hover:text-[#E86A10] font-semibold"
-            >
-              {t('nav.home', 'Home')}
-            </Button>
-            <Button
-              variant="link"
-              onClick={onNavigateAbout}
-              className="cursor-pointer text-[#123814] hover:text-[#E86A10] font-semibold"
-            >
-              {t('nav.aboutUs', 'About Us')}
-            </Button>
-            <Button
-              variant="link"
-              onClick={() => scrollToProducts("All")}
-              className="cursor-pointer text-[#123814] hover:text-[#E86A10] font-bold"
-            >
-              {t('nav.allProducts', 'All Products')}
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => scrollToProducts("All")} className="cursor-pointer hover:text-[#E86A10]">
-              <Search className="w-5 h-5" />
-            </Button>
+          {/* Search Bar in Store (Circled in red in 2nd image) */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t('store.searchPlaceholder', 'उत्पादने शोधा (Search products)...')}
+              className="w-full pl-9 pr-7 py-1.5 sm:py-2 text-xs sm:text-sm rounded-full border border-gray-300 bg-white/90 focus:border-[#123814] focus:ring-2 focus:ring-[#123814]/15 outline-none transition-all shadow-2xs"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold cursor-pointer"
+              >
+                ✕
+              </button>
+            )}
+          </div>
 
-            <LanguageSwitcher />
-
-            {/* Desktop Navbar Cart Button with Bounce & Badge */}
-            <motion.button
-              id="header-cart-button-desktop"
-              type="button"
-              onClick={() => setIsCartOpen(true)}
-              animate={isCartBouncing ? { scale: [1, 1.35, 0.88, 1.15, 1], rotate: [0, -8, 8, -4, 0] } : { scale: 1, rotate: 0 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="cursor-pointer relative p-2.5 rounded-full hover:bg-black/5 text-[#123814] hover:text-[#E86A10] transition-colors focus-visible:outline-2 focus-visible:outline-[#E86A10] select-none"
-              aria-label={`Open shopping cart, ${totalCartCount} items`}
-            >
-              <ShoppingBasket className="w-5 h-5 text-[#123814]" />
-              {totalCartCount > 0 && (
-                <span className={`absolute -top-1 -right-1 w-5 h-5 bg-[#E86A10] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-md transition-transform duration-200 ${isCartBouncing ? 'scale-125' : 'scale-100'}`}>
-                  {totalCartCount}
-                </span>
-              )}
-            </motion.button>
-          </nav>
-
-          {/* Mobile Right Navigation: Language Switcher + Cart Button + Sheet Nav */}
-          <div className="flex lg:hidden items-center gap-1.5 ml-auto">
-            <LanguageSwitcher />
-            <motion.button
-              id="header-cart-button-mobile"
-              type="button"
-              onClick={() => setIsCartOpen(true)}
-              animate={isCartBouncing ? { scale: [1, 1.35, 0.88, 1.15, 1], rotate: [0, -8, 8, -4, 0] } : { scale: 1, rotate: 0 }}
-              transition={{ duration: 0.45, ease: "easeOut" }}
-              className="cursor-pointer relative p-2 rounded-full hover:bg-black/5 text-[#123814] hover:text-[#E86A10] transition-colors focus-visible:outline-2 focus-visible:outline-[#E86A10] select-none"
-              aria-label={`Open shopping cart, ${totalCartCount} items`}
-            >
-              <ShoppingBasket className="w-5 h-5 text-[#123814]" />
-              {totalCartCount > 0 && (
-                <span className={`absolute -top-1 -right-1 w-4.5 h-4.5 bg-[#E86A10] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-xs transition-transform duration-200 ${isCartBouncing ? 'scale-125' : 'scale-100'}`}>
-                  {totalCartCount}
-                </span>
-              )}
-            </motion.button>
-
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:text-[#E86A10]">
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0 bg-white/95 backdrop-blur-md">
-              <SheetHeader className="p-6 text-left border-b">
-                <SheetTitle className="flex items-center gap-3">
-                  <img src={getAssetUrl("/Whitte Circle logo(3).png")} alt="Logo" className="w-10 h-10 object-contain rounded-full" />
-                  <span className="text-lg font-bold text-[#123814]">{t('nav.storeBrand', 'Navbharat Store')}</span>
-                </SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col p-6 space-y-1">
-                <Button variant="ghost" onClick={onNavigateHome} className="justify-start px-2 h-12 text-base font-medium">
-                  {t('nav.home', 'Home')}
-                </Button>
-                <Button variant="ghost" onClick={onNavigateAbout} className="justify-start px-2 h-12 text-base font-medium">
-                  {t('nav.aboutUs', 'About Us')}
-                </Button>
-                <Button variant="ghost" onClick={() => scrollToProducts("All")} className="justify-start px-2 h-12 text-base font-medium font-bold text-[#123814]">
-                  {t('nav.allProducts', 'Products Catalog')}
-                </Button>
-              </nav>
-              <Separator className="mx-6" />
-              <div className="p-6 flex flex-col gap-4">
-                <Button variant="outline" onClick={() => scrollToProducts("All")} className="justify-start gap-2 h-12">
-                  <Search className="w-4 h-4" />
-                  {t('store.searchPlaceholder', 'Search Products')}
-                </Button>
-                <Button variant="outline" onClick={() => setIsCartOpen(true)} className="justify-start gap-2 h-12 relative">
-                  <ShoppingBasket className="w-4 h-4" />
-                  {t('store.cartItems', 'Cart Items')}
-                  <span className="absolute right-3 w-5 h-5 bg-[#E86A10] text-white text-xs rounded-full flex items-center justify-center font-bold">
-                    {totalCartCount}
-                  </span>
-                </Button>
-              </div>
-            </SheetContent>
-          </Sheet>
+          {/* Store Shopping Basket Cart Button (Circled in red in 2nd image) */}
+          <motion.button
+            id="header-cart-button-desktop"
+            type="button"
+            onClick={() => setIsCartOpen(true)}
+            animate={isCartBouncing ? { scale: [1, 1.35, 0.88, 1.15, 1], rotate: [0, -8, 8, -4, 0] } : { scale: 1, rotate: 0 }}
+            transition={{ duration: 0.45, ease: "easeOut" }}
+            className="relative p-2 sm:p-2.5 rounded-full border border-[#123814]/20 bg-white hover:border-[#123814] text-[#123814] hover:text-[#E86A10] shadow-xs transition-all cursor-pointer hover:scale-105 active:scale-95 flex items-center justify-center shrink-0"
+            aria-label={`Open shopping cart, ${totalCartCount} items`}
+          >
+            <ShoppingBasket className="w-5 h-5 text-[#123814]" />
+            {totalCartCount > 0 && (
+              <span className={`absolute -top-1.5 -right-1.5 w-5 h-5 bg-[#E86A10] text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-md transition-transform duration-200 ${isCartBouncing ? 'scale-125' : 'scale-100'}`}>
+                {totalCartCount}
+              </span>
+            )}
+          </motion.button>
         </div>
       </div>
-    </header>
 
       {/* Main Page Scrollable Content */}
       <main className="w-full relative container px-2 sm:px-4 mx-auto max-w-7xl pb-12">

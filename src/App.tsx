@@ -3,12 +3,15 @@ import CozyPawsHero from './components/CozyPawsHero';
 import ToonhubCarousel from './components/ToonhubCarousel';
 import AboutUs from './components/AboutUs';
 import Footer from './components/Footer';
+import AdminDashboard from './components/AdminDashboard';
 import { CommerceHero } from './components/ui/commerce-hero';
 import { LanguageProvider } from './lib/languageContext';
+import { isAdminLoggedIn } from './components/AdminLoginModal';
 
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'store'>(() => {
+  const [currentPage, setCurrentPage] = useState<'home' | 'store' | 'admin'>(() => {
     if (typeof window !== 'undefined') {
+      if (window.location.hash === '#admin') return 'admin';
       if (window.location.hash === '#store' || window.location.hash === '#discover') return 'store';
     }
     return 'home';
@@ -16,7 +19,10 @@ function AppContent() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      if (window.location.hash === '#about') {
+      if (window.location.hash === '#admin') {
+        setCurrentPage('admin');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (window.location.hash === '#about') {
         setCurrentPage('home');
         setTimeout(() => {
           document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
@@ -28,11 +34,34 @@ function AppContent() {
       }
     };
 
+    const handleAuthChange = () => {
+      if (window.location.hash === '#admin') {
+        if (isAdminLoggedIn()) {
+          setCurrentPage('admin');
+        } else {
+          setCurrentPage('home');
+          window.location.hash = '';
+        }
+      }
+    };
+
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('navbharat_admin_auth_changed', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('navbharat_admin_auth_changed', handleAuthChange);
+    };
   }, []);
 
-  const navigateTo = (page: 'home' | 'about' | 'discover' | 'store', sectionId?: string) => {
+  const navigateTo = (page: 'home' | 'about' | 'discover' | 'store' | 'admin', sectionId?: string) => {
+    if (page === 'admin') {
+      setCurrentPage('admin');
+      window.location.hash = 'admin';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (page === 'about') {
       setCurrentPage('home');
       window.location.hash = 'about';
@@ -64,6 +93,15 @@ function AppContent() {
     }
   };
 
+  if (currentPage === 'admin') {
+    return (
+      <AdminDashboard
+        onBackToHome={() => navigateTo('home', 'cozypaws')}
+        onNavigateStore={() => navigateTo('store')}
+      />
+    );
+  }
+
   if (currentPage === 'store') {
     return (
       <div className="w-full bg-[#EFFDF0] min-h-screen">
@@ -84,6 +122,7 @@ function AppContent() {
         <CozyPawsHero
           onNavigateAbout={() => navigateTo('about')}
           onNavigateStore={() => navigateTo('store')}
+          onNavigateAdmin={() => navigateTo('admin')}
         />
       </section>
 

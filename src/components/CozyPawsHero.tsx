@@ -1,162 +1,33 @@
-import { useState } from 'react';
 import {
-  ShoppingCart,
   Star,
   ArrowUpRight,
   Play,
   ArrowRight,
   Plus,
-  Menu,
 } from 'lucide-react';
 import { getAssetUrl } from '@/lib/utils';
 import { useLanguage } from '@/lib/languageContext';
-import LanguageSwitcher from './ui/LanguageSwitcher';
+import GlobalNavbar from './GlobalNavbar';
 
 interface CozyPawsHeroProps {
   onNavigateAbout?: () => void;
   onNavigateStore?: () => void;
+  onNavigateAdmin?: () => void;
 }
 
-export default function CozyPawsHero({ onNavigateAbout, onNavigateStore }: CozyPawsHeroProps = {}) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export default function CozyPawsHero({ onNavigateAbout, onNavigateStore, onNavigateAdmin }: CozyPawsHeroProps = {}) {
   const { t } = useLanguage();
 
   return (
     <div className="h-full w-full bg-[#EFFDF0] flex flex-col overflow-hidden relative font-['Inter',sans-serif]">
-      {/* HEADER WITH NAVBAR BELOW */}
-      <header className="shrink-0 w-full relative z-30 animate-fade-in delay-100 bg-[#EFFDF0]">
-        {/* Top Row: Logo, Brand Name, Language Switcher & Cart Button */}
-        <div className="w-full px-3.5 sm:px-8 lg:px-12 py-2 sm:py-2.5 flex items-center justify-between border-b border-[#123814]/10">
-          <div className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none">
-            <img
-              src={getAssetUrl("/Whitte Circle logo(3).png")}
-              alt="Navbharat Agro Services Logo"
-              className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain rounded-full shadow-md transition-transform hover:scale-105"
-            />
-            <span className="font-sans font-black text-sm sm:text-lg lg:text-xl text-[#123814] tracking-tight">
-              {t('nav.brand')}
-            </span>
-          </div>
-
-          {/* Right Controls: Language Switcher & Cart */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <LanguageSwitcher />
-
-            <button
-              aria-label="Cart"
-              onClick={onNavigateStore}
-              className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#123814]/20 flex items-center justify-center text-[#123814] hover:border-gray-400 bg-white/70 shadow-xs transition-colors cursor-pointer hover:scale-105 active:scale-95"
-            >
-              <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Bottom Row: Desktop Navigation Bar */}
-        <nav className="hidden md:block w-full bg-[#EFFDF0]/90 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 sm:px-8 lg:px-12">
-          <div className="max-w-5xl mx-auto flex items-center justify-between gap-6 text-xs sm:text-sm font-semibold text-gray-700">
-            <a href="#home" className="text-[#123814] font-bold hover:text-[#E86A10] transition-colors whitespace-nowrap">
-              {t('nav.home')}
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => {
-                if (onNavigateAbout) {
-                  e.preventDefault();
-                  onNavigateAbout();
-                }
-              }}
-              className="hover:text-[#123814] transition-colors whitespace-nowrap cursor-pointer"
-            >
-              {t('nav.aboutUs')}
-            </a>
-            <a href="#toonhub" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              {t('nav.products')}
-            </a>
-            <a href="#gallery" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              {t('nav.gallery')}
-            </a>
-            <a href="#business" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              {t('nav.careers')}
-            </a>
-            <a href="#blog" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              {t('nav.blog')}
-            </a>
-            <a href="#contact" className="hover:text-[#123814] transition-colors whitespace-nowrap">
-              {t('nav.contactUs')}
-            </a>
-          </div>
-        </nav>
-
-        {/* Bottom Row: Mobile Navigation Bar (Centered 3 sections + menu icon) */}
-        <nav className="md:hidden w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/10 py-1.5 px-4 relative flex items-center justify-center">
-          <div className="flex items-center justify-center gap-6 text-xs font-bold text-gray-700">
-            <a href="#home" className="text-[#123814] font-extrabold hover:text-[#E86A10] transition-colors">
-              {t('nav.home')}
-            </a>
-            <a
-              href="#about"
-              onClick={(e) => {
-                if (onNavigateAbout) {
-                  e.preventDefault();
-                  onNavigateAbout();
-                }
-              }}
-              className="hover:text-[#123814] transition-colors cursor-pointer"
-            >
-              {t('nav.aboutUs')}
-            </a>
-            <a href="#toonhub" className="hover:text-[#123814] transition-colors">
-              {t('nav.products')}
-            </a>
-          </div>
-
-          {/* List Icon Button for remaining items on right */}
-          <div className="absolute right-3">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="More navigation links"
-              className="flex items-center justify-center w-7 h-7 rounded-full bg-white/90 border border-[#123814]/20 text-[#123814] shadow-xs active:scale-95 transition-all cursor-pointer"
-            >
-              <Menu className="w-3.5 h-3.5 text-[#123814]" />
-            </button>
-
-            {/* Dropdown Menu */}
-            {isMobileMenuOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-44 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-[#123814]/15 py-2 z-50 animate-fade-in text-xs font-semibold text-gray-800">
-                <a
-                  href="#gallery"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                >
-                  {t('nav.gallery')}
-                </a>
-                <a
-                  href="#business"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                >
-                  {t('nav.careers')}
-                </a>
-                <a
-                  href="#blog"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                >
-                  {t('nav.blog')}
-                </a>
-                <a
-                  href="#contact"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-2 hover:bg-[#EFFDF0] hover:text-[#E86A10] transition-colors"
-                >
-                  {t('nav.contactUs')}
-                </a>
-              </div>
-            )}
-          </div>
-        </nav>
-      </header>
+      {/* GLOBAL NAVBAR AT TOP */}
+      <GlobalNavbar
+        currentPage="home"
+        onNavigateAbout={onNavigateAbout}
+        onNavigateStore={onNavigateStore}
+        onNavigateAdmin={onNavigateAdmin}
+        sticky={false}
+      />
 
       {/* HERO SECTION CONTAINER */}
       <main className="flex-1 relative flex flex-col justify-between overflow-hidden">
