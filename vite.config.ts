@@ -18,7 +18,7 @@ const copy404Plugin = () => ({
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
+  base: './',
   plugins: [react(), tailwindcss(), copy404Plugin()],
   resolve: {
     alias: {
