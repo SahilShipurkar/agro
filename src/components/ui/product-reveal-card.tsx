@@ -1,10 +1,26 @@
 "use client" 
 import { motion, useReducedMotion } from "framer-motion" 
 import { buttonVariants } from "@/components/ui/button" 
-import { ShoppingCart, Star, Heart, Plus, Minus, Eye, Check, X, CheckCircle2, MessageSquare } from "lucide-react" 
-import { useState, useRef } from "react" 
+import {
+  ShoppingCart,
+  Star,
+  Heart,
+  Plus,
+  Minus,
+  Eye,
+  Check,
+  X,
+  CheckCircle2,
+  MessageSquare,
+  XCircle,
+  AlertTriangle,
+  Sparkles,
+  BadgePercent,
+} from "lucide-react" 
+import { useState, useRef, useEffect } from "react" 
 import { cn, getAssetUrl } from "@/lib/utils" 
 import { useLanguage } from "@/lib/languageContext" 
+import type { ProductOffer } from "@/lib/priceStore"
 
 export interface ProductRevealCardProps { 
   name?: string 
@@ -24,6 +40,10 @@ export interface ProductRevealCardProps {
   highlights?: string[]
   usage?: string
   importantNote?: string
+  inStock?: boolean
+  variantStock?: Record<string, boolean>
+  offer?: ProductOffer
+  variantOffers?: Record<string, ProductOffer>
   onAddToCart?: (
     item: { name: string; variant: string; quantity: number; unitPrice: number; image: string; category: string },
     sourceElement?: HTMLElement | null
@@ -57,6 +77,10 @@ export function ProductRevealCard({
   ],
   usage = "50 g per animal daily. For every additional 1 litre of capacity, increase the dosage by 5 g.",
   importantNote,
+  inStock = true,
+  variantStock = {},
+  offer,
+  variantOffers = {},
   onAddToCart,
   onViewDetails,
   onFavorite, 
@@ -72,7 +96,38 @@ export function ProductRevealCard({
   const [addedSuccess, setAddedSuccess] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const currentUnitPrice = variantPrices[selectedVariant] || (typeof price === 'number' ? price : parseInt(String(price).replace(/[^0-9]/g, '')) || 0)
+  // Sync selected variant when variants prop updates
+  useEffect(() => {
+    if (variants && variants.length > 0) {
+      if (!variants.includes(selectedVariant)) {
+        // Find first in-stock variant or fallback to first
+        const firstInStock = variants.find((v) => variantStock?.[v] !== false);
+        setSelectedVariant(firstInStock || variants[0]);
+      }
+    }
+  }, [variants, selectedVariant, variantStock]);
+
+  const isProductInStock = inStock !== false;
+  const isSelectedVariantInStock = isProductInStock && (variantStock?.[selectedVariant] !== false);
+
+  // Compute regular price and variant-specific offer
+  const regularPrice =
+    variantPrices[selectedVariant] ||
+    (typeof price === 'number' ? price : parseInt(String(price).replace(/[^0-9]/g, '')) || 0);
+
+  const activeVariantOffer =
+    variantOffers?.[selectedVariant] ||
+    (selectedVariant === variants[0] && offer?.enabled ? offer : undefined);
+
+  const isOfferActive = Boolean(
+    activeVariantOffer?.enabled &&
+    activeVariantOffer.discountPercent &&
+    activeVariantOffer.discountPercent > 0
+  );
+
+  const discountPercent = isOfferActive ? activeVariantOffer!.discountPercent! : 0;
+  const moneySaved = isOfferActive ? Math.round((regularPrice * discountPercent) / 100) : 0;
+  const currentUnitPrice = isOfferActive ? (regularPrice - moneySaved) : regularPrice;
 
   const shouldReduceMotion = useReducedMotion() 
   const shouldAnimate = enableAnimations && !shouldReduceMotion 
@@ -83,6 +138,7 @@ export function ProductRevealCard({
   }
 
   const handleAdd = (sourceEl?: HTMLElement | null) => {
+    if (!isSelectedVariantInStock) return;
     if (onAddToCart) {
       onAddToCart(
         {
@@ -207,8 +263,9 @@ export function ProductRevealCard({
         variants={containerVariants} 
         onClick={handleOpenDetails}
         className={cn( 
-          "relative w-full max-w-sm rounded-3xl border-2 border-[#123814]/15 bg-white text-card-foreground overflow-hidden", 
-          "shadow-lg shadow-black/5 cursor-pointer group flex flex-col justify-between", 
+          "relative w-full max-w-sm rounded-3xl border-2 bg-white text-card-foreground overflow-hidden", 
+          isProductInStock ? "border-[#123814]/15 shadow-lg shadow-black/5" : "border-rose-300 shadow-md",
+          "cursor-pointer group flex flex-col justify-between", 
           className 
         )} 
       > 
@@ -240,16 +297,29 @@ export function ProductRevealCard({
           > 
             <Heart className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", isFavorite && "fill-current")} /> 
           </motion.button> 
+
+          {/* Offer Highlight Pill on Image */}
+          {isOfferActive && (
+            <div className="absolute top-2 right-10 sm:top-4 sm:right-14 z-10">
+              <span className="bg-gradient-to-r from-[#E86A10] to-orange-500 text-white px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8.5px] sm:text-[10px] font-black tracking-wide shadow-md flex items-center gap-1">
+                <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-200" />
+                <span>{activeVariantOffer?.badgeText || `${discountPercent}% OFF`}</span>
+              </span>
+            </div>
+          )}
    
-          {/* Category Badge */} 
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8, x: -20 }} 
-            animate={{ opacity: 1, scale: 1, x: 0 }} 
-            transition={{ delay: 0.2 }} 
-            className="absolute top-2 left-2 sm:top-4 sm:left-4 bg-[#123814] text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-extrabold tracking-wide shadow-sm" 
-          > 
-            {category} 
-          </motion.div> 
+          {/* Category Badge & Stock Badge */} 
+          <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-1 items-start">
+            <span className="bg-[#123814] text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[9px] sm:text-xs font-extrabold tracking-wide shadow-sm">
+              {category}
+            </span>
+            {!isProductInStock && (
+              <span className="bg-rose-600 text-white px-2 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider shadow-xs flex items-center gap-1">
+                <XCircle className="w-2.5 h-2.5" />
+                <span>Out of Stock</span>
+              </span>
+            )}
+          </div>
         </div> 
    
         {/* Content */} 
@@ -274,9 +344,23 @@ export function ProductRevealCard({
                 </span> 
               </div>
 
-              {/* Price Tag Badge */}
-              <div className="bg-[#123814] text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-black shadow-xs">
-                ₹{currentUnitPrice.toLocaleString('en-IN')}
+              {/* Price Tag Badge with Strike-through if Offer Active */}
+              <div className="flex items-center gap-1.5">
+                {isOfferActive && (
+                  <span className="text-[10px] sm:text-xs line-through text-gray-400 font-bold">
+                    ₹{regularPrice.toLocaleString('en-IN')}
+                  </span>
+                )}
+                <div className={cn(
+                  "px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-black shadow-xs",
+                  !isSelectedVariantInStock
+                    ? "bg-rose-100 text-rose-800 border border-rose-300"
+                    : isOfferActive
+                    ? "bg-[#E86A10] text-white"
+                    : "bg-[#123814] text-white"
+                )}>
+                  ₹{currentUnitPrice.toLocaleString('en-IN')}
+                </div>
               </div>
             </div> 
      
@@ -295,53 +379,112 @@ export function ProductRevealCard({
           </div>
 
           <div className="space-y-1.5 pt-1 border-t border-[#123814]/10">
+            {/* Offer Savings Banner */}
+            {isOfferActive && (
+              <div className="py-1 px-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-[9px] sm:text-[10.5px] font-bold flex items-center justify-between animate-fade-in shadow-2xs">
+                <span className="flex items-center gap-1 text-[#E86A10] font-black">
+                  <BadgePercent className="w-3.5 h-3.5" />
+                  <span>{activeVariantOffer?.badgeText || `${discountPercent}% OFF`}</span>
+                </span>
+                <span className="font-extrabold text-emerald-700">
+                  {t('store.saveMoney', 'Save')} ₹{moneySaved.toLocaleString('en-IN')} ({discountPercent}% OFF)
+                </span>
+              </div>
+            )}
+
             {/* Variant Selection */}
             <div>
               <label className="text-[9px] sm:text-xs font-bold text-[#123814] block mb-1">
                 {t('store.selectVariant', 'Select Variant / Size:')}
               </label>
               <div className="flex flex-wrap gap-1">
-                {variants.map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedVariant(v);
-                    }}
-                    className={cn(
-                      "px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8.5px] sm:text-xs font-bold transition-all cursor-pointer border flex items-center gap-1",
-                      selectedVariant === v
-                        ? "bg-[#123814] text-white border-[#123814] shadow-xs"
-                        : "bg-white text-[#123814] border-[#123814]/20 hover:border-[#123814]/60"
-                    )}
-                  >
-                    <span>{v}</span>
-                    <span className={selectedVariant === v ? "text-white/80" : "text-[#E86A10]"}>
-                      ₹{(variantPrices[v] || currentUnitPrice).toLocaleString('en-IN')}
-                    </span>
-                  </button>
-                ))}
+                {variants.map((v) => {
+                  const isVInStock = isProductInStock && (variantStock?.[v] !== false);
+                  const isSelected = selectedVariant === v;
+                  const vRegular = variantPrices[v] || regularPrice;
+                  const vOffer = variantOffers?.[v] || (v === variants[0] && offer?.enabled ? offer : undefined);
+                  const vHasOffer = Boolean(vOffer?.enabled && vOffer.discountPercent && vOffer.discountPercent > 0);
+                  const vDiscounted = vHasOffer
+                    ? Math.round(vRegular - (vRegular * vOffer!.discountPercent!) / 100)
+                    : vRegular;
+
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedVariant(v);
+                      }}
+                      className={cn(
+                        "px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8.5px] sm:text-xs font-bold transition-all cursor-pointer border flex items-center gap-1",
+                        isSelected
+                          ? isVInStock
+                            ? "bg-[#123814] text-white border-[#123814] shadow-xs"
+                            : "bg-rose-700 text-white border-rose-800 shadow-xs"
+                          : isVInStock
+                            ? "bg-white text-[#123814] border-[#123814]/20 hover:border-[#123814]/60"
+                            : "bg-rose-50 text-rose-700 border-rose-200 hover:border-rose-300 opacity-80"
+                      )}
+                    >
+                      <span className={!isVInStock ? "line-through opacity-85" : ""}>{v}</span>
+                      {vHasOffer && (
+                        <span className="line-through text-[7.5px] opacity-70">
+                          ₹{vRegular}
+                        </span>
+                      )}
+                      <span className={isSelected ? "text-white/90" : isVInStock ? "text-[#E86A10]" : "text-rose-500"}>
+                        ₹{vDiscounted.toLocaleString('en-IN')}
+                      </span>
+                      {vHasOffer && (
+                        <span className="text-[7.5px] px-1 rounded-xs bg-[#E86A10] text-white font-black">
+                          {vOffer!.discountPercent}% OFF
+                        </span>
+                      )}
+                      {!isVInStock && (
+                        <span className="text-[7.5px] px-1 rounded-xs bg-rose-200 text-rose-900 font-black uppercase">
+                          {t('store.outOfStockTag', 'Out')}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
+
+            {/* Out of stock warning banner if current selected variant is out */}
+            {!isSelectedVariantInStock && (
+              <div className="py-1 px-2 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-[9.5px] sm:text-xs font-bold flex items-center gap-1">
+                <AlertTriangle className="w-3 h-3 text-rose-600 shrink-0" />
+                <span>{t('store.variantOutOfStock', 'This size is currently Out of Stock (स्टॉक संपला आहे)')}</span>
+              </div>
+            )}
 
             {/* Quantity Selector Counter & Total Price */}
             <div className="flex items-center justify-between pt-0.5">
               <div>
                 <span className="text-[9px] sm:text-xs font-bold text-[#123814] block">{t('store.quantity', 'Quantity:')}</span>
-                <span className="text-[9.5px] sm:text-xs font-black text-[#E86A10]">
-                  {t('store.total', 'Total:')} ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
-                </span>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[9.5px] sm:text-xs font-black text-[#E86A10]">
+                    {t('store.total', 'Total:')} ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
+                  </span>
+                  {isOfferActive && (
+                    <span className="text-[8.5px] sm:text-[10px] font-extrabold text-emerald-700 bg-emerald-100/80 px-1.5 py-0.5 rounded-md">
+                      Save ₹{(moneySaved * quantity).toLocaleString('en-IN')}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center bg-gray-50 border border-[#123814]/20 rounded-full p-0.5 sm:p-1 shadow-2xs">
                 <button
                   type="button"
+                  disabled={!isSelectedVariantInStock}
                   onClick={(e) => {
                     e.stopPropagation();
                     setQuantity((q) => Math.max(1, q - 1));
                   }}
-                  className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer shadow-2xs active:scale-95"
+                  className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer shadow-2xs active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Minus className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
                 </button>
@@ -350,11 +493,12 @@ export function ProductRevealCard({
                 </span>
                 <button
                   type="button"
+                  disabled={!isSelectedVariantInStock}
                   onClick={(e) => {
                     e.stopPropagation();
                     setQuantity((q) => q + 1);
                   }}
-                  className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer shadow-2xs active:scale-95"
+                  className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-white hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer shadow-2xs active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
                 </button>
@@ -365,18 +509,27 @@ export function ProductRevealCard({
             <div className="pt-1.5 flex items-center gap-1 sm:gap-2">
               <button
                 type="button"
+                disabled={!isSelectedVariantInStock}
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (!isSelectedVariantInStock) return;
                   handleAdd();
                 }}
                 className={cn(
-                  "flex-1 py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-xl sm:rounded-full text-[10px] sm:text-xs font-black transition-all flex items-center justify-center gap-1 shadow-xs active:scale-95 cursor-pointer",
-                  addedSuccess
-                    ? "bg-[#25D366] text-white"
-                    : "bg-[#E86A10] hover:bg-[#d05c0b] text-white"
+                  "flex-1 py-1.5 sm:py-2.5 px-2 sm:px-3 rounded-xl sm:rounded-full text-[10px] sm:text-xs font-black transition-all flex items-center justify-center gap-1 shadow-xs active:scale-95",
+                  !isSelectedVariantInStock
+                    ? "bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed shadow-none"
+                    : addedSuccess
+                    ? "bg-[#25D366] text-white cursor-pointer"
+                    : "bg-[#E86A10] hover:bg-[#d05c0b] text-white cursor-pointer"
                 )}
               >
-                {addedSuccess ? (
+                {!isSelectedVariantInStock ? (
+                  <>
+                    <XCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500" />
+                    <span>{t('store.outOfStock', 'Out of Stock (स्टॉक संपला)')}</span>
+                  </>
+                ) : addedSuccess ? (
                   <>
                     <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     <span>{t('store.added', 'Added!')}</span>
@@ -388,6 +541,7 @@ export function ProductRevealCard({
                   </>
                 )}
               </button>
+
               <button
                 type="button"
                 onClick={(e) => {
@@ -416,9 +570,26 @@ export function ProductRevealCard({
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#E86A10] bg-[#E86A10]/10 px-2.5 py-0.5 rounded-full">
                   {category}
                 </span>
-                <span className="text-xs font-extrabold text-[#123814]">₹{currentUnitPrice.toLocaleString('en-IN')}</span>
+                <div className="flex items-center gap-1.5">
+                  {isOfferActive && (
+                    <span className="text-xs line-through text-gray-400 font-bold">
+                      ₹{regularPrice.toLocaleString('en-IN')}
+                    </span>
+                  )}
+                  <span className={cn(
+                    "text-xs font-extrabold",
+                    !isSelectedVariantInStock ? "text-rose-600 line-through" : isOfferActive ? "text-[#E86A10]" : "text-[#123814]"
+                  )}>
+                    ₹{currentUnitPrice.toLocaleString('en-IN')}
+                  </span>
+                </div>
               </div>
               <h4 className="font-extrabold text-[#123814] text-base leading-snug">{name}</h4> 
+              {isOfferActive && (
+                <div className="mt-1 text-[11px] font-extrabold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md inline-block">
+                  Save ₹{moneySaved.toLocaleString('en-IN')} ({discountPercent}% OFF)
+                </div>
+              )}
             </motion.div> 
    
             {/* Variant Selection Options */} 
@@ -427,27 +598,57 @@ export function ProductRevealCard({
                 {t('store.selectVariant', 'Select Variant / Size:')}
               </label>
               <div className="flex flex-wrap gap-1.5">
-                {variants.map((v) => (
-                  <button
-                    key={v}
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedVariant(v);
-                    }}
-                    className={cn(
-                      "px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer border flex items-center gap-1",
-                      selectedVariant === v
-                        ? "bg-[#123814] text-white border-[#123814] shadow-sm"
-                        : "bg-white text-[#123814] border-[#123814]/20 hover:border-[#123814]/60"
-                    )}
-                  >
-                    <span>{v}</span>
-                    <span className={selectedVariant === v ? "text-white/80" : "text-[#E86A10]"}>
-                      ₹{(variantPrices[v] || currentUnitPrice).toLocaleString('en-IN')}
-                    </span>
-                  </button>
-                ))}
+                {variants.map((v) => {
+                  const isVInStock = isProductInStock && (variantStock?.[v] !== false);
+                  const isSelected = selectedVariant === v;
+                  const vRegular = variantPrices[v] || regularPrice;
+                  const vOffer = variantOffers?.[v] || (v === variants[0] && offer?.enabled ? offer : undefined);
+                  const vHasOffer = Boolean(vOffer?.enabled && vOffer.discountPercent && vOffer.discountPercent > 0);
+                  const vDiscounted = vHasOffer
+                    ? Math.round(vRegular - (vRegular * vOffer!.discountPercent!) / 100)
+                    : vRegular;
+
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedVariant(v);
+                      }}
+                      className={cn(
+                        "px-2.5 py-1 rounded-full text-xs font-bold transition-all cursor-pointer border flex items-center gap-1.5",
+                        isSelected
+                          ? isVInStock
+                            ? "bg-[#123814] text-white border-[#123814] shadow-sm"
+                            : "bg-rose-700 text-white border-rose-800 shadow-sm"
+                          : isVInStock
+                            ? "bg-white text-[#123814] border-[#123814]/20 hover:border-[#123814]/60"
+                            : "bg-rose-50 text-rose-700 border-rose-200 hover:border-rose-300 opacity-80"
+                      )}
+                    >
+                      <span className={!isVInStock ? "line-through opacity-85" : ""}>{v}</span>
+                      {vHasOffer && (
+                        <span className="line-through text-[8px] opacity-70">
+                          ₹{vRegular}
+                        </span>
+                      )}
+                      <span className={isSelected ? "text-white/90" : isVInStock ? "text-[#E86A10]" : "text-rose-500"}>
+                        ₹{vDiscounted.toLocaleString('en-IN')}
+                      </span>
+                      {vHasOffer && (
+                        <span className="text-[8px] px-1 rounded-xs bg-[#E86A10] text-white font-black">
+                          {vOffer!.discountPercent}% OFF
+                        </span>
+                      )}
+                      {!isVInStock && (
+                        <span className="text-[8px] px-1 rounded-xs bg-rose-200 text-rose-900 font-black uppercase">
+                          {t('store.outOfStockTag', 'Out')}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </motion.div> 
 
@@ -458,16 +659,22 @@ export function ProductRevealCard({
                 <span className="text-[11px] font-extrabold text-[#E86A10]">
                   {t('store.total', 'Total:')} ₹{(currentUnitPrice * quantity).toLocaleString('en-IN')}
                 </span>
+                {isOfferActive && (
+                  <span className="text-[10px] font-extrabold text-emerald-700 block">
+                    Save ₹{(moneySaved * quantity).toLocaleString('en-IN')}
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center bg-white border border-[#123814]/20 rounded-full p-1 shadow-xs">
                 <button
                   type="button"
+                  disabled={!isSelectedVariantInStock}
                   onClick={(e) => {
                     e.stopPropagation();
                     setQuantity((q) => Math.max(1, q - 1));
                   }}
-                  className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer"
+                  className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
@@ -476,11 +683,12 @@ export function ProductRevealCard({
                 </span>
                 <button
                   type="button"
+                  disabled={!isSelectedVariantInStock}
                   onClick={(e) => {
                     e.stopPropagation();
                     setQuantity((q) => q + 1);
                   }}
-                  className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer"
+                  className="w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 text-[#123814] flex items-center justify-center font-bold cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
@@ -492,24 +700,33 @@ export function ProductRevealCard({
           <motion.div variants={contentVariants} className="space-y-2 mt-3"> 
             <motion.button 
               type="button"
+              disabled={!isSelectedVariantInStock}
               onClick={(e) => {
                 e.stopPropagation();
+                if (!isSelectedVariantInStock) return;
                 handleAdd();
               }} 
               variants={buttonVariants_motion} 
               initial="rest" 
-              whileHover="hover" 
-              whileTap="tap" 
+              whileHover={isSelectedVariantInStock ? "hover" : "rest"} 
+              whileTap={isSelectedVariantInStock ? "tap" : "rest"} 
               className={cn( 
                 buttonVariants({ variant: "default" }),  
-                "w-full h-11 font-bold text-sm rounded-full cursor-pointer transition-all", 
-                addedSuccess
-                  ? "bg-[#25D366] text-white"
-                  : "bg-gradient-to-r from-[#E86A10] to-[#E86A10]/90 hover:from-[#d05c0b] hover:to-[#E86A10] text-white shadow-md shadow-[#E86A10]/20", 
+                "w-full h-11 font-bold text-sm rounded-full transition-all", 
+                !isSelectedVariantInStock
+                  ? "bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed shadow-none"
+                  : addedSuccess
+                  ? "bg-[#25D366] text-white cursor-pointer"
+                  : "bg-gradient-to-r from-[#E86A10] to-[#E86A10]/90 hover:from-[#d05c0b] hover:to-[#E86A10] text-white shadow-md shadow-[#E86A10]/20 cursor-pointer", 
                 "flex items-center justify-center gap-2" 
               )} 
             > 
-              {addedSuccess ? (
+              {!isSelectedVariantInStock ? (
+                <>
+                  <XCircle className="w-4 h-4 text-gray-500" />
+                  <span>{t('store.outOfStock', 'Out of Stock (स्टॉक संपला)')}</span>
+                </>
+              ) : addedSuccess ? (
                 <>
                   <Check className="w-4 h-4 text-white" />
                   {t('store.added', 'Added!')} (₹{(currentUnitPrice * quantity).toLocaleString('en-IN')})
@@ -574,13 +791,41 @@ export function ProductRevealCard({
             {/* Modal Product Image & Badges */}
             <div className="bg-[#EFFDF0] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-around gap-6 border border-[#123814]/15">
               <img ref={modalImageRef} src={getAssetUrl(image)} alt={name} className="h-44 object-contain drop-shadow-lg" />
-              <div className="space-y-2 text-xs font-bold text-[#123814]">
+              <div className="space-y-2 text-xs font-bold text-[#123814] w-full sm:w-auto">
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs flex items-center justify-between gap-4">
                   <span>💰 {t('store.total', 'Price')}:</span>
-                  <span className="text-[#E86A10] font-black text-sm">₹{currentUnitPrice.toLocaleString('en-IN')}</span>
+                  <div className="flex items-center gap-1.5">
+                    {isOfferActive && (
+                      <span className="text-xs line-through text-gray-400 font-bold">
+                        ₹{regularPrice.toLocaleString('en-IN')}
+                      </span>
+                    )}
+                    <span className={cn(
+                      "font-black text-sm",
+                      isSelectedVariantInStock ? "text-[#E86A10]" : "text-rose-600 line-through"
+                    )}>
+                      ₹{currentUnitPrice.toLocaleString('en-IN')}
+                    </span>
+                    {isOfferActive && (
+                      <span className="text-[10px] font-black text-white bg-[#E86A10] px-1.5 py-0.5 rounded-md">
+                        {discountPercent}% OFF
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs">
-                  📦 {t('discover.packaging', 'Packaging')}: <span className="text-[#E86A10]">{selectedVariant}</span>
+
+                {isOfferActive && (
+                  <div className="bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200 text-emerald-800 text-[11px] font-black flex items-center justify-between">
+                    <span>🎉 Deal:</span>
+                    <span>Save ₹{moneySaved.toLocaleString('en-IN')} ({discountPercent}% OFF)</span>
+                  </div>
+                )}
+
+                <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs flex items-center justify-between gap-3">
+                  <span>📦 {t('discover.packaging', 'Selected Size')}:</span>
+                  <span className={cn("font-bold", isSelectedVariantInStock ? "text-[#123814]" : "text-rose-600")}>
+                    {selectedVariant} {!isSelectedVariantInStock && '(Out of Stock)'}
+                  </span>
                 </div>
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs">
                   🥣 {t('discover.form', 'Form')}: <span className="text-gray-700">{form}</span>
@@ -588,6 +833,63 @@ export function ProductRevealCard({
                 <div className="bg-white px-3 py-1.5 rounded-xl border border-[#123814]/15 shadow-xs">
                   🐾 {t('discover.idealFor', 'Ideal For')}: <span className="text-gray-700">{idealFor}</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Variant Selector Inside Modal */}
+            <div className="space-y-2 bg-gray-50/70 p-4 rounded-2xl border border-gray-200">
+              <label className="text-xs font-bold text-[#123814] block">
+                {t('store.selectVariant', 'Select Packaging Size:')}
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {variants.map((v) => {
+                  const isVInStock = isProductInStock && (variantStock?.[v] !== false);
+                  const isSelected = selectedVariant === v;
+                  const vRegular = variantPrices[v] || regularPrice;
+                  const vOffer = variantOffers?.[v] || (v === variants[0] && offer?.enabled ? offer : undefined);
+                  const vHasOffer = Boolean(vOffer?.enabled && vOffer.discountPercent && vOffer.discountPercent > 0);
+                  const vDiscounted = vHasOffer
+                    ? Math.round(vRegular - (vRegular * vOffer!.discountPercent!) / 100)
+                    : vRegular;
+
+                  return (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={() => setSelectedVariant(v)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer border flex items-center gap-1.5",
+                        isSelected
+                          ? isVInStock
+                            ? "bg-[#123814] text-white border-[#123814] shadow-sm"
+                            : "bg-rose-700 text-white border-rose-800 shadow-sm"
+                          : isVInStock
+                            ? "bg-white text-[#123814] border-gray-300 hover:border-[#123814]"
+                            : "bg-rose-50 text-rose-700 border-rose-200 opacity-80"
+                      )}
+                    >
+                      <span className={!isVInStock ? "line-through opacity-85" : ""}>{v}</span>
+                      {vHasOffer && (
+                        <span className="line-through text-[8px] opacity-70">
+                          ₹{vRegular}
+                        </span>
+                      )}
+                      <span className={isSelected ? "text-white/90" : isVInStock ? "text-[#E86A10]" : "text-rose-500"}>
+                        ₹{vDiscounted.toLocaleString('en-IN')}
+                      </span>
+                      {vHasOffer && (
+                        <span className="text-[8px] px-1 rounded-xs bg-[#E86A10] text-white font-black">
+                          {vOffer!.discountPercent}% OFF
+                        </span>
+                      )}
+                      {!isVInStock && (
+                        <span className="text-[8px] px-1 rounded-xs bg-rose-200 text-rose-900 font-black uppercase">
+                          Out
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -632,15 +934,34 @@ export function ProductRevealCard({
             <div className="pt-4 border-t border-[#123814]/10 flex flex-col sm:flex-row items-center gap-3">
               <button
                 type="button"
+                disabled={!isSelectedVariantInStock}
                 onClick={() => {
+                  if (!isSelectedVariantInStock) return;
                   handleAdd(modalImageRef.current);
                   setIsModalOpen(false);
                 }}
-                className="w-full sm:w-1/2 bg-[#E86A10] hover:bg-[#d05c0b] text-white py-3 rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className={cn(
+                  "w-full sm:w-1/2 py-3 rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 transition-all",
+                  !isSelectedVariantInStock
+                    ? "bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed shadow-none"
+                    : "bg-[#E86A10] hover:bg-[#d05c0b] text-white cursor-pointer"
+                )}
               >
-                <ShoppingCart className="w-4 h-4" />
-                {t('store.addToCart', 'Add to Cart')} (₹{currentUnitPrice.toLocaleString('en-IN')})
+                {!isSelectedVariantInStock ? (
+                  <>
+                    <XCircle className="w-4 h-4 text-gray-500" />
+                    <span>{t('store.outOfStock', 'Out of Stock (स्टॉक संपला)')}</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4" />
+                    <span>
+                      {t('store.addToCart', 'Add to Cart')} (₹{currentUnitPrice.toLocaleString('en-IN')})
+                    </span>
+                  </>
+                )}
               </button>
+
               <a
                 href={`https://wa.me/918237795424?text=${encodeURIComponent(`Hello Navbharat Agro! I am interested in ordering ${name} (${selectedVariant}) for ₹${currentUnitPrice}.`)}`}
                 target="_blank"

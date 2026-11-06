@@ -39,6 +39,10 @@ export interface StoreProduct {
   usage: string;
   importantNote?: string;
   deliveryNote?: string;
+  inStock?: boolean;
+  variantStock?: Record<string, boolean>;
+  offer?: any;
+  variantOffers?: any;
 }
 
 export interface DiscoverItem {
@@ -54,6 +58,10 @@ export interface DiscoverItem {
   usage: string;
   importantNote?: string;
   deliveryNote?: string;
+  inStock?: boolean;
+  variantStock?: Record<string, boolean>;
+  offer?: any;
+  variantOffers?: any;
 }
 
 export interface DiscoverSection {

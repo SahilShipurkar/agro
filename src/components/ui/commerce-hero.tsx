@@ -1,6 +1,6 @@
 "use client";
 import { useState, useMemo, useEffect } from "react";
-import { ArrowUpRight, Search, ShoppingBasket, ShoppingBag, Trash2, Plus, Minus, MessageSquare, Receipt, ArrowLeft, ArrowRight, MapPin, User, Phone, Building2, CheckCircle2 } from "lucide-react";
+import { Search, ShoppingBasket, ShoppingBag, Trash2, Plus, Minus, MessageSquare, Receipt, ArrowLeft, ArrowRight, MapPin, User, Phone, Building2, CheckCircle2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -13,7 +13,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ProductRevealCard } from "@/components/ui/product-reveal-card";
 import { getAssetUrl } from "@/lib/utils";
 import { useLanguage } from "@/lib/languageContext";
-import { getStoreCategories, getStoreProducts } from "@/lib/productsData";
+import { getStoreProducts } from "@/lib/productsData";
 import { getLocalCachedPrices, fetchLivePrices, applyLivePrices } from "@/lib/priceStore";
 import GlobalNavbar from "@/components/GlobalNavbar";
 
@@ -48,7 +48,6 @@ export function CommerceHero({
   onNavigateAbout,
 }: CommerceHeroProps = {}) {
   const { language, t } = useLanguage();
-  const categories = getStoreCategories(language);
   const baseStoreProducts = useMemo(() => getStoreProducts(language), [language]);
   const [customPrices, setCustomPrices] = useState(() => getLocalCachedPrices());
 
@@ -311,11 +310,11 @@ export function CommerceHero({
         }}
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
-        sticky={true}
+        sticky={false}
       />
 
-      {/* STORE ACTION SUB-NAVBAR: Search & Cart (Shown below global navbar as requested) */}
-      <div className="sticky top-[73px] sm:top-[79px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[#123814]/10 py-2 sm:py-2.5 px-3 sm:px-6 shadow-xs">
+      {/* STORE ACTION SUB-NAVBAR: Search & Cart (Slides to and sticks at top when scrolled down) */}
+      <div className="sticky top-0 z-40 w-full bg-[#EFFDF0]/95 backdrop-blur-md border-b border-[#123814]/15 py-2 sm:py-2.5 px-3 sm:px-6 shadow-sm transition-all">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6">
           {/* Store Title */}
           <div
@@ -403,38 +402,7 @@ export function CommerceHero({
           </motion.section>
         </div>
 
-      {/* Category Cards (2 columns on mobile, 4 on desktop) */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-6 max-w-7xl mx-auto mt-4 sm:mt-6">
-        {categories.map((category, index) => (
-          <motion.div
-            key={category.title}
-            className="group relative bg-white border-2 border-[#123814]/15 rounded-2xl sm:rounded-3xl p-3 sm:p-6 min-h-[170px] sm:min-h-[260px] w-full overflow-hidden shadow-md sm:shadow-lg transition-all duration-500 hover:shadow-2xl hover:border-[#123814]/30 cursor-pointer flex flex-col justify-between"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-            onClick={() => scrollToProducts(category.filterKey)}
-          >
-            <div className="relative z-20">
-              <h2 className="text-xs sm:text-2xl font-extrabold text-[#123814] group-hover:text-[#E86A10] transition-colors duration-300 leading-tight">
-                {category.title}
-              </h2>
-              <p className="text-[9px] sm:text-xs text-gray-600 font-medium mt-0.5 sm:mt-1 line-clamp-1">
-                {category.subtitle}
-              </p>
-              <div className="mt-2 sm:mt-6 flex items-center justify-center p-1 sm:p-2">
-                <img
-                  src={getAssetUrl(category.image)}
-                  alt={category.title}
-                  className="w-auto h-16 sm:h-36 max-h-36 object-contain group-hover:scale-110 transition-all duration-500 drop-shadow-md"
-                />
-              </div>
-              <div className="absolute bottom-1 right-1 sm:bottom-3 sm:right-3 w-6 h-6 sm:w-10 sm:h-10 bg-[#123814] text-white rounded-full flex items-center justify-center group-hover:bg-[#E86A10] group-hover:scale-110 transition-all duration-300 shadow-md">
-                <ArrowUpRight className="w-3 h-3 sm:w-5 sm:h-5" />
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+
 
       {/* Store Products Reveal Cards Section */}
       <div id="store-products" className="mt-8 sm:mt-14 mb-10 max-w-7xl mx-auto px-1 sm:px-2 scroll-mt-6">
